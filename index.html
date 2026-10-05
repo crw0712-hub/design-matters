@@ -32,7 +32,7 @@ button:disabled{opacity:.55}
 <body>
 <div class="wrap" id="wrap">
   <div class="head">
-    <div class="eyebrow">DESIGN MATTERS · UPCOMING</div>
+    <div class="eyebrow">DESIGN MATTERS · UPCOMING · v2</div>
     <h1>接下来的讨论。</h1>
     <p>看到想参与的问题，可以先留下兴趣。对应场次开放报名时，我们会通知你。</p>
   </div>
@@ -45,7 +45,7 @@ button:disabled{opacity:.55}
     <label class="event"><input class="eventCheck" type="checkbox" value="013"><strong>#013</strong><span>What does an AI-native team actually look like?</span></label>
 
     <label class="label" for="email">邮箱</label>
-    <input id="email" type="email" placeholder="name@example.com">
+    <input id="email" type="email" placeholder="name@example.com" required>
 
     <label class="consent"><input id="consent" type="checkbox"><span>我同意接收所选 Design Matters 场次的报名通知。</span></label>
 
@@ -75,7 +75,8 @@ form.addEventListener('submit',async(e)=>{
   statusEl.textContent='正在检查…';
 
   const eventIds=[...document.querySelectorAll('.eventCheck:checked')].map(x=>x.value);
-  const email=document.getElementById('email').value.trim().toLowerCase();
+  const emailInput=document.getElementById('email');
+  const email=emailInput.value.trim().toLowerCase();
   const consent=document.getElementById('consent').checked;
 
   if(!eventIds.length){
@@ -83,9 +84,10 @@ form.addEventListener('submit',async(e)=>{
     statusEl.textContent='请至少选择一个感兴趣的场次。';
     return;
   }
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+  if(!email || !emailInput.checkValidity()){
     statusEl.className='status error';
     statusEl.textContent='请输入有效的邮箱地址。';
+    emailInput.focus();
     return;
   }
   if(!consent){
