@@ -83,7 +83,7 @@ form.addEventListener('submit',async(e)=>{
     statusEl.textContent='请至少选择一个感兴趣的场次。';
     return;
   }
-  if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
     statusEl.className='status error';
     statusEl.textContent='请输入有效的邮箱地址。';
     return;
