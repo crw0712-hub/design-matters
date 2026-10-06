@@ -1,0 +1,201 @@
+lid var(--ink);
+  }
+  .interest-picker-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    padding:11px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .interest-picker-head strong{
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .select-all-btn{
+    border:1px solid var(--ink);
+    border-radius:999px;
+    padding:6px 10px;
+    background:transparent;
+    font-size:10px;
+    font-weight:850;
+    cursor:pointer;
+  }
+  .interest-option{
+    display:grid !important;
+    grid-template-columns:22px 52px minmax(0,1fr);
+    gap:8px;
+    align-items:start;
+    margin:0 !important;
+    padding:13px 0;
+    border-bottom:1px solid var(--line);
+    cursor:pointer;
+  }
+  .interest-option:last-child{border-bottom:0}
+  .interest-option input{
+    width:16px;
+    height:16px;
+    margin:2px 0 0;
+    accent-color:var(--ink);
+  }
+  .interest-option-no{
+    font-size:11px;
+    font-weight:900;
+    padding-top:2px;
+  }
+  .interest-option-title{
+    font-size:13px;
+    line-height:1.35;
+    font-weight:750;
+  }
+  .interest-form input[type="email"]{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:var(--white);
+    padding:14px 15px;
+    margin-bottom:14px;
+    outline:none;
+  }
+  .interest-form input[type="email"]:focus{border-color:var(--ink)}
+  .interest-form .consent-row{margin-bottom:14px}
+  .interest-form .btn{width:100%}
+  .interest-form .btn:disabled{
+    opacity:.36;
+    cursor:not-allowed;
+  }
+  .interest-form-note{
+    margin-top:10px;
+    color:var(--muted);
+    font-size:10px;
+    line-height:1.45;
+  }
+  .interest-form-note.success{color:#1f5d10;font-weight:750}
+  .interest-form-note.error{color:#8d1919;font-weight:750}
+  .interest-success{
+    display:none;
+    padding:42px 28px 34px;
+    text-align:center;
+  }
+  .interest-dialog.is-success .interest-form{display:none}
+  .interest-dialog.is-success .interest-dialog-head{display:none}
+  .interest-dialog.is-success .interest-success{display:block}
+  .interest-success-mark{
+    width:58px;height:58px;margin:0 auto 18px;
+    display:grid;place-items:center;
+    border:1.5px solid var(--ink);border-radius:50%;
+    background:var(--acid);font-size:28px;font-weight:950;
+  }
+  .interest-success h3{
+    margin:0 0 12px;font-size:32px;line-height:1.05;letter-spacing:-.045em;
+  }
+  .interest-success p{
+    max-width:440px;margin:0 auto 24px;color:#44413c;font-size:14px;line-height:1.6;
+  }
+  .interest-success .btn{min-width:180px}
+
+
+  @media (max-width:1000px){
+    .current-conversation{border-bottom:1px solid var(--ink)}
+  }
+
+  @media (max-width:760px){
+    .conversation-board-head{
+      grid-template-columns:1fr;
+      gap:12px;
+      padding:34px 22px 24px;
+    }
+    .current-conversation,.upcoming-conversations{padding:28px 22px}
+    .current-conversation h3{font-size:44px}
+    .current-actions .btn{width:100%}
+    .upcoming-title-row{
+      grid-template-columns:48px minmax(0,1fr);
+      gap:10px;
+    }
+    .upcoming-meta-row,.upcoming-hook{margin-left:58px}
+    .upcoming-copy h3{font-size:23px}
+    .upcoming-footer{padding-top:22px}
+    .upcoming-footer .interest-btn{width:100%}
+    .interest-dialog{border-radius:20px}
+    .interest-option{grid-template-columns:22px 46px minmax(0,1fr)}
+  }
+
+</style>
+</head>
+<body>
+<div class="page">
+<nav class="nav">
+<a class="brand" href="#top">
+<span class="mark">D</span>
+<span>DESIGN MATTERS</span>
+</a>
+<div class="navlinks">
+<div aria-label="Language switch" class="lang-toggle" role="group">
+<button class="lang-btn active" data-lang="zh" type="button">中</button>
+<span>/</span>
+<button class="lang-btn" data-lang="en" type="button">EN</button>
+</div>
+<a data-en="#008" data-i18n="text" data-zh="#008" href="#next">#008</a><a data-en="Season 01" data-i18n="text" data-zh="Season 01" href="#season01">Season 01</a><a data-en="Archive" data-i18n="text" data-zh="归档" href="#archive">归档</a><a class="apply-pill" data-en="Apply" data-i18n="text" data-zh="申请加入" href="#join">申请加入</a></div>
+</nav>
+<header class="hero" id="top">
+<div class="hero-copy">
+<div>
+<span class="kicker" data-en='&lt;span class="dot"&gt;&lt;/span&gt; AI × DESIGN ROUNDTABLE' data-i18n="html" data-zh='&lt;span class="dot"&gt;&lt;/span&gt; AI × 设计圆桌'><span class="dot"></span> AI × 设计圆桌</span>
+<h1 data-en="In the age of AI,&lt;br&gt;what is design&lt;br&gt;actually becoming?" data-i18n="html" data-zh="AI 时代，&lt;br&gt;设计到底&lt;br&gt;在变什么？">AI 时代，<br/>设计到底<br/>在变什么？</h1>
+<p data-en="AI is reshaping products, workflows, teams, and the designer’s role. We bring real practices from different organizations into the same room—not to rush toward one answer, but to compare differences, track change, and build better judgment." data-i18n="text" data-zh="AI 正在重塑产品、workflow、团队与设计师角色。我们把不同组织里的真实实践放进同一个 room，不急着找标准答案，而是比较差异、追踪变化、沉淀新的判断。">AI 正在重塑产品、workflow、团队与设计师角色。我们把不同组织里的真实实践放进同一个 room，不急着找标准答案，而是比较差异、追踪变化、沉淀新的判断。</p>
+</div>
+
+</div>
+<div class="hero-visual">
+<div aria-label="Design Matters network illustration" class="network">
+<svg role="img" viewbox="0 0 600 600">
+<rect fill="#fbfaf6" height="600" width="600" x="0" y="0"></rect>
+<path d="M88 305 C165 190, 240 225, 306 300 S430 410, 515 250" fill="none" stroke="#0a0a0a" stroke-dasharray="8 9" stroke-width="3"></path>
+<path d="M114 430 C220 350, 340 425, 485 390" fill="none" stroke="#0a0a0a" stroke-width="2.2"></path>
+<circle cx="110" cy="304" fill="#b8ff17" r="28" stroke="#0a0a0a" stroke-width="3"></circle>
+<circle cx="296" cy="301" fill="#0a0a0a" r="52"></circle>
+<circle cx="514" cy="250" fill="#fbfaf6" r="28" stroke="#0a0a0a" stroke-width="3"></circle>
+<circle cx="485" cy="390" fill="#b8ff17" r="28" stroke="#0a0a0a" stroke-width="3"></circle>
+<circle cx="115" cy="430" fill="#fbfaf6" r="21" stroke="#0a0a0a" stroke-width="3"></circle>
+<text fill="#ffffff" font-size="34" font-weight="900" text-anchor="middle" x="296" y="312">?</text>
+<text font-size="12" font-weight="850" text-anchor="middle" x="110" y="311">PRODUCT</text>
+<text font-size="12" font-weight="850" text-anchor="middle" x="514" y="257">ROLE</text>
+<text font-size="11" font-weight="850" text-anchor="middle" x="485" y="397">WORKFLOW</text>
+<text font-size="10" font-weight="850" text-anchor="middle" x="115" y="436">ORG</text>
+<rect fill="#b8ff17" height="64" rx="16" stroke="#0a0a0a" stroke-width="2" width="188" x="59" y="70"></rect>
+<text font-size="13" font-weight="900" x="79" y="98">SHARED CHANGE.</text>
+<text font-size="13" font-weight="900" x="79" y="119">DIFFERENT SYSTEMS.</text>
+<rect fill="#fbfaf6" height="62" rx="16" stroke="#0a0a0a" stroke-width="2" width="171" x="365" y="474"></rect>
+<text font-size="13" font-weight="900" x="386" y="502">CHANGING</text>
+<text font-size="13" font-weight="900" x="386" y="522">JUDGMENT.</text>
+</svg>
+<div class="network-note">
+<span>People × Curation</span>
+<span>Conversation × Synthesis</span>
+</div>
+</div>
+</div>
+</header>
+<div class="statement">
+<div class="label" data-en="WHAT WE ARE BUILDING" data-i18n="text" data-zh="我们在做什么">我们在做什么</div>
+<div class="big" data-en="Not “another AI design event.”&lt;br&gt;We track &lt;em&gt;changes already happening inside real teams—before they become industry playbooks.&lt;/em&gt;" data-i18n="html" data-zh="不是“又一个 AI 设计活动”。&lt;br&gt;我们追踪的是：&lt;em&gt;真实团队里已经发生、但还没有变成行业 playbook 的变化。&lt;/em&gt;">不是“又一个 AI 设计活动”。<br/>我们追踪的是：<em>真实团队里已经发生、但还没有变成行业 playbook 的变化。</em></div>
+</div><div aria-hidden="true" class="chapter-break">
+<div class="chapter-break-track">
+<span data-en="NEXT CONVERSATION" data-i18n="text" data-zh="下一场">下一场</span><span>008</span><span data-en="SEASON 02" data-i18n="text" data-zh="SEASON 02">SEASON 02</span>
+<span data-en="NEXT CONVERSATION" data-i18n="text" data-zh="下一场">下一场</span><span>008</span><span data-en="SEASON 02" data-i18n="text" data-zh="SEASON 02">SEASON 02</span>
+</div>
+</div><section class="next next-chapter" id="next">
+<div aria-hidden="true" class="parallax-scene">
+<div class="parallax-word p-word-1" data-parallax="-0.10">AI</div>
+<div class="parallax-word p-word-2" data-parallax="0.16">NATIVE</div>
+<div class="parallax-ring p-ring-1" data-parallax="-0.22"></div>
+<div class="parallax-ring p-ring-2" data-parallax="0.12"></div>
+<div class="parallax-cross p-cross-1" data-parallax="0.28">+</div>
+</div>
+<div class="next-left">
+<div class="season" data-en="REGISTRATION OPEN · Season 02 · #008" data-i18n="text" data-zh="报名中 · Season 02 · #008">报名中 · Season 02 · #008</div>
+<h2 data-en="Everyone says&lt;br&gt;AI-native.&lt;br&gt;What actually&lt;br&gt;counts?" data-i18n="html" data-zh="都在说&lt;br&gt;AI-native，&lt;br&gt;到底什么&lt;br&gt;才算？">都在说<br/>AI-native，<br/>到底什么<br/>才算？</h2>
+<p data-en="AI-native is everywhere. Products say it. Teams say it. Job posts say it. Startups say it even more. But are we actually talking about the same thing?" data-i18n="text" data-zh="AI-native 时兴。产品在说，团队在说，招聘在说，创业公司更在说。但大家说的，真的还是同一件事吗？">AI-native 时兴。产品在说，团队在说，招聘在说，创业公司更在说。但大家说的，真的还是同一件事吗？</p>
+</div>
+<d
