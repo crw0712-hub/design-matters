@@ -2,132 +2,3025 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Design Matters — AI × Design</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Design Matters — AI × Design Roundtable</title>
+<meta
+  name="description"
+  content="Design Matters tracks how AI is changing products, workflows, roles and design judgment in real work."
+>
+
 <style>
-:root{--bg:#f5f3ec;--paper:#fbfaf6;--ink:#0a0a0a;--muted:#6e6c66;--line:#d8d5cd;--acid:#b8ff17}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
-.wrap{width:min(860px,calc(100% - 24px));margin:24px auto;border:1.5px solid var(--ink);border-radius:28px;overflow:hidden;background:var(--paper)}
-.head{padding:30px;background:var(--acid);border-bottom:1px solid var(--ink)}
-.eyebrow{font-size:11px;font-weight:900;letter-spacing:.12em}
-h1{font-size:clamp(38px,7vw,72px);line-height:.95;letter-spacing:-.055em;margin:14px 0 14px}
-.head p{margin:0;max-width:650px;font-size:16px;line-height:1.55}
-.form{padding:28px}
-.event{display:grid;grid-template-columns:26px 58px 1fr;gap:10px;align-items:start;padding:16px 0;border-bottom:1px solid var(--line);cursor:pointer}
-.event strong{font-size:12px}.event span{font-size:15px;line-height:1.4}
-.label{display:block;margin:24px 0 8px;font-size:12px;font-weight:850}
-input[type=email]{width:100%;padding:14px 15px;border:1px solid var(--line);border-radius:12px;background:#fff;font:inherit}
-.consent{display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-size:12px;color:#555;line-height:1.5}
-button{width:100%;padding:15px;border:1.5px solid var(--ink);border-radius:999px;background:var(--ink);color:#fff;font:inherit;font-weight:900;cursor:pointer}
-button:disabled{opacity:.55}
-.status{min-height:22px;margin-top:12px;font-size:12px}
-.error{color:#8d1919;font-weight:800}
-.success{display:none;padding:58px 28px;text-align:center}
-.done .head,.done .form{display:none}.done .success{display:block}
-.mark{width:64px;height:64px;margin:0 auto 18px;border:1.5px solid var(--ink);border-radius:50%;background:var(--acid);display:grid;place-items:center;font-size:30px;font-weight:950}
-.success h2{font-size:34px;letter-spacing:-.045em;margin:0 0 10px}.success p{margin:0 auto;max-width:540px;color:#444;line-height:1.65}
+:root{
+  --green:#b8ff17;
+  --black:#0a0a0a;
+  --paper:#fbfaf6;
+  --bg:#f3f1ea;
+  --muted:#6e6c66;
+  --line:#d8d5cd;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--black);
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "PingFang SC",
+    "Microsoft YaHei",
+    Arial,
+    sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+button,
+input,
+textarea{
+  font:inherit;
+}
+
+.page{
+  width:min(1480px, calc(100% - 24px));
+  margin:12px auto 32px;
+  background:var(--paper);
+  border:1.5px solid var(--black);
+  border-radius:28px;
+  overflow:hidden;
+}
+
+
+/* NAV */
+
+.nav{
+  position:sticky;
+  top:0;
+  z-index:50;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:16px 24px;
+
+  border-bottom:1px solid var(--line);
+
+  background:rgba(251,250,246,.94);
+  backdrop-filter:blur(14px);
+}
+
+.brand{
+  display:flex;
+  gap:10px;
+  align-items:center;
+
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+
+.logo{
+  width:32px;
+  height:32px;
+
+  display:grid;
+  place-items:center;
+
+  border:1px solid var(--black);
+  border-radius:9px;
+
+  background:var(--green);
+
+  font-weight:950;
+}
+
+.links{
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.links > a{
+  padding:8px 11px;
+
+  border-radius:999px;
+
+  font-size:12px;
+  font-weight:800;
+}
+
+.links > a:hover{
+  background:#fff;
+}
+
+.apply{
+  background:var(--black)!important;
+  color:#fff!important;
+}
+
+.lang-toggle{
+  display:flex;
+  align-items:center;
+  gap:4px;
+
+  padding:5px 8px;
+
+  border:1px solid var(--black);
+  border-radius:999px;
+
+  background:#fff;
+
+  font-size:11px;
+  font-weight:850;
+}
+
+.lang-toggle button{
+  border:0;
+  background:transparent;
+
+  padding:4px 6px;
+
+  cursor:pointer;
+
+  color:#777;
+
+  font:inherit;
+}
+
+.lang-toggle button.active{
+  color:#000;
+  background:var(--green);
+
+  border-radius:999px;
+}
+
+
+/* HERO */
+
+.hero{
+  min-height:700px;
+
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+
+  border-bottom:1px solid var(--black);
+}
+
+.hero-left{
+  padding:70px 54px;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.tag{
+  display:inline-flex;
+  width:max-content;
+
+  padding:8px 12px;
+
+  border:1px solid var(--black);
+  border-radius:999px;
+
+  background:var(--green);
+
+  font-size:12px;
+  font-weight:850;
+}
+
+.hero h1{
+  margin:36px 0 24px;
+
+  font-size:clamp(58px, 7vw, 112px);
+  line-height:.92;
+
+  letter-spacing:-.07em;
+}
+
+.hero-left p{
+  max-width:790px;
+
+  margin:0;
+
+  font-size:clamp(20px, 2vw, 27px);
+  line-height:1.5;
+
+  letter-spacing:-.02em;
+}
+
+.hero-right{
+  min-height:700px;
+
+  padding:36px;
+
+  display:grid;
+  place-items:center;
+
+  background:var(--black);
+}
+
+.visual{
+  width:min(540px, 100%);
+  aspect-ratio:1/1;
+
+  position:relative;
+  overflow:hidden;
+
+  border:1px solid var(--black);
+  border-radius:30px;
+
+  background:var(--paper);
+}
+
+.visual-box{
+  position:absolute;
+  left:10%;
+  top:10%;
+
+  padding:14px 18px;
+
+  border:2px solid var(--black);
+  border-radius:16px;
+
+  background:var(--green);
+
+  font-weight:900;
+}
+
+.node{
+  position:absolute;
+
+  display:grid;
+  place-items:center;
+
+  border:3px solid var(--black);
+  border-radius:50%;
+
+  font-size:11px;
+  font-weight:900;
+}
+
+.n1{
+  left:18%;
+  top:48%;
+
+  width:62px;
+  height:62px;
+
+  background:var(--green);
+}
+
+.n2{
+  left:44%;
+  top:40%;
+
+  width:106px;
+  height:106px;
+
+  background:var(--black);
+  color:#fff;
+
+  font-size:32px;
+}
+
+.n3{
+  right:12%;
+  top:37%;
+
+  width:62px;
+  height:62px;
+}
+
+.n4{
+  right:15%;
+  bottom:18%;
+
+  width:72px;
+  height:72px;
+
+  background:var(--green);
+}
+
+.n5{
+  left:20%;
+  bottom:16%;
+
+  width:50px;
+  height:50px;
+}
+
+.visual-line-1{
+  position:absolute;
+
+  width:48%;
+  left:25%;
+  top:46%;
+
+  border-top:3px dashed var(--black);
+
+  transform:rotate(12deg);
+}
+
+.visual-line-2{
+  position:absolute;
+
+  width:58%;
+  left:24%;
+  bottom:25%;
+
+  border-top:2px solid var(--black);
+
+  transform:rotate(-5deg);
+}
+
+.visual-footer{
+  position:absolute;
+
+  left:8%;
+  right:8%;
+  bottom:5%;
+
+  display:flex;
+  justify-content:space-between;
+
+  padding-top:12px;
+
+  border-top:1px solid var(--black);
+
+  font-size:10px;
+  font-weight:850;
+}
+
+
+/* POSITION */
+
+.position{
+  display:grid;
+  grid-template-columns:180px 1fr;
+  gap:38px;
+
+  padding:40px 54px;
+
+  border-bottom:1px solid var(--black);
+}
+
+.eyebrow{
+  font-size:11px;
+  font-weight:850;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+
+  color:var(--muted);
+}
+
+.position-copy{
+  max-width:1050px;
+
+  font-size:clamp(27px, 3vw, 45px);
+  line-height:1.18;
+
+  letter-spacing:-.04em;
+}
+
+
+/* CHAPTER TICKER */
+
+.ticker{
+  overflow:hidden;
+
+  padding:11px 0;
+
+  border-bottom:1px solid var(--black);
+}
+
+.ticker-track{
+  width:max-content;
+
+  display:flex;
+  gap:28px;
+
+  white-space:nowrap;
+
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.12em;
+
+  animation:marquee 25s linear infinite;
+}
+
+@keyframes marquee{
+  to{
+    transform:translateX(-50%);
+  }
+}
+
+
+/* #008 */
+
+.next{
+  position:relative;
+  overflow:hidden;
+
+  min-height:720px;
+
+  display:grid;
+  grid-template-columns:.78fr 1.22fr;
+
+  background:var(--green);
+
+  border-bottom:1px solid var(--black);
+}
+
+.next-left,
+.next-right{
+  position:relative;
+  z-index:2;
+
+  padding:54px;
+}
+
+.next-left{
+  border-right:1px solid var(--black);
+}
+
+.current-pill{
+  display:inline-flex;
+
+  padding:7px 10px;
+
+  border:1px solid var(--black);
+  border-radius:999px;
+
+  background:rgba(255,255,255,.48);
+
+  font-size:11px;
+  font-weight:900;
+}
+
+.next h2{
+  margin:28px 0;
+
+  font-size:clamp(58px, 6.7vw, 104px);
+  line-height:.92;
+
+  letter-spacing:-.07em;
+}
+
+.next-left p{
+  max-width:600px;
+
+  font-size:18px;
+  line-height:1.55;
+}
+
+.questions{
+  border-top:1px solid var(--black);
+}
+
+.question{
+  padding:16px 0;
+
+  border-bottom:1px solid var(--black);
+
+  font-size:clamp(18px, 1.5vw, 23px);
+  font-weight:650;
+  line-height:1.35;
+
+  letter-spacing:-.025em;
+}
+
+.context-card{
+  margin-top:36px;
+
+  padding:22px;
+
+  border:1.5px solid var(--black);
+  border-radius:20px;
+
+  background:var(--paper);
+}
+
+.contexts{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+
+  margin:14px 0;
+}
+
+.contexts span{
+  padding:8px 10px;
+
+  border:1px solid var(--black);
+  border-radius:999px;
+
+  font-size:12px;
+  font-weight:800;
+}
+
+.context-card p{
+  line-height:1.55;
+}
+
+.button{
+  display:inline-block;
+
+  margin-top:12px;
+  padding:12px 16px;
+
+  border:1px solid var(--black);
+  border-radius:999px;
+
+  background:var(--black);
+  color:#fff;
+
+  font-size:13px;
+  font-weight:850;
+}
+
+.parallax-word{
+  position:absolute;
+  z-index:0;
+
+  pointer-events:none;
+
+  font-size:clamp(140px, 22vw, 350px);
+  line-height:.8;
+
+  font-weight:950;
+
+  color:transparent;
+
+  -webkit-text-stroke:1px rgba(0,0,0,.13);
+
+  will-change:transform;
+}
+
+.parallax-ai{
+  left:-2%;
+  top:3%;
+}
+
+.parallax-native{
+  right:-10%;
+  bottom:-4%;
+}
+
+
+/* SEASON INTRO */
+
+.season-intro{
+  background:var(--black);
+  color:#fff;
+}
+
+.season-top{
+  display:flex;
+  justify-content:space-between;
+
+  padding:17px 54px;
+
+  border-bottom:1px solid rgba(255,255,255,.2);
+
+  font-size:12px;
+  font-weight:900;
+}
+
+.season-top strong{
+  color:var(--green);
+}
+
+.season-body{
+  display:grid;
+  grid-template-columns:180px 1fr;
+  gap:38px;
+
+  padding:54px;
+}
+
+.season-body h2{
+  grid-column:2;
+
+  margin:0;
+
+  font-size:clamp(54px, 6.4vw, 100px);
+  line-height:.92;
+
+  letter-spacing:-.07em;
+}
+
+.season-body p{
+  grid-column:2;
+
+  max-width:760px;
+
+  margin:24px 0 0;
+
+  color:#bbb;
+
+  font-size:18px;
+  line-height:1.55;
+}
+
+
+/* SECTIONS */
+
+.section{
+  border-bottom:1px solid var(--black);
+}
+
+.section-head{
+  display:grid;
+  grid-template-columns:180px 1fr;
+  gap:38px;
+
+  padding:54px;
+}
+
+.section-head h2{
+  margin:0;
+
+  font-size:clamp(42px, 5vw, 76px);
+  line-height:.98;
+
+  letter-spacing:-.055em;
+}
+
+.section-head p{
+  max-width:820px;
+
+  font-size:18px;
+  line-height:1.6;
+}
+
+
+/* PATTERNS */
+
+.patterns{
+  display:grid;
+  grid-template-columns:repeat(5, 1fr);
+
+  border-top:1px solid var(--black);
+}
+
+.pattern{
+  min-height:340px;
+
+  padding:24px;
+
+  border-right:1px solid var(--black);
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+
+  transition:.2s ease;
+}
+
+.pattern:last-child{
+  border-right:0;
+}
+
+.pattern:hover{
+  background:var(--green);
+}
+
+.pattern h3{
+  font-size:24px;
+  line-height:1.15;
+
+  letter-spacing:-.035em;
+}
+
+.pattern p{
+  font-size:14px;
+  line-height:1.55;
+
+  color:#45433f;
+}
+
+.pattern-take{
+  padding-top:16px;
+
+  border-top:1px solid currentColor;
+
+  font-size:11px;
+  font-weight:850;
+}
+
+
+/* ARCHIVE */
+
+.archive-wrap{
+  padding:0 54px 68px;
+}
+
+.archive-grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+
+  border-top:1px solid var(--black);
+  border-left:1px solid var(--black);
+}
+
+details{
+  border-right:1px solid var(--black);
+  border-bottom:1px solid var(--black);
+}
+
+summary{
+  min-height:190px;
+
+  padding:22px;
+
+  list-style:none;
+  cursor:pointer;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+summary::-webkit-details-marker{
+  display:none;
+}
+
+.archive-top{
+  display:flex;
+  justify-content:space-between;
+}
+
+.archive-num{
+  padding:6px 8px;
+
+  border:1px solid var(--black);
+  border-radius:999px;
+
+  background:var(--green);
+
+  font-size:11px;
+  font-weight:900;
+}
+
+.archive-plus{
+  font-size:26px;
+}
+
+.archive-topic{
+  font-size:10px;
+  font-weight:850;
+  letter-spacing:.08em;
+
+  color:var(--muted);
+}
+
+.archive-grid h3{
+  font-size:28px;
+  line-height:1.1;
+
+  letter-spacing:-.04em;
+}
+
+.archive-body{
+  padding:0 22px 24px;
+
+  border-top:1px solid var(--line);
+}
+
+.archive-body p{
+  line-height:1.6;
+}
+
+.archive-signal{
+  padding:14px;
+
+  border:1px solid var(--black);
+  border-radius:12px;
+
+  background:var(--green);
+
+  font-weight:800;
+}
+
+
+/* JOIN */
+
+.join{
+  display:grid;
+  grid-template-columns:.85fr 1.15fr;
+  gap:70px;
+
+  padding:68px 54px;
+}
+
+.join h2{
+  margin:0;
+
+  font-size:clamp(42px, 5vw, 72px);
+  line-height:1;
+
+  letter-spacing:-.055em;
+}
+
+.join > div > p{
+  font-size:18px;
+  line-height:1.6;
+}
+
+.form{
+  padding:22px;
+
+  border:1px solid var(--black);
+  border-radius:20px;
+
+  background:#fff;
+}
+
+.form label{
+  display:block;
+
+  margin-bottom:7px;
+
+  font-size:12px;
+  font-weight:850;
+}
+
+.form input,
+.form textarea{
+  width:100%;
+
+  margin-bottom:14px;
+  padding:13px 14px;
+
+  border:1px solid var(--line);
+  border-radius:11px;
+
+  background:var(--paper);
+
+  outline:none;
+}
+
+.form input:focus,
+.form textarea:focus{
+  border-color:var(--black);
+}
+
+.form textarea{
+  min-height:115px;
+
+  resize:vertical;
+}
+
+.consent{
+  display:flex!important;
+  align-items:flex-start;
+  gap:9px;
+
+  color:#555;
+
+  font-weight:600!important;
+  line-height:1.5;
+}
+
+.consent input{
+  width:16px!important;
+  height:16px;
+
+  margin:1px 0 0!important;
+
+  flex:0 0 auto;
+}
+
+.submit{
+  padding:11px 15px;
+
+  border:1px solid var(--black);
+  border-radius:999px;
+
+  background:var(--black);
+  color:#fff;
+
+  font-weight:850;
+
+  cursor:pointer;
+}
+
+.form-note{
+  margin-top:10px;
+
+  font-size:11px;
+  line-height:1.45;
+
+  color:var(--muted);
+}
+
+.success-state{
+  padding:30px 8px;
+}
+
+.success-label{
+  margin-bottom:16px;
+
+  font-size:12px;
+  font-weight:850;
+}
+
+.success-title{
+  font-size:32px;
+  font-weight:850;
+  line-height:1.15;
+
+  letter-spacing:-.035em;
+}
+
+.success-copy{
+  margin-top:16px;
+
+  color:#666;
+
+  line-height:1.6;
+}
+
+
+/* FOOTER */
+
+footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+
+  padding:32px 54px;
+
+  background:var(--black);
+  color:#fff;
+}
+
+.footer-brand{
+  font-size:clamp(32px, 4vw, 56px);
+  font-weight:900;
+
+  letter-spacing:-.05em;
+}
+
+footer p{
+  margin:0;
+
+  color:#bbb;
+
+  font-size:11px;
+  line-height:1.5;
+
+  text-align:right;
+}
+
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+  .hero,
+  .next{
+    grid-template-columns:1fr;
+  }
+
+  .hero-right{
+    min-height:500px;
+  }
+
+  .next-left{
+    border-right:0;
+    border-bottom:1px solid var(--black);
+  }
+
+  .patterns{
+    grid-template-columns:repeat(2, 1fr);
+  }
+
+  .pattern{
+    border-bottom:1px solid var(--black);
+  }
+
+  .pattern:nth-child(2n){
+    border-right:0;
+  }
+
+  .pattern:last-child{
+    grid-column:1/-1;
+  }
+}
+
+@media(max-width:720px){
+
+  .page{
+    width:calc(100% - 12px);
+    margin:6px auto;
+  }
+
+  .nav{
+    padding:12px;
+  }
+
+  .brand span:last-child,
+  .links > a:not(.apply){
+    display:none;
+  }
+
+  .hero-left,
+  .hero-right,
+  .next-left,
+  .next-right,
+  .join{
+    padding:30px 20px;
+  }
+
+  .hero-right{
+    min-height:420px;
+  }
+
+  .position,
+  .section-head,
+  .season-body{
+    grid-template-columns:1fr;
+
+    gap:14px;
+
+    padding:28px 20px;
+  }
+
+  .season-top{
+    padding:14px 20px;
+  }
+
+  .season-body h2,
+  .season-body p{
+    grid-column:1;
+  }
+
+  .patterns,
+  .archive-grid{
+    grid-template-columns:1fr;
+  }
+
+  .pattern{
+    border-right:0;
+  }
+
+  .pattern:last-child{
+    grid-column:auto;
+  }
+
+  .archive-wrap{
+    padding:0 20px 44px;
+  }
+
+  .join{
+    grid-template-columns:1fr;
+
+    gap:28px;
+  }
+
+  footer{
+    flex-direction:column;
+    align-items:flex-start;
+
+    padding:26px 20px;
+  }
+
+  footer p{
+    margin-top:20px;
+
+    text-align:left;
+  }
+
+  .visual-footer{
+    font-size:8px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+
+  .ticker-track{
+    animation:none;
+  }
+
+  .parallax-word{
+    transform:none!important;
+  }
+}
+
+/* ===== Design Matters upcoming program + interest flow ===== */
+.dm-program{
+  padding:70px 56px 78px;
+  background:var(--paper);
+  border-bottom:1px solid var(--ink);
+}
+.dm-program-head{
+  display:grid;
+  grid-template-columns:180px 1fr;
+  gap:44px;
+  padding-bottom:32px;
+}
+.dm-program-kicker{
+  font-size:11px;
+  line-height:1.3;
+  font-weight:900;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+.dm-program h2{
+  margin:0;
+  font-size:clamp(42px,5vw,76px);
+  line-height:.96;
+  letter-spacing:-.055em;
+}
+.dm-program-intro{
+  max-width:760px;
+  margin:20px 0 0;
+  font-size:18px;
+  line-height:1.55;
+  color:#3f3d38;
+}
+.dm-upcoming-list{
+  margin-top:18px;
+}
+.dm-upcoming-row{
+  display:grid;
+  grid-template-columns:74px minmax(0,1fr) 120px;
+  gap:20px;
+  padding:24px 0;
+  border-top:1px solid var(--ink);
+  align-items:start;
+}
+.dm-upcoming-no{
+  font-size:13px;
+  font-weight:900;
+}
+.dm-upcoming-title{
+  font-size:clamp(22px,2.5vw,34px);
+  line-height:1.12;
+  letter-spacing:-.035em;
+  font-weight:760;
+}
+.dm-upcoming-meta{
+  margin-top:12px;
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.dm-tag{
+  display:inline-flex;
+  padding:6px 9px;
+  border:1px solid var(--ink);
+  border-radius:999px;
+  font-size:10px;
+  line-height:1;
+  font-weight:850;
+  letter-spacing:.05em;
+}
+.dm-upcoming-time{
+  text-align:right;
+  font-size:11px;
+  font-weight:850;
+  letter-spacing:.07em;
+}
+.dm-program-cta{
+  margin-top:32px;
+  display:flex;
+  justify-content:flex-end;
+}
+.dm-interest-btn{
+  border:1.5px solid var(--ink);
+  border-radius:999px;
+  padding:13px 18px;
+  background:var(--ink);
+  color:white;
+  font:inherit;
+  font-size:13px;
+  font-weight:900;
+  cursor:pointer;
+}
+.dm-interest-btn:hover{background:var(--acid);color:var(--ink)}
+
+.dm-interest-modal[hidden]{display:none}
+.dm-interest-modal{
+  position:fixed;
+  inset:0;
+  z-index:999;
+  background:rgba(10,10,10,.58);
+  display:grid;
+  place-items:center;
+  padding:18px;
+}
+.dm-interest-dialog{
+  width:min(760px,100%);
+  max-height:calc(100vh - 36px);
+  overflow:auto;
+  background:var(--paper);
+  border:1.5px solid var(--ink);
+  border-radius:24px;
+  box-shadow:0 20px 80px rgba(0,0,0,.28);
+}
+.dm-interest-head{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  padding:24px 24px 20px;
+  border-bottom:1px solid var(--ink);
+  background:var(--acid);
+}
+.dm-interest-head h3{
+  margin:7px 0 0;
+  font-size:30px;
+  line-height:1.05;
+  letter-spacing:-.04em;
+}
+.dm-interest-kicker{
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.1em;
+}
+.dm-close{
+  width:38px;height:38px;
+  flex:0 0 38px;
+  border:1px solid var(--ink);
+  border-radius:50%;
+  background:var(--paper);
+  font-size:24px;
+  line-height:1;
+  cursor:pointer;
+}
+.dm-interest-form{padding:24px}
+.dm-interest-form>p{
+  margin:0 0 18px;
+  color:#45433f;
+  line-height:1.55;
+}
+.dm-picker{
+  border-top:1px solid var(--ink);
+}
+.dm-picker-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  padding:12px 0;
+}
+.dm-picker-head strong{
+  font-size:11px;
+  letter-spacing:.08em;
+}
+.dm-select-all{
+  border:1px solid var(--ink);
+  border-radius:999px;
+  padding:6px 10px;
+  background:transparent;
+  font:inherit;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
+}
+.dm-option{
+  display:grid;
+  grid-template-columns:24px 52px 1fr;
+  gap:9px;
+  padding:13px 0;
+  border-top:1px solid var(--line);
+  align-items:start;
+  cursor:pointer;
+}
+.dm-option input{margin-top:3px}
+.dm-option-no{font-size:11px;font-weight:900}
+.dm-option-title{font-size:14px;line-height:1.42}
+.dm-field-label{
+  display:block;
+  margin:20px 0 8px;
+  font-size:11px;
+  font-weight:900;
+}
+.dm-email{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:13px 14px;
+  background:white;
+  font:inherit;
+  outline:none;
+}
+.dm-email:focus{border-color:var(--ink)}
+.dm-consent{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  margin:16px 0;
+  font-size:12px;
+  line-height:1.5;
+  color:#55524c;
+}
+.dm-submit{
+  width:100%;
+  border:1.5px solid var(--ink);
+  border-radius:999px;
+  padding:14px 16px;
+  background:var(--ink);
+  color:white;
+  font:inherit;
+  font-weight:900;
+  cursor:pointer;
+}
+.dm-submit:disabled{opacity:.55;cursor:wait}
+.dm-status{
+  min-height:20px;
+  margin-top:11px;
+  font-size:12px;
+}
+.dm-status.error{color:#8d1919;font-weight:800}
+.dm-success{
+  display:none;
+  padding:52px 28px;
+  text-align:center;
+}
+.dm-interest-dialog.is-success .dm-interest-head,
+.dm-interest-dialog.is-success .dm-interest-form{display:none}
+.dm-interest-dialog.is-success .dm-success{display:block}
+.dm-success-mark{
+  width:62px;height:62px;
+  border:1.5px solid var(--ink);
+  border-radius:50%;
+  background:var(--acid);
+  display:grid;
+  place-items:center;
+  margin:0 auto 18px;
+  font-size:30px;
+  font-weight:950;
+}
+.dm-success h3{
+  margin:0 0 10px;
+  font-size:34px;
+  letter-spacing:-.045em;
+}
+.dm-success p{
+  max-width:520px;
+  margin:0 auto 22px;
+  line-height:1.6;
+  color:#44413d;
+}
+@media(max-width:760px){
+  .dm-program{padding:48px 22px 54px}
+  .dm-program-head{grid-template-columns:1fr;gap:14px}
+  .dm-upcoming-row{grid-template-columns:54px 1fr}
+  .dm-upcoming-time{grid-column:2;text-align:left;margin-top:-6px}
+  .dm-program-cta{justify-content:stretch}
+  .dm-interest-btn{width:100%}
+}
+
 </style>
 </head>
+
+
 <body>
-<div class="wrap" id="wrap">
-  <div class="head">
-    <div class="eyebrow">DESIGN MATTERS · UPCOMING · v2</div>
-    <h1>接下来的讨论。</h1>
-    <p>看到想参与的问题，可以先留下兴趣。对应场次开放报名时，我们会通知你。</p>
+
+<div class="page">
+
+<nav class="nav">
+
+  <a class="brand" href="#top">
+    <span class="logo">D</span>
+    <span>DESIGN MATTERS</span>
+  </a>
+
+  <div class="links">
+
+    <div class="lang-toggle">
+      <button
+        type="button"
+        class="active"
+        data-lang="zh"
+      >中</button>
+
+      <span>/</span>
+
+      <button
+        type="button"
+        data-lang="en"
+      >EN</button>
+    </div>
+
+    <a href="#next">#008</a>
+    <a href="#season">Season 01</a>
+
+    <a
+      href="#join"
+      class="apply"
+      id="navJoin"
+    >加入</a>
+
   </div>
 
-  <form class="form" id="interestForm" novalidate>
-    <label class="event"><input class="eventCheck" type="checkbox" value="009"><strong>#009</strong><span>When AI can act for you, what should you still control?</span></label>
-    <label class="event"><input class="eventCheck" type="checkbox" value="010"><strong>#010</strong><span>If everyone can build, what is design actually responsible for?</span></label>
-    <label class="event"><input class="eventCheck" type="checkbox" value="011"><strong>#011</strong><span>Why do AI pilots still fail to become real workflows?</span></label>
-    <label class="event"><input class="eventCheck" type="checkbox" value="012"><strong>#012</strong><span>When AI does the execution, what does senior judgment actually mean?</span></label>
-    <label class="event"><input class="eventCheck" type="checkbox" value="013"><strong>#013</strong><span>What does an AI-native team actually look like?</span></label>
+</nav>
 
-    <label class="label" for="email">邮箱</label>
-    <input id="email" type="email" placeholder="name@example.com" required>
 
-    <label class="consent"><input id="consent" type="checkbox"><span>我同意接收所选 Design Matters 场次的报名通知。</span></label>
+<header
+  class="hero"
+  id="top"
+>
 
-    <button id="submitBtn" type="submit">报名开放时通知我 →</button>
-    <div class="status" id="status" aria-live="polite"></div>
-  </form>
+  <div class="hero-left">
 
-  <div class="success">
-    <div class="mark">✓</div>
-    <h2>提交成功</h2>
-    <p>我们已经记录你的兴趣。你选择的场次开放报名时，我们会通过邮件通知你。</p>
+    <span
+      class="tag"
+      id="heroTag"
+    >
+      AI × 设计圆桌
+    </span>
+
+    <h1 id="heroTitle">
+      AI 时代，<br>
+      设计到底<br>
+      在变什么？
+    </h1>
+
+    <p id="heroCopy">
+      AI 正在重塑产品、workflow、团队与设计师角色。
+      我们把不同组织里的真实实践放进同一个 room，
+      不急着找标准答案，而是比较差异、追踪变化、沉淀新的判断。
+    </p>
+
+  </div>
+
+
+  <div class="hero-right">
+
+    <div class="visual">
+
+      <div class="visual-box">
+        SHARED CHANGE.<br>
+        DIFFERENT SYSTEMS.
+      </div>
+
+      <div class="visual-line-1"></div>
+      <div class="visual-line-2"></div>
+
+      <div class="node n1">PRODUCT</div>
+      <div class="node n2">?</div>
+      <div class="node n3">ROLE</div>
+      <div class="node n4">WORKFLOW</div>
+      <div class="node n5">ORG</div>
+
+      <div class="visual-footer">
+        <span>PEOPLE × CURATION</span>
+        <span>CONVERSATION × SYNTHESIS</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<section class="position">
+
+  <div
+    class="eyebrow"
+    id="trackLabel"
+  >
+    我们在追踪什么
+  </div>
+
+  <div
+    class="position-copy"
+    id="trackCopy"
+  >
+    不是 AI 趋势本身。<br>
+    <strong>
+      而是 AI 进入真实工作后，
+      产品、workflow、角色与判断怎么变。
+    </strong>
+  </div>
+
+</section>
+
+
+<div class="ticker">
+
+  <div class="ticker-track">
+
+    <span>NEXT CONVERSATION</span>
+    <span>008</span>
+    <span>SEASON 02</span>
+
+    <span>NEXT CONVERSATION</span>
+    <span>008</span>
+    <span>SEASON 02</span>
+
+    <span>NEXT CONVERSATION</span>
+    <span>008</span>
+    <span>SEASON 02</span>
+
+  </div>
+
+</div>
+
+
+<section
+  class="next"
+  id="next"
+>
+
+  <div
+    class="parallax-word parallax-ai"
+    data-parallax="-0.12"
+  >
+    AI
+  </div>
+
+  <div
+    class="parallax-word parallax-native"
+    data-parallax="0.14"
+  >
+    NATIVE
+  </div>
+
+
+  <div class="next-left">
+
+    <span
+      class="current-pill"
+      id="now"
+    >
+      报名中 · Season 02 · #008
+    </span>
+
+    <h2 id="nextTitle">
+      都在说<br>
+      AI-native，<br>
+      到底什么<br>
+      才算？
+    </h2>
+
+    <p id="nextLead">
+      AI-native 时兴。
+      产品在说，团队在说，招聘在说，创业公司更在说。
+      但大家说的，真的是同一件事吗？
+    </p>
+
+  </div>
+
+
+  <div class="next-right">
+
+    <div class="questions">
+
+      <div
+        class="question"
+        id="q1"
+      >
+        原产品接入 AI，就算 AI-native？
+      </div>
+
+      <div
+        class="question"
+        id="q2"
+      >
+        搜索变对话、加 Copilot / Agent，就算？
+      </div>
+
+      <div
+        class="question"
+        id="q3"
+      >
+        还是要等到产品逻辑、workflow、人的角色与 decision ownership 都改变？
+      </div>
+
+    </div>
+
+
+    <div class="context-card">
+
+      <div
+        class="eyebrow"
+        id="sameQuestion"
+      >
+        不同环境 · 同一个问题
+      </div>
+
+      <div class="contexts">
+        <span>AI-native startup</span>
+        <span>Global tech</span>
+        <span>Consulting</span>
+      </div>
+
+      <p id="nextCardCopy">
+        这次不是再聊一次“大家怎么用 AI”，
+        而是把不同产品和组织环境里的真实实践放在一起，
+        看大家口中的 AI-native 到底是不是同一回事。
+      </p>
+
+      <a
+        class="button"
+        href="https://luma.com/designmatter"
+        target="_blank"
+        rel="noopener noreferrer"
+        id="lumaButton"
+      >
+        Luma 报名 ↗
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<section class="dm-program" id="upcoming">
+  <div class="dm-program-head">
+    <div class="dm-program-kicker">SEASON 02 · PROGRAM</div>
+    <div>
+      <h2 data-dm-zh="接下来的讨论。" data-dm-en="What’s coming next.">接下来的讨论。</h2>
+      <p class="dm-program-intro"
+         data-dm-zh="看到想参与的问题，可以先留下兴趣。对应场次开放报名时，我们会通知你。"
+         data-dm-en="Mark the future questions you want to be in the room for. We’ll notify you when those sessions open.">
+        看到想参与的问题，可以先留下兴趣。对应场次开放报名时，我们会通知你。
+      </p>
+    </div>
+  </div>
+
+  <div class="dm-upcoming-list">
+    <article class="dm-upcoming-row">
+      <div class="dm-upcoming-no">#009</div>
+      <div>
+        <div class="dm-upcoming-title">When AI can act for you, what should you still control?</div>
+        <div class="dm-upcoming-meta"><span class="dm-tag">AGENTIC PRODUCTS</span><span class="dm-tag">AGENT UX</span></div>
+      </div>
+      <div class="dm-upcoming-time">MID OCT</div>
+    </article>
+
+    <article class="dm-upcoming-row">
+      <div class="dm-upcoming-no">#010</div>
+      <div>
+        <div class="dm-upcoming-title">If everyone can build, what is design actually responsible for?</div>
+        <div class="dm-upcoming-meta"><span class="dm-tag">VIBE CODING</span><span class="dm-tag">DESIGN ROLE</span></div>
+      </div>
+      <div class="dm-upcoming-time">LATE OCT</div>
+    </article>
+
+    <article class="dm-upcoming-row">
+      <div class="dm-upcoming-no">#011</div>
+      <div>
+        <div class="dm-upcoming-title">Why do AI pilots still fail to become real workflows?</div>
+        <div class="dm-upcoming-meta"><span class="dm-tag">ENTERPRISE AI</span></div>
+      </div>
+      <div class="dm-upcoming-time">MID NOV</div>
+    </article>
+
+    <article class="dm-upcoming-row">
+      <div class="dm-upcoming-no">#012</div>
+      <div>
+        <div class="dm-upcoming-title">When AI does the execution, what does senior judgment actually mean?</div>
+        <div class="dm-upcoming-meta"><span class="dm-tag">DESIGN ROLE</span><span class="dm-tag">JUDGMENT</span><span class="dm-tag">FUTURE OF WORK</span></div>
+      </div>
+      <div class="dm-upcoming-time">LATE NOV</div>
+    </article>
+
+    <article class="dm-upcoming-row">
+      <div class="dm-upcoming-no">#013</div>
+      <div>
+        <div class="dm-upcoming-title">What does an AI-native team actually look like?</div>
+        <div class="dm-upcoming-meta"><span class="dm-tag">AI-NATIVE STARTUPS</span><span class="dm-tag">AI PRODUCT STRATEGY</span></div>
+      </div>
+      <div class="dm-upcoming-time">MID DEC</div>
+    </article>
+  </div>
+
+  <div class="dm-program-cta">
+    <button class="dm-interest-btn" id="openInterestSelection" type="button"
+      data-dm-zh="我感兴趣 →" data-dm-en="I’m interested →">我感兴趣 →</button>
+  </div>
+</section>
+
+<div class="dm-interest-modal" id="interestModal" hidden>
+  <div class="dm-interest-dialog" role="dialog" aria-modal="true" aria-labelledby="interestTitle">
+    <div class="dm-interest-head">
+      <div>
+        <div class="dm-interest-kicker">UPCOMING CONVERSATIONS</div>
+        <h3 id="interestTitle" data-dm-zh="你对哪些讨论感兴趣？" data-dm-en="Which conversations are you interested in?">你对哪些讨论感兴趣？</h3>
+      </div>
+      <button class="dm-close" id="interestClose" type="button" aria-label="Close">×</button>
+    </div>
+
+    <form class="dm-interest-form" id="interestForm" novalidate>
+      <input id="interestHoney" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true"
+        style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden">
+
+      <p data-dm-zh="选择你想参与的场次，再留下邮箱。对应讨论开放报名时，我们会通知你。"
+         data-dm-en="Select the conversations you want to join, then leave your email. We’ll notify you when registration opens.">
+         选择你想参与的场次，再留下邮箱。对应讨论开放报名时，我们会通知你。
+      </p>
+
+      <div class="dm-picker">
+        <div class="dm-picker-head">
+          <strong data-dm-zh="选择场次" data-dm-en="SELECT SESSIONS">选择场次</strong>
+          <button class="dm-select-all" id="selectAllInterest" type="button" data-dm-zh="全选" data-dm-en="Select all">全选</button>
+        </div>
+        <label class="dm-option"><input class="interest-check" type="checkbox" value="009"><span class="dm-option-no">#009</span><span class="dm-option-title">When AI can act for you, what should you still control?</span></label>
+        <label class="dm-option"><input class="interest-check" type="checkbox" value="010"><span class="dm-option-no">#010</span><span class="dm-option-title">If everyone can build, what is design actually responsible for?</span></label>
+        <label class="dm-option"><input class="interest-check" type="checkbox" value="011"><span class="dm-option-no">#011</span><span class="dm-option-title">Why do AI pilots still fail to become real workflows?</span></label>
+        <label class="dm-option"><input class="interest-check" type="checkbox" value="012"><span class="dm-option-no">#012</span><span class="dm-option-title">When AI does the execution, what does senior judgment actually mean?</span></label>
+        <label class="dm-option"><input class="interest-check" type="checkbox" value="013"><span class="dm-option-no">#013</span><span class="dm-option-title">What does an AI-native team actually look like?</span></label>
+      </div>
+
+      <label class="dm-field-label" for="interestEmail" data-dm-zh="邮箱" data-dm-en="EMAIL">邮箱</label>
+      <input class="dm-email" id="interestEmail" type="email" autocomplete="email" required
+        placeholder="name@example.com">
+
+      <label class="dm-consent">
+        <input name="consent" type="checkbox">
+        <span data-dm-zh="我同意接收所选 Design Matters 场次的报名通知。"
+              data-dm-en="I agree to receive registration updates for the Design Matters conversations I selected.">
+          我同意接收所选 Design Matters 场次的报名通知。
+        </span>
+      </label>
+
+      <button class="dm-submit" id="interestSubmit" type="submit" data-dm-zh="报名开放时通知我 →" data-dm-en="Notify me →">报名开放时通知我 →</button>
+      <div class="dm-status" id="interestStatus" role="status" aria-live="polite"></div>
+    </form>
+
+    <div class="dm-success" id="interestSuccess" role="status" aria-live="polite">
+      <div class="dm-success-mark">✓</div>
+      <h3 data-dm-zh="提交成功" data-dm-en="Submitted successfully">提交成功</h3>
+      <p data-dm-zh="我们已经记录你的兴趣。你选择的场次开放报名时，我们会通过邮件通知你。"
+         data-dm-en="Your interest has been saved. When registration opens for the conversations you selected, we’ll email you.">
+         我们已经记录你的兴趣。你选择的场次开放报名时，我们会通过邮件通知你。
+      </p>
+      <button class="dm-interest-btn" id="interestSuccessClose" type="button" data-dm-zh="完成" data-dm-en="Done">完成</button>
+    </div>
   </div>
 </div>
 
+
+<section
+  class="season-intro"
+  id="season"
+>
+
+  <div class="season-top">
+    <strong>SEASON 01</strong>
+    <span>001—007</span>
+  </div>
+
+
+  <div class="season-body">
+
+    <div
+      class="eyebrow"
+      style="color:var(--green)"
+      id="seasonKicker"
+    >
+      过去七期放在一起看
+    </div>
+
+    <h2 id="seasonTitle">
+      一些变化，<br>
+      开始反复出现。
+    </h2>
+
+    <p id="seasonDesc">
+      把它们放在一起，不是为了总结过去，
+      而是为了看清接下来值得继续追的问题。
+    </p>
+
+  </div>
+
+</section>
+
+
+<section class="section">
+
+  <div class="section-head">
+
+    <div class="eyebrow">
+      5 RECURRING PATTERNS
+    </div>
+
+    <div>
+
+      <h2 id="patternTitle">
+        AI 进入真实工作后，<br>
+        我们反复碰到这五件事
+      </h2>
+
+      <p id="patternDesc">
+        它们不是定论，
+        而是跨不同团队、不同组织环境反复出现的信号。
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div
+    class="patterns"
+    id="patterns"
+  ></div>
+
+</section>
+
+
+<section
+  class="section"
+  id="archive"
+>
+
+  <div class="section-head">
+
+    <div class="eyebrow">
+      ARCHIVE<br>
+      001—007
+    </div>
+
+    <div>
+
+      <h2 id="archiveTitle">
+        七期，不是七篇活动回顾。
+      </h2>
+
+      <p id="archiveDesc">
+        Archive 保留每一场真正发生过的转折：
+        当时的问题、出现的 tension，
+        以及它把下一期推向了哪里。
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="archive-wrap">
+
+    <div
+      class="archive-grid"
+      id="archiveGrid"
+    ></div>
+
+  </div>
+
+</section>
+
+
+<section
+  class="join"
+  id="join"
+>
+
+  <div>
+
+    <div
+      class="eyebrow"
+      id="joinEyebrow"
+    >
+      加入讨论
+    </div>
+
+    <h2 id="joinTitle">
+      想继续参与？<br>
+      把你的问题留给我们。
+    </h2>
+
+    <p id="joinCopy">
+      如果你正在真实工作中处理 AI 带来的产品、workflow、
+      组织或角色变化，可以留下你的背景和问题。
+      我们会在后续圆桌或相关讨论中联系你。
+    </p>
+
+    <div class="contexts">
+
+      <span>NO TALKS</span>
+      <span>NO SLIDES</span>
+
+      <span id="chipConsensus">
+        不强求共识
+      </span>
+
+      <span id="chipApplication">
+        申请制
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <form
+    class="form"
+    id="interestForm"
+    action="https://formsubmit.co/hedi-de@outlook.com"
+    method="POST"
+  >
+
+    <!-- Anti-spam -->
+    <input
+      type="text"
+      name="_honey"
+      style="display:none"
+    >
+
+    <!-- FormSubmit settings -->
+    <input
+      type="hidden"
+      name="_template"
+      value="table"
+    >
+
+    <input
+      type="hidden"
+      name="_subject"
+      value="Design Matters — New interest"
+    >
+
+    <input
+      type="hidden"
+      name="_next"
+      value="https://hddddt.github.io/design-matters/?submitted=1#join"
+    >
+
+    <input
+      type="hidden"
+      name="submitted_at"
+      id="submittedAt"
+    >
+
+
+    <label
+      for="email"
+      id="emailLabel"
+    >
+      邮箱
+    </label>
+
+    <input
+      id="email"
+      name="email"
+      type="email"
+      required
+      autocomplete="email"
+      placeholder="name@example.com"
+    >
+
+
+    <label
+      for="role"
+      id="roleLabel"
+    >
+      你现在在做什么？
+    </label>
+
+    <input
+      id="role"
+      name="role_context"
+      required
+      placeholder="Product / Design / Engineering / Research..."
+    >
+
+
+    <label
+      for="question"
+      id="questionLabel"
+    >
+      你最想带进圆桌的 AI × Design 问题是什么？
+    </label>
+
+    <textarea
+      id="question"
+      name="discussion_question"
+      required
+      placeholder="越具体越好：发生在哪个真实工作场景里？"
+    ></textarea>
+
+
+    <label class="consent">
+
+      <input
+        type="checkbox"
+        name="consent"
+        value="yes"
+        required
+      >
+
+      <span id="consentText">
+        我同意将以上信息用于 Design Matters 报名与后续联系。
+      </span>
+
+    </label>
+
+
+    <button
+      class="submit"
+      type="submit"
+      id="submitButton"
+    >
+      提交 →
+    </button>
+
+
+    <div
+      class="form-note"
+      id="formNote"
+    >
+      Your information will only be used for Design Matters
+      applications and related follow-up.
+    </div>
+
+  </form>
+
+</section>
+
+
+<footer>
+
+  <div class="footer-brand">
+    DESIGN<br>
+    MATTERS
+  </div>
+
+  <p>
+    Shared change. Different systems. Changing judgment.<br>
+    © 2026 Design Matters.
+  </p>
+
+</footer>
+
+</div>
+
+
 <script>
-const ENDPOINT='https://khhfxkrwgcckgqupncyw.supabase.co/rest/v1/rpc/register_dm_interest_public';
-const APIKEY='sb_publishable_oXnMd_aF95wYTPcq6TwGVg_alaNdfTH';
 
-const form=document.getElementById('interestForm');
-const statusEl=document.getElementById('status');
-const btn=document.getElementById('submitBtn');
-const wrap=document.getElementById('wrap');
+/* ==============================
+   LANGUAGE CONTENT
+================================ */
 
-form.addEventListener('submit',async(e)=>{
-  e.preventDefault();
-  statusEl.className='status';
-  statusEl.textContent='正在检查…';
+const COPY = {
 
-  const eventIds=[...document.querySelectorAll('.eventCheck:checked')].map(x=>x.value);
-  const emailInput=document.getElementById('email');
-  const email=emailInput.value.trim().toLowerCase();
-  const consent=document.getElementById('consent').checked;
+  zh: {
 
-  if(!eventIds.length){
-    statusEl.className='status error';
-    statusEl.textContent='请至少选择一个感兴趣的场次。';
-    return;
+    navJoin:
+      "加入",
+
+    heroTag:
+      "AI × 设计圆桌",
+
+    heroTitle:
+      "AI 时代，<br>设计到底<br>在变什么？",
+
+    heroCopy:
+      "AI 正在重塑产品、workflow、团队与设计师角色。我们把不同组织里的真实实践放进同一个 room，不急着找标准答案，而是比较差异、追踪变化、沉淀新的判断。",
+
+    trackLabel:
+      "我们在追踪什么",
+
+    trackCopy:
+      "不是 AI 趋势本身。<br><strong>而是 AI 进入真实工作后，产品、workflow、角色与判断怎么变。</strong>",
+
+    now:
+      "报名中 · Season 02 · #008",
+
+    nextTitle:
+      "都在说<br>AI-native，<br>到底什么<br>才算？",
+
+    nextLead:
+      "AI-native 时兴。产品在说，团队在说，招聘在说，创业公司更在说。但大家说的，真的是同一件事吗？",
+
+    q1:
+      "原产品接入 AI，就算 AI-native？",
+
+    q2:
+      "搜索变对话、加 Copilot / Agent，就算？",
+
+    q3:
+      "还是要等到产品逻辑、workflow、人的角色与 decision ownership 都改变？",
+
+    sameQuestion:
+      "不同环境 · 同一个问题",
+
+    nextCardCopy:
+      "这次不是再聊一次“大家怎么用 AI”，而是把不同产品和组织环境里的真实实践放在一起，看大家口中的 AI-native 到底是不是同一回事。",
+
+    lumaButton:
+      "Luma 报名 ↗",
+
+    seasonKicker:
+      "过去七期放在一起看",
+
+    seasonTitle:
+      "一些变化，<br>开始反复出现。",
+
+    seasonDesc:
+      "把它们放在一起，不是为了总结过去，而是为了看清接下来值得继续追的问题。",
+
+    patternTitle:
+      "AI 进入真实工作后，<br>我们反复碰到这五件事",
+
+    patternDesc:
+      "它们不是定论，而是跨不同团队、不同组织环境反复出现的信号。",
+
+    archiveTitle:
+      "七期，不是七篇活动回顾。",
+
+    archiveDesc:
+      "Archive 保留每一场真正发生过的转折：当时的问题、出现的 tension，以及它把下一期推向了哪里。",
+
+    joinEyebrow:
+      "加入讨论",
+
+    joinTitle:
+      "想继续参与？<br>把你的问题留给我们。",
+
+    joinCopy:
+      "如果你正在真实工作中处理 AI 带来的产品、workflow、组织或角色变化，可以留下你的背景和问题。我们会在后续圆桌或相关讨论中联系你。",
+
+    chipConsensus:
+      "不强求共识",
+
+    chipApplication:
+      "申请制",
+
+    emailLabel:
+      "邮箱",
+
+    roleLabel:
+      "你现在在做什么？",
+
+    questionLabel:
+      "你最想带进圆桌的 AI × Design 问题是什么？",
+
+    consentText:
+      "我同意将以上信息用于 Design Matters 报名与后续联系。",
+
+    submitButton:
+      "提交 →",
+
+    formNote:
+      "你的信息只会用于 Design Matters 报名及相关后续联系。"
+
+  },
+
+
+  en: {
+
+    navJoin:
+      "Join",
+
+    heroTag:
+      "AI × DESIGN ROUNDTABLE",
+
+    heroTitle:
+      "In the age of AI,<br>what is design<br>actually becoming?",
+
+    heroCopy:
+      "AI is reshaping products, workflows, teams, and the designer’s role. We bring real practices from different organizations into the same room—not to rush toward one answer, but to compare differences, track change, and build better judgment.",
+
+    trackLabel:
+      "WHAT WE TRACK",
+
+    trackCopy:
+      "Not AI trends themselves.<br><strong>We track how products, workflows, roles, and judgment change once AI enters real work.</strong>",
+
+    now:
+      "NOW · Season 02 · #008 · NEXT CONVERSATION",
+
+    nextTitle:
+      "Everyone says<br>AI-native.<br>What actually<br>counts?",
+
+    nextLead:
+      "AI-native is everywhere. Products say it. Teams say it. Job posts say it. Startups say it even more. But are we actually talking about the same thing?",
+
+    q1:
+      "Add AI to an existing product — is that AI-native?",
+
+    q2:
+      "Search becomes chat, add a Copilot / Agent — does that count?",
+
+    q3:
+      "Or only when product logic, workflow, human roles, and decision ownership all change?",
+
+    sameQuestion:
+      "DIFFERENT CONTEXTS · SAME QUESTION",
+
+    nextCardCopy:
+      "This is not another conversation about how everyone uses AI. We put real practices from different product and organizational contexts side by side to see whether AI-native actually means the same thing across them.",
+
+    lumaButton:
+      "Register on Luma ↗",
+
+    seasonKicker:
+      "LOOKING ACROSS THE FIRST SEVEN SESSIONS",
+
+    seasonTitle:
+      "Some shifts<br>keep recurring.",
+
+    seasonDesc:
+      "We put them side by side not to summarize the past, but to see more clearly what is worth tracking next.",
+
+    patternTitle:
+      "Five things we kept seeing<br>once AI entered real work",
+
+    patternDesc:
+      "These are not final conclusions, but signals recurring across different teams and organizational contexts.",
+
+    archiveTitle:
+      "Seven sessions, not seven event recaps.",
+
+    archiveDesc:
+      "The archive keeps the real turning points from each session: the question, the tension, and what it pushed us to investigate next.",
+
+    joinEyebrow:
+      "JOIN THE CONVERSATION",
+
+    joinTitle:
+      "Want to stay involved?<br>Leave us a real question.",
+
+    joinCopy:
+      "If you are already dealing with AI-driven changes in products, workflows, organizations, or roles, leave your context and question. We may reach out for a future roundtable or related discussion.",
+
+    chipConsensus:
+      "NO FORCED CONSENSUS",
+
+    chipApplication:
+      "BY APPLICATION",
+
+    emailLabel:
+      "Email",
+
+    roleLabel:
+      "What are you working on?",
+
+    questionLabel:
+      "What AI × Design question would you bring into the room?",
+
+    consentText:
+      "I agree that this information may be used for Design Matters applications and follow-up.",
+
+    submitButton:
+      "Submit →",
+
+    formNote:
+      "Your information will only be used for Design Matters applications and related follow-up."
+
   }
-  if(!email || !emailInput.checkValidity()){
-    statusEl.className='status error';
-    statusEl.textContent='请输入有效的邮箱地址。';
-    emailInput.focus();
-    return;
-  }
-  if(!consent){
-    statusEl.className='status error';
-    statusEl.textContent='请勾选同意接收报名通知。';
-    return;
-  }
 
-  btn.disabled=true;
-  btn.textContent='提交中…';
-  statusEl.textContent='正在提交…';
+};
 
-  try{
-    const res=await fetch(ENDPOINT,{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'apikey':APIKEY
-      },
-      body:JSON.stringify({
-        p_email:email,
-        p_event_ids:eventIds,
-        p_consent:true,
-        p_locale:'zh'
-      })
+
+/* ==============================
+   PATTERNS
+================================ */
+
+const PATTERNS = {
+
+  zh: [
+
+    [
+      "01 / HANDOFF",
+      "先被压缩的，往往不是职位，而是原来的 handoff。",
+      "Designer → Figma → Engineer，开始变成 Designer → prototype / code → PR → Engineer review。",
+      "ROLE BOUNDARY COMPRESSION"
+    ],
+
+    [
+      "02 / SCOPE",
+      "Scope 在扩大，价值却不会自动跟着扩大。",
+      "“做得出来”与“做得对”开始明显脱钩。",
+      "EXECUTION ↑ ≠ JUDGMENT ↑"
+    ],
+
+    [
+      "03 / JUDGMENT",
+      "真正没有被解决的，仍然是 judgment。",
+      "复杂 context 里的优先级、trade-off 与业务约束，仍很难被压成稳定答案。",
+      "THE UNRESOLVED LAYER"
+    ],
+
+    [
+      "04 / SYSTEM",
+      "瓶颈正在从“能不能生成”移到“能不能整合”。",
+      "architecture、security、GDPR、design system、review ownership 与 maintainability 开始成为瓶颈。",
+      "GENERATION → INTEGRATION"
+    ],
+
+    [
+      "05 / ORGANIZATION",
+      "AI adoption 最终是组织问题，不只是工具问题。",
+      "同一个工具，在不同组织里会被流程、compliance 与权责边界塑造成完全不同的结果。",
+      "SAME AI. DIFFERENT SYSTEMS."
+    ]
+
+  ],
+
+
+  en: [
+
+    [
+      "01 / HANDOFF",
+      "What gets compressed first is often not the job, but the old handoff.",
+      "Designer → Figma → Engineer starts becoming Designer → prototype / code → PR → Engineer review.",
+      "ROLE BOUNDARY COMPRESSION"
+    ],
+
+    [
+      "02 / SCOPE",
+      "Scope expands. Value does not automatically expand with it.",
+      "“Can make it” and “can make the right call” increasingly diverge.",
+      "EXECUTION ↑ ≠ JUDGMENT ↑"
+    ],
+
+    [
+      "03 / JUDGMENT",
+      "The unresolved layer is still judgment.",
+      "Priorities, trade-offs, organizational context, and business constraints remain difficult to compress into stable answers.",
+      "THE UNRESOLVED LAYER"
+    ],
+
+    [
+      "04 / SYSTEM",
+      "The bottleneck is moving from generation to integration.",
+      "Architecture, security, GDPR, design systems, review ownership and maintainability increasingly become the bottleneck.",
+      "GENERATION → INTEGRATION"
+    ],
+
+    [
+      "05 / ORGANIZATION",
+      "AI adoption ultimately becomes an organizational problem, not just a tool problem.",
+      "The same tool produces very different outcomes depending on process, compliance and ownership boundaries.",
+      "SAME AI. DIFFERENT SYSTEMS."
+    ]
+
+  ]
+
+};
+
+
+/* ==============================
+   ARCHIVE
+================================ */
+
+const ARCHIVE = {
+
+  zh: [
+
+    [
+      "001",
+      "ORGANIZATION · SCOPE",
+      "设计师开始分化了",
+      "同样是 AI，不同组织里的设计师被推向完全不同的边界。",
+      "SHIFT → 问题不再只是“AI 能做什么”，而是“不同系统会把设计师推向哪里”。"
+    ],
+
+    [
+      "002",
+      "VALUE · JUDGMENT",
+      "AI 之后，设计师还剩什么？",
+      "执行能力正在被拉平，但 framing、prioritization、trade-off 与复杂 context 下的判断没有同步被拉平。",
+      "SHIFT → 执行变便宜以后，判断开始变成更稀缺的层。"
+    ],
+
+    [
+      "003",
+      "BUILD · OWNERSHIP",
+      "必须当“设计程序猿”吗？",
+      "AI 让设计师越来越靠近 prototype、UI code 和 codebase，但“会写 code”并不自动等于扩权。",
+      "SHIFT → 从 skill question 转向 ownership question。"
+    ],
+
+    [
+      "004",
+      "BOUNDARY · CONTROL",
+      "AI Engineer ↔ Product Design",
+      "当设计靠近实现，工程也越来越靠近产品和体验定义，边界开始双向移动。",
+      "OPEN QUESTION → 靠近 implementation，不等于拥有更多 decision rights。"
+    ],
+
+    [
+      "005",
+      "DECISION · CROSS-ROLE",
+      "What do designers still get to decide?",
+      "Designer、PM、Engineer 放进同一个 room：当 AI 开始做决定，人还该 own 什么？",
+      "SHIFT → 从角色边界推进到决策权与责任。"
+    ],
+
+    [
+      "006",
+      "PRACTICE · WORKFLOW",
+      "Vibe Coding at Work — Part 01",
+      "进入真实 Vibe Coding 实践：什么真的变快、什么反而变慢，设计和工程在哪里开始交叉。",
+      "PATTERN → “做得更快”不等于整个系统真的更快。"
+    ],
+
+    [
+      "007",
+      "PRODUCTION · SYSTEM",
+      "Vibe Coding at Work — Part 02",
+      "从 making things faster 推进到 production responsibility：Skill / MCP、security、GDPR、maintainability 与 stop line。",
+      "SHIFT → 瓶颈从 generation 转向 integration 与 review ownership。"
+    ]
+
+  ],
+
+
+  en: [
+
+    [
+      "001",
+      "ORGANIZATION · SCOPE",
+      "Designers are starting to diverge",
+      "The same AI wave pushes designers toward very different boundaries across organizations.",
+      "SHIFT → The question becomes where different systems push designers."
+    ],
+
+    [
+      "002",
+      "VALUE · JUDGMENT",
+      "After AI, what is left for designers?",
+      "Execution gets flatter, but framing, prioritization, trade-offs and judgment do not.",
+      "SHIFT → As execution gets cheaper, judgment becomes scarcer."
+    ],
+
+    [
+      "003",
+      "BUILD · OWNERSHIP",
+      "Do designers have to become design engineers?",
+      "AI pulls designers closer to prototypes and code, but coding does not automatically mean more agency.",
+      "SHIFT → From a skill question to an ownership question."
+    ],
+
+    [
+      "004",
+      "BOUNDARY · CONTROL",
+      "AI Engineer ↔ Product Design",
+      "As design approaches implementation, engineering also approaches product and experience definition.",
+      "OPEN QUESTION → Closer to implementation does not automatically mean more decision rights."
+    ],
+
+    [
+      "005",
+      "DECISION · CROSS-ROLE",
+      "What do designers still get to decide?",
+      "Designers, PMs and Engineers in one room: when AI starts deciding, what should humans still own?",
+      "SHIFT → From role boundaries to decision rights and responsibility."
+    ],
+
+    [
+      "006",
+      "PRACTICE · WORKFLOW",
+      "Vibe Coding at Work — Part 01",
+      "Real Vibe Coding practice: what gets faster, what slows down, and where design and engineering overlap.",
+      "PATTERN → Making something faster does not mean the whole system is faster."
+    ],
+
+    [
+      "007",
+      "PRODUCTION · SYSTEM",
+      "Vibe Coding at Work — Part 02",
+      "From speed to production responsibility: Skills / MCP, security, GDPR, maintainability and the stop line.",
+      "SHIFT → The bottleneck moves from generation to integration and review ownership."
+    ]
+
+  ]
+
+};
+
+
+/* ==============================
+   RENDER DYNAMIC CONTENT
+================================ */
+
+function renderPatterns(lang){
+
+  const target =
+    document.getElementById("patterns");
+
+  target.innerHTML =
+    PATTERNS[lang]
+      .map(item => `
+        <article class="pattern">
+
+          <div>
+
+            <div class="eyebrow">
+              ${item[0]}
+            </div>
+
+            <h3>
+              ${item[1]}
+            </h3>
+
+            <p>
+              ${item[2]}
+            </p>
+
+          </div>
+
+          <div class="pattern-take">
+            ${item[3]}
+          </div>
+
+        </article>
+      `)
+      .join("");
+
+}
+
+
+function renderArchive(lang){
+
+  const target =
+    document.getElementById("archiveGrid");
+
+  target.innerHTML =
+    ARCHIVE[lang]
+      .map(item => `
+        <details>
+
+          <summary>
+
+            <div class="archive-top">
+
+              <span class="archive-num">
+                ${item[0]}
+              </span>
+
+              <span class="archive-plus">
+                +
+              </span>
+
+            </div>
+
+            <div>
+
+              <div class="archive-topic">
+                ${item[1]}
+              </div>
+
+              <h3>
+                ${item[2]}
+              </h3>
+
+            </div>
+
+          </summary>
+
+          <div class="archive-body">
+
+            <p>
+              ${item[3]}
+            </p>
+
+            <div class="archive-signal">
+              ${item[4]}
+            </div>
+
+          </div>
+
+        </details>
+      `)
+      .join("");
+
+}
+
+
+/* ==============================
+   LANGUAGE SWITCH
+================================ */
+
+function setLanguage(lang){
+
+  document.documentElement.lang =
+    lang === "zh"
+      ? "zh-CN"
+      : "en";
+
+
+  document
+    .querySelectorAll("[data-lang]")
+    .forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.lang === lang
+      );
+
     });
 
-    const data=await res.json().catch(()=>({}));
-    if(!res.ok) throw new Error(data.message||data.error||('HTTP '+res.status));
 
-    wrap.classList.add('done');
-  }catch(err){
-    console.error(err);
-    statusEl.className='status error';
-    statusEl.textContent='提交没有成功：'+(err.message||'请稍后再试');
-  }finally{
-    btn.disabled=false;
-    btn.textContent='报名开放时通知我 →';
+  Object.entries(COPY[lang])
+    .forEach(([id, value]) => {
+
+      const element =
+        document.getElementById(id);
+
+      if(element){
+        element.innerHTML = value;
+      }
+
+    });
+
+
+  const question =
+    document.getElementById("question");
+
+  if(question){
+
+    question.placeholder =
+      lang === "zh"
+        ? "越具体越好：发生在哪个真实工作场景里？"
+        : "Be specific: what real work situation is this happening in?";
+
   }
-});
+
+
+  renderPatterns(lang);
+  renderArchive(lang);
+
+  localStorage.setItem(
+    "designMattersLanguage",
+    lang
+  );
+
+}
+
+
+document
+  .querySelectorAll("[data-lang]")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => setLanguage(button.dataset.lang)
+    );
+
+  });
+
+
+const savedLanguage =
+  localStorage.getItem(
+    "designMattersLanguage"
+  );
+
+
+const initialLanguage =
+  savedLanguage ||
+  (
+    (navigator.language || "")
+      .toLowerCase()
+      .startsWith("zh")
+      ? "zh"
+      : "en"
+  );
+
+
+setLanguage(initialLanguage);
+
+
+/* ==============================
+   PARALLAX
+================================ */
+
+const parallaxElements =
+  document.querySelectorAll(
+    "[data-parallax]"
+  );
+
+
+function updateParallax(){
+
+  const section =
+    document.getElementById("next");
+
+  if(!section){
+    return;
+  }
+
+
+  const rect =
+    section.getBoundingClientRect();
+
+
+  const viewport =
+    window.innerHeight;
+
+
+  const progress =
+    (
+      viewport / 2 -
+      (
+        rect.top +
+        rect.height / 2
+      )
+    ) / viewport;
+
+
+  parallaxElements.forEach(element => {
+
+    const speed =
+      Number(
+        element.dataset.parallax || 0
+      );
+
+
+    const y =
+      progress *
+      speed *
+      420;
+
+
+    const rotation =
+      element.classList.contains(
+        "parallax-native"
+      )
+        ? -7
+        : 0;
+
+
+    element.style.transform =
+      `translate3d(0, ${y}px, 0) rotate(${rotation}deg)`;
+
+  });
+
+}
+
+
+let ticking = false;
+
+
+window.addEventListener(
+  "scroll",
+  () => {
+
+    if(!ticking){
+
+      requestAnimationFrame(() => {
+
+        updateParallax();
+
+        ticking = false;
+
+      });
+
+      ticking = true;
+
+    }
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+window.addEventListener(
+  "resize",
+  updateParallax
+);
+
+
+updateParallax();
+
+
+/* ==============================
+   FORM SUBMIT
+================================ */
+
+const form =
+  document.getElementById(
+    "interestForm"
+  );
+
+
+const submitted =
+  new URLSearchParams(
+    window.location.search
+  ).get("submitted") === "1";
+
+
+if(submitted){
+
+  const lang =
+    localStorage.getItem(
+      "designMattersLanguage"
+    ) || "zh";
+
+
+  if(lang === "zh"){
+
+    form.innerHTML = `
+      <div class="success-state">
+
+        <div class="success-label">
+          DESIGN MATTERS
+        </div>
+
+        <div class="success-title">
+          收到了，谢谢。
+        </div>
+
+        <p class="success-copy">
+          如果适合之后的圆桌或相关讨论，
+          我们会联系你。
+        </p>
+
+      </div>
+    `;
+
+  }
+
+  else{
+
+    form.innerHTML = `
+      <div class="success-state">
+
+        <div class="success-label">
+          DESIGN MATTERS
+        </div>
+
+        <div class="success-title">
+          Thanks — we got your question.
+        </div>
+
+        <p class="success-copy">
+          We’ll reach out if it fits
+          an upcoming conversation.
+        </p>
+
+      </div>
+    `;
+
+  }
+
+}
+
+else{
+
+  form.addEventListener(
+    "submit",
+    () => {
+
+      document
+        .getElementById(
+          "submittedAt"
+        )
+        .value =
+        new Date()
+          .toISOString();
+
+    }
+  );
+
+}
+
 </script>
+
+
+<script>
+(function(){
+  const ENDPOINT='https://khhfxkrwgcckgqupncyw.supabase.co/rest/v1/rpc/register_dm_interest_public';
+  const APIKEY='sb_publishable_oXnMd_aF95wYTPcq6TwGVg_alaNdfTH';
+
+  const modal=document.getElementById('interestModal');
+  const dialog=modal && modal.querySelector('.dm-interest-dialog');
+  const openBtn=document.getElementById('openInterestSelection');
+  const closeBtn=document.getElementById('interestClose');
+  const successClose=document.getElementById('interestSuccessClose');
+  const selectAll=document.getElementById('selectAllInterest');
+  const form=document.getElementById('interestForm');
+  const emailInput=document.getElementById('interestEmail');
+  const submitBtn=document.getElementById('interestSubmit');
+  const status=document.getElementById('interestStatus');
+  const honey=document.getElementById('interestHoney');
+  const checks=Array.from(document.querySelectorAll('.interest-check'));
+
+  if(!modal || !dialog || !openBtn || !form || !emailInput || !submitBtn) return;
+
+  function lang(){
+    return localStorage.getItem('designMattersLanguage') || (((navigator.language||'').toLowerCase().startsWith('zh')) ? 'zh' : 'en');
+  }
+
+  function applyDmLanguage(value){
+    document.querySelectorAll('[data-dm-zh]').forEach(function(el){
+      el.textContent=value==='zh' ? el.getAttribute('data-dm-zh') : el.getAttribute('data-dm-en');
+    });
+  }
+
+  document.querySelectorAll('[data-lang]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      setTimeout(function(){applyDmLanguage(btn.dataset.lang || 'zh');},0);
+    });
+  });
+  applyDmLanguage(lang());
+
+  function setStatus(message,isError){
+    if(!status) return;
+    status.textContent=message || '';
+    status.classList.toggle('error',!!isError);
+  }
+
+  function open(){
+    dialog.classList.remove('is-success');
+    setStatus('',false);
+    modal.hidden=false;
+    document.body.style.overflow='hidden';
+    setTimeout(function(){emailInput.focus();},50);
+  }
+
+  function close(){
+    modal.hidden=true;
+    document.body.style.overflow='';
+  }
+
+  openBtn.addEventListener('click',open);
+  closeBtn && closeBtn.addEventListener('click',close);
+  successClose && successClose.addEventListener('click',close);
+  modal.addEventListener('click',function(e){ if(e.target===modal) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && !modal.hidden) close(); });
+
+  selectAll && selectAll.addEventListener('click',function(){
+    const shouldCheck=!checks.every(function(x){return x.checked;});
+    checks.forEach(function(x){x.checked=shouldCheck;});
+  });
+
+  form.addEventListener('submit',async function(e){
+    e.preventDefault();
+    const current=lang();
+    const selected=checks.filter(function(x){return x.checked;}).map(function(x){return x.value;});
+    const email=emailInput.value.trim().toLowerCase();
+    const consent=form.querySelector('input[name="consent"]');
+
+    setStatus(current==='zh'?'正在检查…':'Checking…',false);
+
+    if(!selected.length){
+      setStatus(current==='zh'?'请至少选择一个感兴趣的场次。':'Please select at least one conversation.',true);
+      return;
+    }
+    if(!email || !emailInput.checkValidity()){
+      setStatus(current==='zh'?'请输入有效的邮箱地址。':'Please enter a valid email address.',true);
+      emailInput.focus();
+      return;
+    }
+    if(honey && honey.value){
+      dialog.classList.add('is-success');
+      return;
+    }
+    if(!consent || !consent.checked){
+      setStatus(current==='zh'?'请勾选同意接收所选场次的报名通知。':'Please agree to receive registration updates.',true);
+      return;
+    }
+
+    submitBtn.disabled=true;
+    const oldLabel=submitBtn.textContent;
+    submitBtn.textContent=current==='zh'?'提交中…':'Saving…';
+    setStatus(current==='zh'?'正在提交…':'Saving…',false);
+
+    try{
+      const res=await fetch(ENDPOINT,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':APIKEY},
+        body:JSON.stringify({
+          p_email:email,
+          p_event_ids:selected,
+          p_consent:true,
+          p_locale:current
+        })
+      });
+      const data=await res.json().catch(function(){return {};});
+      if(!res.ok) throw new Error(data.message || data.error || ('HTTP '+res.status));
+      form.reset();
+      dialog.classList.add('is-success');
+      setStatus('',false);
+    }catch(err){
+      console.error(err);
+      setStatus(current==='zh'?'提交没有成功，请稍后再试。':'Submission failed. Please try again.',true);
+    }finally{
+      submitBtn.disabled=false;
+      submitBtn.textContent=oldLabel;
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
