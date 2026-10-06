@@ -124,6 +124,8 @@ function copyTheme(){
   const stampInput = document.getElementById('interestSubmittedAt');
   const emailInput = document.getElementById('interestEmail');
   const submitBtn = document.getElementById('interestSubmit');
+  const successClose = document.getElementById('interestSuccessClose');
+  const dialog = modal?.querySelector('.interest-dialog');
   const form = modal?.querySelector('form');
   const note = form?.querySelector('.interest-form-note');
   if (!modal || !openBtn || !form || !emailInput || !submitBtn) return;
@@ -150,6 +152,11 @@ function copyTheme(){
   }
 
   function openModal(){
+    dialog?.classList.remove('is-success');
+    const lang = currentLang();
+    if (note) note.textContent = lang === 'zh'
+      ? '点击提交，即表示你希望在所选场次开放报名时收到邮件通知。你的邮箱只会用于这些通知。'
+      : 'By submitting, you’re asking Design Matters to email you when registration opens for the conversations you selected. Your email will only be used for these updates.';
     modal.classList.add('open');
     modal.setAttribute('aria-hidden','false');
     document.body.style.overflow = 'hidden';
@@ -164,6 +171,7 @@ function copyTheme(){
 
   openBtn.addEventListener('click', openModal);
   closeBtn?.addEventListener('click', closeModal);
+  successClose?.addEventListener('click', closeModal);
   modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
@@ -187,20 +195,12 @@ function copyTheme(){
     const lang = currentLang();
     const selected = selectedChecks();
     const email = emailInput.value.trim().toLowerCase();
-    const consent = form.querySelector('input[name="consent"]');
 
     if (!selected.length) return;
 
     if (!email || !emailInput.checkValidity()){
       if (note) note.textContent = lang === 'zh' ? '请输入有效的邮箱地址。' : 'Please enter a valid email address.';
       emailInput.focus();
-      return;
-    }
-
-    if (!consent?.checked){
-      if (note) note.textContent = lang === 'zh'
-        ? '请勾选同意接收所选场次的报名通知。'
-        : 'Please agree to receive registration updates.';
       return;
     }
 
@@ -233,11 +233,10 @@ function copyTheme(){
         throw new Error(result.message || result.error || `HTTP ${response.status}`);
       }
 
-      if (note) note.textContent = lang === 'zh'
-        ? '✓ 提交成功。我们已经记录你的兴趣；对应场次开放报名时会通过邮件通知你。'
-        : '✓ Submitted successfully. We’ll email you when registration opens for the sessions you selected.';
+      form.reset();
       submitBtn.textContent = oldText;
-      submitBtn.disabled = false;
+      updateSelectionState();
+      dialog?.classList.add('is-success');
     }catch(error){
       console.error(error);
       if (note) note.textContent = lang === 'zh'
