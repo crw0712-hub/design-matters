@@ -236,8 +236,8 @@ function copyTheme(){
       if (note) note.textContent = lang === 'zh'
         ? '✓ 提交成功。我们已经记录你的兴趣；对应场次开放报名时会通过邮件通知你。'
         : '✓ Submitted successfully. We’ll email you when registration opens for the sessions you selected.';
-      submitBtn.textContent = lang === 'zh' ? '已提交 ✓' : 'Submitted ✓';
-      submitBtn.disabled = true;
+      submitBtn.textContent = oldText;
+      submitBtn.disabled = false;
     }catch(error){
       console.error(error);
       if (note) note.textContent = lang === 'zh'
