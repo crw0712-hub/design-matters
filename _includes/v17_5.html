@@ -5,15 +5,15 @@ rest-option-no">#013</span>
 
       <label for="interestEmail" data-en="Email" data-i18n="text" data-zh="邮箱">邮箱</label>
       <input id="interestEmail" name="email" type="email" autocomplete="email" placeholder="name@example.com" required/>
-      <div class="consent-row">
-        <label class="consent-label">
-          <input name="consent" required type="checkbox" value="yes"/>
-          <span data-en="I agree to receive registration updates for the Design Matters conversations I selected." data-i18n="text" data-zh="我同意接收所选 Design Matters 场次的报名通知。">我同意接收所选 Design Matters 场次的报名通知。</span>
-        </label>
-      </div>
       <button class="btn primary" id="interestSubmit" type="submit" disabled data-en="Notify me →" data-i18n="text" data-zh="报名开放时通知我 →">报名开放时通知我 →</button>
-      <div class="interest-form-note" data-en="This currently sends your email + selected sessions to the existing FormSubmit inbox. The same UI can later connect to a database." data-i18n="text" data-zh="目前会把邮箱 + 你选择的场次发送到现有 FormSubmit 收件箱；之后可以在不改这套 UI 的情况下接入 database。">目前会把邮箱 + 你选择的场次发送到现有 FormSubmit 收件箱；之后可以在不改这套 UI 的情况下接入 database。</div>
+      <div class="interest-form-note" data-en="By submitting, you’re asking Design Matters to email you when registration opens for the conversations you selected. Your email will only be used for these updates." data-i18n="text" data-zh="点击提交，即表示你希望在所选场次开放报名时收到邮件通知。你的邮箱只会用于这些通知。">点击提交，即表示你希望在所选场次开放报名时收到邮件通知。你的邮箱只会用于这些通知。</div>
     </form>
+    <div class="interest-success" id="interestSuccess">
+      <div class="interest-success-mark">✓</div>
+      <h3 data-en="Submitted successfully" data-i18n="text" data-zh="提交成功">提交成功</h3>
+      <p data-en="Your interest has been saved. When registration opens for the conversations you selected, we’ll email you." data-i18n="text" data-zh="我们已经记录你的兴趣。你选择的场次开放报名时，我们会通过邮件通知你。">我们已经记录你的兴趣。你选择的场次开放报名时，我们会通过邮件通知你。</p>
+      <button class="btn primary" id="interestSuccessClose" type="button" data-en="Done" data-i18n="text" data-zh="完成">完成</button>
+    </div>
   </div>
 </div>
 
