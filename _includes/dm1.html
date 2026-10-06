@@ -1,0 +1,352 @@
+100%;border:1px solid var(--line);border-radius:12px;background:var(--paper);
+    padding:14px 15px;margin-bottom:14px;outline:none;
+  }
+  .form textarea{min-height:120px;resize:vertical}
+  .form textarea:focus,.form input:focus{border-color:var(--ink)}
+  .toast{display:none;margin-top:12px;font-size:12px;color:var(--muted)}
+
+  footer{
+    display:flex;justify-content:space-between;align-items:end;gap:28px;
+    padding:34px 56px;background:var(--ink);color:white;
+  }
+  .footer-brand{font-size:clamp(32px,4vw,58px);font-weight:900;letter-spacing:-.055em}
+  footer p{margin:0;color:#bcbcbc;font-size:12px;line-height:1.5;text-align:right}
+
+  @media (max-width: 1100px){
+    .findings{grid-template-columns:repeat(2,1fr)}
+    .finding{border-bottom:1px solid var(--ink)}
+    .finding:nth-child(2n){border-right:none}
+    .finding:last-child{grid-column:1/-1}
+    .hero{grid-template-columns:1fr}
+    .hero-visual{border-left:none;border-top:1px solid var(--ink);min-height:520px}
+    .next{grid-template-columns:1fr}
+    .next-left{border-right:none;border-bottom:1px solid var(--ink)}
+  }
+
+  @media (max-width: 760px){
+    .page{width:calc(100% - 16px);margin:8px auto 20px;border-radius:22px}
+    .nav{padding:13px 14px}
+    .brand span:last-child{display:none}
+    .navlinks a:not(.apply-pill){display:none}
+    .hero-copy,.hero-visual,.next-left,.next-right,.join{padding:34px 22px}
+    .hero{min-height:auto}
+    .hero-copy{min-height:650px}
+    .hero-visual{min-height:420px}
+    .statement,.section-head{grid-template-columns:1fr;gap:16px;padding:30px 22px}
+    .section-head{padding-top:48px}
+    .findings{grid-template-columns:1fr}
+    .finding,.finding:nth-child(2n){border-right:none;min-height:280px}
+    .finding:last-child{grid-column:auto}
+    .archive-wrap{padding:0 22px 48px}
+    .archive-intro{align-items:flex-start;flex-direction:column}
+    .archive-grid{grid-template-columns:1fr}
+    details.session summary{min-height:190px}
+    .join{grid-template-columns:1fr;gap:32px}
+    footer{padding:28px 22px;align-items:flex-start;flex-direction:column}
+    footer p{text-align:left}
+    .network-note{font-size:10px}
+  }
+
+  /* --- Chapter separation + parallax for #008 --- */
+  .chapter-break{
+    overflow:hidden;
+    background:var(--paper);
+    border-bottom:1px solid var(--ink);
+    padding:14px 0;
+  }
+  .chapter-break-track{
+    display:flex;
+    width:max-content;
+    gap:34px;
+    align-items:center;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    white-space:nowrap;
+    animation:marquee 24s linear infinite;
+  }
+  .chapter-break-track span:nth-child(3n+2){
+    color:var(--acid2);
+    -webkit-text-stroke:1px var(--ink);
+    font-size:18px;
+    letter-spacing:-.02em;
+  }
+  @keyframes marquee{
+    from{transform:translateX(0)}
+    to{transform:translateX(-50%)}
+  }
+
+  .next-chapter{
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
+    min-height:760px;
+    background:var(--ink);
+    color:var(--white);
+    border-top:0;
+  }
+  .next-chapter .next-left,
+  .next-chapter .next-right{
+    position:relative;
+    z-index:3;
+  }
+  .next-chapter .next-left{
+    background:transparent;
+    border-right:1px solid rgba(255,255,255,.28);
+  }
+  .next-chapter .next-left .season{
+    display:inline-flex;
+    width:max-content;
+    padding:8px 11px;
+    border:1px solid var(--acid);
+    border-radius:999px;
+    color:var(--acid);
+  }
+  .next-chapter .next-left h2{
+    color:var(--white);
+    max-width:760px;
+  }
+  .next-chapter .next-left p{
+    color:#c9c9c9;
+    max-width:600px;
+  }
+  .next-chapter .question-list{
+    border-top-color:rgba(255,255,255,.45);
+  }
+  .next-chapter .question{
+    border-bottom-color:rgba(255,255,255,.32);
+    color:var(--white);
+  }
+  .next-chapter .question span:first-child{
+    color:var(--acid);
+  }
+  .next-chapter .context-card{
+    background:var(--acid);
+    color:var(--ink);
+    border-color:var(--white);
+    box-shadow:0 28px 80px rgba(0,0,0,.28);
+  }
+  .next-chapter .context-card p{color:#1d1d1d}
+  .next-chapter .contexts span{background:rgba(255,255,255,.42)}
+  .next-chapter .btn.primary{
+    background:var(--ink);
+    color:var(--white);
+    border-color:var(--ink);
+  }
+
+  .parallax-scene{
+    position:absolute;
+    inset:-12% -4%;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+    opacity:.98;
+  }
+  .parallax-word,
+  .parallax-ring,
+  .parallax-cross{
+    position:absolute;
+    will-change:transform;
+    transform:translate3d(0,0,0);
+  }
+  .parallax-word{
+    font-size:clamp(150px,22vw,360px);
+    line-height:.8;
+    letter-spacing:-.10em;
+    font-weight:950;
+    color:transparent;
+    -webkit-text-stroke:1px rgba(184,255,23,.28);
+    white-space:nowrap;
+  }
+  .p-word-1{left:-3%;top:8%}
+  .p-word-2{right:-12%;bottom:0;transform:rotate(-7deg)}
+  .parallax-ring{
+    border:1px solid rgba(184,255,23,.45);
+    border-radius:50%;
+  }
+  .p-ring-1{
+    width:430px;height:430px;right:14%;top:-10%;
+  }
+  .p-ring-2{
+    width:180px;height:180px;left:37%;bottom:7%;
+    background:rgba(184,255,23,.04);
+  }
+  .parallax-cross{
+    right:7%;top:26%;
+    font-size:120px;
+    font-weight:200;
+    color:var(--acid);
+    opacity:.85;
+  }
+
+  /* Make the switch back into Season 01 equally clear */
+  #season01{
+    position:relative;
+    background:var(--paper);
+    border-top:12px solid var(--acid);
+  }
+  #season01:before{
+    content:"SEASON 01 · WHAT WE'VE LEARNED";
+    display:block;
+    padding:14px 56px;
+    background:var(--acid);
+    color:var(--ink);
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:.12em;
+  }
+
+  @media (max-width:760px){
+    .next-chapter{min-height:auto}
+    .next-chapter .next-left{
+      border-right:none;
+      border-bottom:1px solid rgba(255,255,255,.28);
+    }
+    .parallax-word{font-size:150px}
+    .p-word-1{top:4%;left:-15%}
+    .p-word-2{right:-34%;bottom:10%}
+    .p-ring-1{width:260px;height:260px;right:-14%;top:4%}
+    .p-ring-2{width:120px;height:120px;left:8%;bottom:4%}
+    .p-cross-1{font-size:76px;right:8%;top:20%}
+    #season01:before{padding:12px 22px}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .chapter-break-track{animation:none}
+    .parallax-word,.parallax-ring,.parallax-cross{transform:none!important}
+  }
+
+
+  /* ===== v6 visual direction =====
+     Keep v3's acid / cream palette for #008,
+     but make the hero diagram panel black. */
+
+  .hero-visual{
+    background:var(--ink) !important;
+  }
+
+  .hero-visual .network{
+    box-shadow:0 26px 70px rgba(0,0,0,.22);
+  }
+
+  /* #008 back to the v3 palette */
+  .next-chapter{
+    background:var(--acid) !important;
+    color:var(--ink) !important;
+  }
+
+  .next-chapter .next-left{
+    border-right:1px solid var(--ink) !important;
+  }
+
+  .next-chapter .next-left .season{
+    color:var(--ink) !important;
+    border-color:var(--ink) !important;
+    background:rgba(251,250,246,.55);
+  }
+
+  .next-chapter .next-left h2{
+    color:var(--ink) !important;
+  }
+
+  .next-chapter .next-left p{
+    color:#222 !important;
+  }
+
+  .next-chapter .question-list{
+    border-top-color:var(--ink) !important;
+  }
+
+  .next-chapter .question{
+    border-bottom-color:var(--ink) !important;
+    color:var(--ink) !important;
+  }
+
+  .next-chapter .question span:first-child{
+    color:var(--ink) !important;
+  }
+
+  .next-chapter .context-card{
+    background:var(--paper) !important;
+    color:var(--ink) !important;
+    border-color:var(--ink) !important;
+    box-shadow:0 24px 70px rgba(0,0,0,.14);
+  }
+
+  .next-chapter .context-card p{
+    color:#34322e !important;
+  }
+
+  .next-chapter .contexts span{
+    background:transparent !important;
+  }
+
+  /* Parallax remains, but becomes black-outline on acid instead of neon-on-black */
+  .parallax-word{
+    -webkit-text-stroke:1px rgba(10,10,10,.18) !important;
+  }
+
+  .parallax-ring{
+    border-color:rgba(10,10,10,.28) !important;
+  }
+
+  .p-ring-2{
+    background:rgba(10,10,10,.025) !important;
+  }
+
+  .parallax-cross{
+    color:var(--ink) !important;
+    opacity:.26 !important;
+  }
+
+  @media (max-width:760px){
+    .next-chapter .next-left{
+      border-right:none !important;
+      border-bottom:1px solid var(--ink) !important;
+    }
+  }
+
+  .consent-row{
+    margin:2px 0 16px;
+  }
+  .consent-label{
+    display:flex !important;
+    align-items:flex-start;
+    gap:10px;
+    font-size:12px !important;
+    line-height:1.5;
+    font-weight:600 !important;
+    color:#55524c;
+    cursor:pointer;
+  }
+  .consent-label input{
+    width:16px !important;
+    height:16px;
+    margin:1px 0 0 !important;
+    flex:0 0 auto;
+    accent-color:var(--ink);
+  }
+  .submit-note{
+    margin-top:12px;
+    font-size:11px;
+    line-height:1.45;
+    color:var(--muted);
+  }
+
+  .lang-toggle{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    margin-right:2px;
+    padding:5px 8px;
+    border:1px solid var(--ink);
+    border-radius:999px;
+    background:var(--white);
+    font-size:11px;
+    font-weight:850;
+    line-height:1;
+  }
+  .lang-btn{
+    border:0;
+    
