@@ -1,0 +1,256 @@
+is happening in?" data-placeholder-zh="越具体越好：发生在哪个真实工作场景里？" id="q" name="discussion_question" placeholder="越具体越好：发生在哪个真实工作场景里？" required="required"></textarea>
+<div class="consent-row">
+<label class="consent-label">
+<input name="consent" required="" type="checkbox" value="yes"/>
+<span data-en="I agree that this information may be used for Design Matters applications and follow-up." data-i18n="text" data-zh="我同意将以上信息用于 Design Matters 报名与后续联系。">我同意将以上信息用于 Design Matters 报名与后续联系。</span>
+</label>
+</div>
+<button class="btn primary" data-en="Submit interest →" data-i18n="text" data-zh="提交申请 →" type="submit">提交申请 →</button>
+<div class="submit-note" data-en="On the first real submission, FormSubmit will send one activation email to the receiving address. After confirmation, future applications will be delivered directly." data-i18n="text" data-zh="首次真实提交后，FormSubmit 会向接收邮箱发送一次激活确认；确认后后续报名会直接发送到邮箱。" id="toast">首次真实提交后，FormSubmit 会向接收邮箱发送一次激活确认；确认后后续报名会直接发送到邮箱。</div>
+</form>
+</section>
+<footer>
+<div class="footer-brand">DESIGN<br/>MATTERS</div>
+<p data-en="Shared change. Different systems. Changing judgment.&lt;br&gt;© 2026 Design Matters." data-i18n="html" data-zh="共同变化，不同系统，不断变化的判断。&lt;br&gt;© 2026 Design Matters.">共同变化，不同系统，不断变化的判断。<br/>© 2026 Design Matters.</p>
+</footer>
+</div>
+<script>
+function copyTheme(){
+  const text = "Design Matters #008 — 都在说 AI-native，到底什么才算？";
+  navigator.clipboard?.writeText(text);
+}
+
+</script>
+<script>
+(function(){
+  const items = [...document.querySelectorAll('[data-parallax]')];
+  const section = document.getElementById('next');
+  if (!items.length || !section) return;
+
+  let ticking = false;
+
+  function render(){
+    const r = section.getBoundingClientRect();
+    const vh = window.innerHeight || 1;
+    const progress = Math.max(-1, Math.min(1, (vh/2 - (r.top + r.height/2)) / vh));
+
+    items.forEach((el) => {
+      const speed = parseFloat(el.dataset.parallax || '0');
+      const y = progress * speed * 520;
+      const rotate = el.classList.contains('p-word-2') ? -7 : 0;
+      el.style.transform = `translate3d(0, ${y}px, 0) rotate(${rotate}deg)`;
+    });
+    ticking = false;
+  }
+
+  function requestRender(){
+    if (!ticking){
+      requestAnimationFrame(render);
+      ticking = true;
+    }
+  }
+
+  render();
+  addEventListener('scroll', requestRender, {passive:true});
+  addEventListener('resize', requestRender);
+})();
+</script><script>
+(function(){
+  const form = document.querySelector('form.form');
+  const stamp = document.getElementById('submitted_at');
+  if (!form || !stamp) return;
+
+  form.addEventListener('submit', function(){
+    stamp.value = new Date().toISOString();
+  });
+})();
+</script><script>
+(function(){
+  const root = document.documentElement;
+  const buttons = [...document.querySelectorAll('.lang-btn')];
+
+  function applyLanguage(lang){
+    root.dataset.lang = lang;
+    root.lang = lang === 'zh' ? 'zh-CN' : 'en';
+
+    document.querySelectorAll('[data-i18n="text"]').forEach(el => {
+      const value = el.dataset[lang];
+      if (value != null) el.textContent = value;
+    });
+
+    document.querySelectorAll('[data-i18n="html"]').forEach(el => {
+      const value = el.dataset[lang];
+      if (value != null) el.innerHTML = value;
+    });
+
+    document.querySelectorAll('[data-placeholder-zh]').forEach(el => {
+      el.placeholder = lang === 'zh' ? el.dataset.placeholderZh : el.dataset.placeholderEn;
+    });
+
+    buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+    localStorage.setItem('designMattersLang', lang);
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
+  });
+
+  const saved = localStorage.getItem('designMattersLang');
+  const preferred = saved || ((navigator.language || '').toLowerCase().startsWith('zh') ? 'zh' : 'en');
+  applyLanguage(preferred);
+
+  // Make copied #008 topic match the selected language.
+  window.copyTheme = function(){
+    const lang = root.dataset.lang || 'zh';
+    const text = lang === 'zh'
+      ? 'Design Matters #008 — 都在说 AI-native，到底什么才算？'
+      : 'Design Matters #008 — Everyone says AI-native. What actually counts?';
+    navigator.clipboard?.writeText(text);
+  };
+})();
+</script>
+<script>
+(function(){
+  const ENDPOINT = 'https://khhfxkrwgcckgqupncyw.supabase.co/rest/v1/rpc/register_dm_interest_public';
+  const APIKEY = 'sb_publishable_oXnMd_aF95wYTPcq6TwGVg_alaNdfTH';
+
+  const modal = document.getElementById('interestModal');
+  const openBtn = document.getElementById('openInterestSelection');
+  const closeBtn = document.getElementById('interestClose');
+  const selectAllBtn = document.getElementById('selectAllInterest');
+  const checks = [...document.querySelectorAll('.interest-check')];
+  const idsInput = document.getElementById('interestSelectedIds');
+  const titlesInput = document.getElementById('interestSelectedTitles');
+  const stampInput = document.getElementById('interestSubmittedAt');
+  const emailInput = document.getElementById('interestEmail');
+  const submitBtn = document.getElementById('interestSubmit');
+  const form = modal?.querySelector('form');
+  const note = form?.querySelector('.interest-form-note');
+  if (!modal || !openBtn || !form || !emailInput || !submitBtn) return;
+
+  function currentLang(){
+    return document.documentElement.dataset.lang || 'zh';
+  }
+
+  function selectedChecks(){
+    return checks.filter(check => check.checked);
+  }
+
+  function updateSelectionState(){
+    const selected = selectedChecks();
+    const allSelected = selected.length === checks.length && checks.length > 0;
+    submitBtn.disabled = selected.length === 0;
+
+    if (selectAllBtn){
+      const lang = currentLang();
+      selectAllBtn.textContent = allSelected
+        ? (lang === 'zh' ? '取消全选' : 'Clear all')
+        : (lang === 'zh' ? '全选' : 'Select all');
+    }
+  }
+
+  function openModal(){
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    updateSelectionState();
+  }
+
+  function closeModal(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
+
+  openBtn.addEventListener('click', openModal);
+  closeBtn?.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+  });
+
+  checks.forEach(check => check.addEventListener('change', updateSelectionState));
+
+  selectAllBtn?.addEventListener('click', () => {
+    const shouldSelectAll = !checks.every(check => check.checked);
+    checks.forEach(check => { check.checked = shouldSelectAll; });
+    updateSelectionState();
+  });
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setTimeout(updateSelectionState, 0));
+  });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const lang = currentLang();
+    const selected = selectedChecks();
+    const email = emailInput.value.trim().toLowerCase();
+    const consent = form.querySelector('input[name="consent"]');
+
+    if (!selected.length) return;
+
+    if (!email || !emailInput.checkValidity()){
+      if (note) note.textContent = lang === 'zh' ? '请输入有效的邮箱地址。' : 'Please enter a valid email address.';
+      emailInput.focus();
+      return;
+    }
+
+    if (!consent?.checked){
+      if (note) note.textContent = lang === 'zh'
+        ? '请勾选同意接收所选场次的报名通知。'
+        : 'Please agree to receive registration updates.';
+      return;
+    }
+
+    idsInput.value = selected.map(check => `#${check.value}`).join(', ');
+    titlesInput.value = selected.map(check => `#${check.value} — ${check.dataset.title}`).join(' | ');
+    stampInput.value = new Date().toISOString();
+
+    const oldText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = lang === 'zh' ? '提交中…' : 'Saving…';
+    if (note) note.textContent = lang === 'zh' ? '正在提交…' : 'Saving…';
+
+    try{
+      const response = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': APIKEY
+        },
+        body: JSON.stringify({
+          p_email: email,
+          p_event_ids: selected.map(check => check.value),
+          p_consent: true,
+          p_locale: lang
+        })
+      });
+
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok){
+        throw new Error(result.message || result.error || `HTTP ${response.status}`);
+      }
+
+      if (note) note.textContent = lang === 'zh'
+        ? '✓ 提交成功。我们已经记录你的兴趣；对应场次开放报名时会通过邮件通知你。'
+        : '✓ Submitted successfully. We’ll email you when registration opens for the sessions you selected.';
+      submitBtn.textContent = lang === 'zh' ? '已提交 ✓' : 'Submitted ✓';
+      submitBtn.disabled = true;
+    }catch(error){
+      console.error(error);
+      if (note) note.textContent = lang === 'zh'
+        ? '提交没有成功，请稍后再试。'
+        : 'Submission failed. Please try again.';
+      submitBtn.textContent = oldText;
+      submitBtn.disabled = false;
+    }
+  });
+
+  updateSelectionState();
+})();
+</script>
+
+</body>
+</html>
