@@ -30,3 +30,20 @@
 @media(prefers-reduced-motion:reduce){
   .avatar-cluster .profile-avatar .avatar-edit{transition:none}
 }
+
+/* Clean avatar and small Orbit badge; peer count is illustrative */
+.dm-personal-header .avatar-cluster{flex:0 0 114px;width:114px;align-self:center}
+.dm-personal-header .profile-avatar{width:112px;height:112px;overflow:hidden;border:2px solid var(--ink);border-radius:50%;cursor:default;background:var(--paper)}
+.dm-personal-header .profile-avatar .avatar-edit{display:none!important}
+.dm-personal-header .avatar-orbit-badge{width:40px;height:40px;right:-2px;bottom:-3px;border:1.5px solid var(--ink);border-radius:50%;background:var(--acid);padding:2px;box-shadow:0 0 0 2px var(--paper);cursor:default;pointer-events:none}
+.dm-personal-header .avatar-orbit-badge svg{display:block;width:100%;height:100%}
+.dm-personal-header .badge-community-row{display:flex;align-items:center;flex-wrap:wrap;gap:5px;margin-top:10px;font-size:12px;color:#595750}
+.dm-personal-header .badge-community-row strong{font-size:18px;line-height:1;font-weight:850;color:var(--ink);margin-right:2px}
+.dm-personal-header .badge-demo-tag{margin-left:5px;padding:2px 5px;border:1px solid var(--line);border-radius:4px;font-size:10px;color:#827e75;letter-spacing:.03em}
+#events .empty-events-note{margin:0;padding:12px 0 0;color:#77736e;font-size:13px;line-height:1.5}
+@media(max-width:760px){
+.dm-personal-header .avatar-cluster{flex:0 0 82px;width:82px}
+.dm-personal-header .profile-avatar{width:80px;height:80px}
+.dm-personal-header .avatar-orbit-badge{width:33px;height:33px;right:-5px;bottom:-5px}
+.dm-personal-header .badge-community-row{font-size:11px}
+}
