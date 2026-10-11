@@ -27,10 +27,17 @@
   function pendingTopics(){try{const v=JSON.parse(localStorage.getItem(PENDING)||'[]');return Array.isArray(v)?v.filter(id=>TOPICS.some(t=>t[0]===id)):[];}catch{return [];}}
   function saveProfile(p){const key=p.email||DRAFT;const all=readProfiles();all[key]=p;writeProfiles(all);localStorage.setItem(ACTIVE,key);return p;}
   function beginBenefitsProfile(){
+    const chosen=pendingTopics();
     const existing=getCurrent();
-    if(existing) return;
-    // Blank local draft. No email, verified identity, or attendance is fabricated.
-    saveProfile({email:'',display_name:'',bio:'',badge_id:null,topics:[],avatar_data:null,events:[],is_draft:true});
+    if(existing){
+      if(existing.is_draft && chosen.length){
+        saveProfile({...existing,topics:[...new Set([...(existing.topics||[]),...chosen])]});
+      }
+    }else{
+      // A browser-local draft is not a verified community account.
+      saveProfile({email:'',display_name:'',bio:'',badge_id:null,topics:chosen,avatar_data:null,events:[],is_draft:true});
+    }
+    localStorage.removeItem(PENDING);
   }
   function route(path){window.location.assign('./'+path+'.html');}
   function note(message){const el=$('status');if(el)el.textContent=message||'';}
