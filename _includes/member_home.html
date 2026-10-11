@@ -25,7 +25,7 @@
 @media(max-width:760px){.dm-user-controls{margin-left:2px}.dm-login-link{padding:9px 10px;font-size:11px}.dm-user-menu{right:10px;top:56px}}
 @media(prefers-reduced-motion:reduce){.dm-topic-card .dm-visual svg>*{transition:none!important;transform:none!important}}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.79.0/dist/umd/supabase.min.js"></script>
+
 <script>
 (async function(){
 const root=document.getElementById('dm-community'),original=document.getElementById('upcoming');if(root&&original)original.before(root);
@@ -58,28 +58,9 @@ const oldStatus=document.querySelector('#next .season');if(oldStatus){oldStatus.
 const nav=document.querySelector('.navlinks');if(!nav)return;
 const controls=document.createElement('div');controls.className='dm-user-controls';nav.append(controls);
 const menu=document.createElement('div');menu.className='dm-user-menu';menu.hidden=true;nav.append(menu);
-const auth=window.supabase.createClient('https://khhfxkrwgcckgqupncyw.supabase.co','sb_publishable_oXnMd_aF95wYTPcq6TwGVg_alaNdfTH');
-async function draw(){
-const {data:{user}}=await auth.auth.getUser();controls.textContent='';menu.textContent='';menu.hidden=true;
-if(!user){
- const login=document.createElement('a');login.className='dm-login-link';login.textContent='Log In';login.href='./account.html';
- const signup=document.createElement('a');signup.className='dm-login-link primary';signup.textContent='Sign Up';signup.href='./account.html';
- controls.append(login,signup);
-}else{
- const {data:profile}=await auth.from('dm_member_profiles').select('display_name,avatar_url').eq('user_id',user.id).maybeSingle();
- const button=document.createElement('button');button.className='dm-avatar-trigger';button.type='button';button.setAttribute('aria-label','Account menu');button.textContent=(profile?.display_name||user.email||'D').charAt(0).toUpperCase();
- if(profile?.avatar_url){
- const {data}=await auth.storage.from('dm-avatars').createSignedUrl(profile.avatar_url,900);
- if(data?.signedUrl){button.textContent='';const image=document.createElement('img');image.src=data.signedUrl;image.alt='My profile';button.append(image);}
- }
- button.onclick=()=>menu.hidden=!menu.hidden;controls.append(button);
- const profileLink=document.createElement('a');profileLink.href='./profile.html';profileLink.textContent='My Profile';
- const logout=document.createElement('button');logout.type='button';logout.textContent='Log Out';logout.onclick=async()=>{await auth.auth.signOut();draw()};
- menu.append(profileLink,logout);
- }
-}
-await draw();
-auth.auth.onAuthStateChange(()=>setTimeout(draw,0));
-document.addEventListener('click',e=>{if(!controls.contains(e.target)&&!menu.contains(e.target))menu.hidden=true});
+// Navigation is rendered by the browser-only flow helper.
+controls.remove();menu.remove();
 })();
 </script>
+<script src="./member-flow.js"></script>
+<script>DMFlow.setupHome()</script>
