@@ -7,14 +7,14 @@ const TOPICS=[['agentic-products-agent-ux','Agentic Products & Agent UX'],['ente
 const BADGES=[['explorer','AI Explorer','✳'],['power','AI Power User','⚡'],['cross','Cross-Disciplinary Thinker','↗'],['builder','AI Builder','▣'],['critical','Critical Thinker','◉']];
 const $=id=>document.getElementById(id);
 const go=path=>location.replace('./'+path+'.html');
-const pending=()=>{try{return JSON.parse(sessionStorage.getItem('dm_pending_topics')||'[]').filter(id=>TOPICS.some(t=>t[0]===id))}catch(e){return []}};
+const pending=()=>{try{return JSON.parse(localStorage.getItem('dm_pending_topics')||'[]').filter(id=>TOPICS.some(t=>t[0]===id))}catch(e){return []}};
 const message=s=>{if($('status'))$('status').textContent=s||''};
 async function user(){const {data,error}=await db.auth.getUser();if(error)return null;return data.user}
 async function profile(uid){const {data,error}=await db.from('dm_member_profiles').select('*').eq('user_id',uid).maybeSingle();if(error)throw error;return data}
 async function savePending(uid){
 const chosen=pending();if(!chosen.length)return;
 const {error}=await db.from('dm_member_topic_preferences').upsert(chosen.map(topic_id=>({user_id:uid,topic_id})),{onConflict:'user_id,topic_id'});
-if(error)throw error;sessionStorage.removeItem('dm_pending_topics');
+if(error)throw error;localStorage.removeItem('dm_pending_topics');
 }
 function step(id){document.querySelectorAll('.step').forEach(e=>e.hidden=e.id!==id);message('')}
 async function setupAccount(){
