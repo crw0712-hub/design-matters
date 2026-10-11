@@ -71,7 +71,7 @@
         existing.topics=[...p];
         saveProfile(existing);
         localStorage.removeItem(PENDING);
-        route('profile');
+        route('my-profile');
         return;
       }
       show('nameStep');name.focus();
@@ -83,7 +83,7 @@
       if(!display_name||display_name.length>80){note('请填写 Display Name（最多 80 个字符）。');return;}
       const p={email:enteredEmail,display_name,bio:'',badge_id:signupBadge,topics:pendingTopics(),avatar_data:null,events:[]};
       try{
-        saveProfile(p);localStorage.removeItem(PENDING);route('profile');
+        saveProfile(p);localStorage.removeItem(PENDING);route('my-profile');
       }catch(error){note('当前浏览器无法保存资料，请确认没有禁止本地存储。');}
     });
   }
@@ -226,7 +226,7 @@
         if(p.avatar_data){const img=document.createElement('img');img.src=p.avatar_data;img.alt='My profile';button.append(img);}
         else button.textContent=(p.display_name||'D').charAt(0).toUpperCase();
         button.addEventListener('click',()=>menu.hidden=!menu.hidden);controls.append(button);
-        const profile=document.createElement('a');profile.href='./profile.html';profile.textContent='My Profile';
+        const profile=document.createElement('a');profile.href='./my-profile.html';profile.textContent='My Profile';
         const logout=document.createElement('button');logout.type='button';logout.textContent='Log Out';
         logout.addEventListener('click',()=>{localStorage.removeItem(ACTIVE);draw();});
         menu.append(profile,logout);
