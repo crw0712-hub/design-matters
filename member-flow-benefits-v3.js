@@ -132,7 +132,12 @@
         img.src=p.avatar_data;img.hidden=false;fallback.hidden=true;
       }else{
         img.hidden=true;img.removeAttribute('src');
-        fallback.hidden=false;fallback.textContent=(p.display_name||'?').charAt(0).toUpperCase();
+        fallback.hidden=false;
+        if(p.display_name && p.display_name.trim()){
+          fallback.textContent=p.display_name.trim().charAt(0).toUpperCase();
+        }else{
+          fallback.innerHTML='<svg viewBox="0 0 64 64" width="52" height="52" fill="none" aria-hidden="true" focusable="false"><circle cx="32" cy="23" r="11" stroke="currentColor" stroke-width="2"/><path d="M13 55c1-12 8-20 19-20s18 8 19 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+        }
       }
     }
     function render(){
