@@ -142,10 +142,10 @@ document.getElementById('dmCount').textContent=selected.size?selected.size+' top
 document.getElementById('dmNext').addEventListener('click',()=>{
   if(!selected.size)return;
   localStorage.setItem('dm_pending_topics',JSON.stringify([...selected]));
-  location.href=window.DMFlow?.hasActiveProfile?.()?'./profile.html?edit=topics':'./account.html';
+  location.href=window.DMFlow?.hasActiveProfile?.()?'./profile.html?edit=topics':'./join.html';
 });
 document.getElementById('dmAccount').addEventListener('click',()=>{
-  location.href=window.DMFlow?.hasActiveProfile?.()?'./profile.html':'./account.html';
+  location.href=window.DMFlow?.hasActiveProfile?.()?'./profile.html':'./join.html';
 });
 const oldJoin=document.querySelector('.navlinks a[href="#join"]');if(oldJoin)oldJoin.remove();
 document.querySelectorAll('#next a[href="#join"]').forEach(el=>{el.href='#dm-community';el.textContent='Explore topics →';el.dataset.zh='探索讨论方向 →';el.dataset.en='Explore topics →'});
@@ -157,5 +157,5 @@ const menu=document.createElement('div');menu.className='dm-user-menu';menu.hidd
 controls.remove();menu.remove();
 })();
 </script>
-<script src="./member-flow.js?v=topic-edit-20261011"></script>
+<script src="./member-flow.js?v=benefits-flow-20261011"></script>
 <script>DMFlow.setupHome()</script>
