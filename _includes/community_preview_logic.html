@@ -1,6 +1,9 @@
 <script>
 (function(){
 const $=id=>document.getElementById(id);
+const communitySection=document.getElementById('dm-community');
+const oldUpcoming=document.getElementById('upcoming');
+if(communitySection&&oldUpcoming)oldUpcoming.before(communitySection);
 const topics=[
 ['agentic-products-agent-ux','Agentic Products & Agent UX'],
 ['enterprise-ai','Enterprise AI'],
