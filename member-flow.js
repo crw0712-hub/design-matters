@@ -136,8 +136,8 @@
       $('emptyTopics').hidden=(p.topics||[]).length>0;
       const events=$('events');events.replaceChildren();
       const past=(p.events||[]).filter(e=>e&&typeof e==='object'&&e.status==='attended');
-      if(!past.length){const row=document.createElement('div');row.className='event-row';const title=document.createElement('span');title.textContent='暂无参加记录';row.append(title);events.append(row);}
-      else past.forEach(e=>{const row=document.createElement('div');row.className='event-row';const title=document.createElement('strong');title.textContent=e.title||e.event_id;row.append(title);if(e.date){const date=document.createElement('span');date.textContent=e.date;row.append(date)}events.append(row);});
+      events.classList.toggle('is-empty',!past.length);
+      past.forEach(e=>{const row=document.createElement('div');row.className='event-row';const title=document.createElement('strong');title.textContent=e.title||e.event_id;row.append(title);if(e.date){const date=document.createElement('span');date.textContent=e.date;row.append(date)}events.append(row);});
     }
     function choices(){
       choiceButtons($('topicChoices'),TOPICS,draftTopics,'topic',id=>{
@@ -186,7 +186,9 @@
       try{saveProfile(updated);p=updated;render();closeEdit();}
       catch(e){note('保存失败：浏览器存储空间可能不足。');}
     });
-    $('avatarButton').addEventListener('click',()=>$('avatarFile').click());
+    const openPhotoPicker=()=>{const input=$('avatarFile');if(input)input.click();};
+    $('avatarButton').addEventListener('click',openPhotoPicker);
+    $('editAvatarButton').addEventListener('click',openPhotoPicker);
     $('avatarFile').addEventListener('change',()=>{
       const file=$('avatarFile').files?.[0];
       if(!file)return;
@@ -202,7 +204,7 @@
           const ctx=canvas.getContext('2d');
           ctx.drawImage(image,(image.width-side)/2,(image.height-side)/2,side,side,0,0,256,256);
           const avatar_data=canvas.toDataURL('image/jpeg',.8);
-          const updated={...p,avatar_data};saveProfile(updated);p=updated;render();
+          const updated={...p,avatar_data};saveProfile(updated);p=updated;render();if(!overlay.hidden)note('Photo updated ✓');
         }catch(e){alert('头像无法保存，请尝试更小的图片。');}
         finally{URL.revokeObjectURL(source);}
       };
