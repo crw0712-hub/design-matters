@@ -21,17 +21,58 @@ async function setupAccount(){
 let current=await user();
 if(current){try{let p=await profile(current.id);if(p?.display_name){await savePending(current.id);go('profile');return;}step('nameStep');return;}catch(e){message(e.message);return}}
 step('emailStep');
+let sending=false;
+let sentAt=0;
+let pendingEmail='';
+function authErrorText(error){
+const code=String(error?.code||'').toLowerCase();
+const msg=String(error?.message||'');
+if(error?.status===429||code.includes('rate_limit')||/rate limit|too many requests/i.test(msg)){
+return '邮件发送已达到 Supabase 的频率限制（429）。请勿连续重试；等待额度恢复，或先为项目配置自定义 SMTP 邮件服务。';
+}
+if(/invalid redirect|redirect url|not allowed/i.test(msg)){
+return '登录邮件的回跳地址未获授权，请在 Supabase Auth → URL Configuration 中添加本站 account.html 地址。';
+}
+if(/email not confirmed|email address not authorized/i.test(msg)){
+return '这个邮箱目前无法使用项目的内置发信服务。需配置正式 SMTP 服务后再测试。';
+}
+if(/failed to fetch|network|fetch/i.test(msg))return '网络连接失败。请检查网络后再试。';
+return msg ? '邮件发送失败：'+msg : '暂时无法发送验证邮件，请稍后再试。';
+}
+function updateResend(){
+const remaining=Math.max(0,60-Math.floor((Date.now()-sentAt)/1000));
+const button=$('resend');
+if(!button)return;
+button.disabled=sending||remaining>0;
+button.textContent=remaining>0?'Resend in '+remaining+'s':'Resend email →';
+}
 async function send(){
 const email=$('email').value.trim().toLowerCase();
-if(!$('email').checkValidity())return message('Please enter a valid email address.');
-const b=$('send');b.disabled=true;message('Sending email…');
-const {error}=await db.auth.signInWithOtp({email,options:{shouldCreateUser:true,emailRedirectTo:location.origin+location.pathname}});
-b.disabled=false;if(error)return message(error.message);
-$('sentAddress').textContent=email;step('sentStep');
+if(!email||!$('email').checkValidity())return message('请输入有效的邮箱地址。');
+if(sending)return;
+if(sentAt&&email===pendingEmail&&Date.now()-sentAt<60000){
+return message('请等待一分钟后再发送，避免重复请求。');
+}
+sending=true;
+const b=$('send');b.disabled=true;updateResend();message('正在请求发送登录邮件…');
+try{
+const {error}=await db.auth.signInWithOtp({
+email,
+options:{shouldCreateUser:true,emailRedirectTo:new URL('./account.html',location.href).href}
+});
+if(error){message(authErrorText(error));return}
+pendingEmail=email;
+sentAt=Date.now();
+$('sentAddress').textContent=email;
+step('sentStep');
+updateResend();
+}catch(e){message(authErrorText(e));}
+finally{sending=false;b.disabled=false;updateResend();}
 }
 $('emailForm').addEventListener('submit',e=>{e.preventDefault();send()});
 $('resend').addEventListener('click',send);
 $('changeEmail').addEventListener('click',()=>step('emailStep'));
+setInterval(updateResend,1000);
 $('nameForm').addEventListener('submit',async e=>{
 e.preventDefault();const name=$('displayName').value.trim();
 if(!name||name.length>80)return message('Please enter your display name.');
