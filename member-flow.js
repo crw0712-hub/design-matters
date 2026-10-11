@@ -118,8 +118,9 @@
       $('badgeHeader').replaceChildren();
       const pin=$('avatarBadge');pin.replaceChildren();pin.hidden=!p.badge_id;
       const peer=$('badgeCommunityRow');peer.hidden=!p.badge_id;
-      // The site is offline-only for this flow: never invent community-wide member counts.
-      if(p.badge_id){pin.innerHTML=orbit(p.badge_id);}
+      // Illustrative counts only; replace with a server-derived metric when member data is available.
+      const exampleCounts={explorer:28,power:16,cross:23,builder:31,critical:19};
+      if(p.badge_id){pin.innerHTML=orbit(p.badge_id);$('badgePeerCount').textContent=String(exampleCounts[p.badge_id]??28);}
       if(p.badge_id){
         const badge=BADGES.find(b=>b[0]===p.badge_id);
         const icon=document.createElement('span');icon.innerHTML=orbit(p.badge_id);
@@ -137,6 +138,7 @@
       const events=$('events');events.replaceChildren();
       const past=(p.events||[]).filter(e=>e&&typeof e==='object'&&e.status==='attended');
       events.classList.toggle('is-empty',!past.length);
+      if(!past.length){const empty=document.createElement('p');empty.className='empty-events-note';empty.textContent='期待你的第一次参与';events.append(empty);}
       past.forEach(e=>{const row=document.createElement('div');row.className='event-row';const title=document.createElement('strong');title.textContent=e.title||e.event_id;row.append(title);if(e.date){const date=document.createElement('span');date.textContent=e.date;row.append(date)}events.append(row);});
     }
     function choices(){
@@ -172,7 +174,6 @@
     $('editProfile').addEventListener('click',()=>openEdit());
     $('editTopics').addEventListener('click',()=>openEdit());
     $('editAbout').addEventListener('click',()=>openEdit());
-    $('avatarBadge').addEventListener('click',()=>openEdit());
     $('closeEditor').addEventListener('click',closeEdit);
     overlay.addEventListener('click',e=>{if(e.target===overlay)closeEdit();});
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)closeEdit();});
@@ -187,7 +188,6 @@
       catch(e){note('保存失败：浏览器存储空间可能不足。');}
     });
     const openPhotoPicker=()=>{const input=$('avatarFile');if(input)input.click();};
-    $('avatarButton').addEventListener('click',openPhotoPicker);
     $('editAvatarButton').addEventListener('click',openPhotoPicker);
     $('avatarFile').addEventListener('change',()=>{
       const file=$('avatarFile').files?.[0];
