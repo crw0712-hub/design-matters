@@ -1,0 +1,134 @@
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const topics=[
+['agentic-products-agent-ux','Agentic Products & Agent UX'],
+['enterprise-ai','Enterprise AI'],
+['vibe-coding-design-roles','Vibe Coding & Design Roles'],
+['design-judgment-future-work','Judgment & Future of Work'],
+['ai-native-startups-product-strategy','AI-native Startups & Strategy']
+];
+const badges=[
+['✳','AI Explorer','Exploring what AI makes possible'],
+['⚡','AI Power User','Using AI deeply in daily work'],
+['↗','Cross-Disciplinary Thinker','Connecting design, tech and business'],
+['▣','AI Builder','Building products, tools and workflows'],
+['◉','Critical Thinker','Questioning AI’s value, limits and consequences']
+];
+const ENDPOINT='https://khhfxkrwgcckgqupncyw.supabase.co/rest/v1/rpc/register_dm_topic_interest_public';
+const KEY='sb_publishable_oXnMd_aF95wYTPcq6TwGVg_alaNdfTH';
+const storeKey='dm_community_preview_profile_v1';
+let selected=new Set(), email='', profile=null, badge='AI Explorer';
+try{profile=JSON.parse(localStorage.getItem(storeKey)||'null');}catch(e){}
+const layer=$('dmLayer'), panes=[...document.querySelectorAll('#dmLayer .dm-pane')];
+function step(p){panes.forEach(el=>el.hidden=el.dataset.pane!==p);const a=panes.find(el=>el.dataset.pane===p);if(a)a.scrollIntoView({block:'nearest'});}
+function open(p){layer.hidden=false;document.body.style.overflow='hidden';step(p);}
+function close(){layer.hidden=true;document.body.style.overflow='';}
+$('dmClose').onclick=close;
+layer.addEventListener('click',e=>{if(e.target===layer)close();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!layer.hidden)close();});
+function setLang(){
+const zh=document.documentElement.dataset.lang!=='en';
+document.querySelectorAll('#dm-community [data-zh][data-en]').forEach(el=>{el.innerHTML=el.dataset[zh?'zh':'en'];});
+updateCount();
+}
+function updateCount(){
+const n=selected.size,zh=document.documentElement.dataset.lang!=='en';
+$('dmCount').textContent=n?(zh?'已选择 '+n+' 个讨论方向':'Selected '+n+' directions'):(zh?'选择你关心的问题 · 可多选':'Choose topics · multiple allowed');
+$('dmNext').disabled=!n;
+}
+document.querySelectorAll('#dmTopicGrid .dm-topic-card').forEach(card=>{
+card.onclick=()=>{
+const id=card.dataset.id;
+if(selected.has(id))selected.delete(id);else selected.add(id);
+card.classList.toggle('chosen',selected.has(id));
+card.setAttribute('aria-pressed',String(selected.has(id)));
+card.querySelector('.dm-card-plus').textContent=selected.has(id)?'✓':'+';
+updateCount();
+};
+});
+function syncCards(){
+document.querySelectorAll('#dmTopicGrid .dm-topic-card').forEach(c=>{const yes=selected.has(c.dataset.id);c.classList.toggle('chosen',yes);c.setAttribute('aria-pressed',String(yes));c.querySelector('.dm-card-plus').textContent=yes?'✓':'+';});updateCount();
+}
+$('dmNext').onclick=()=>open('email');
+$('dmAccount').onclick=()=>{if(profile){renderProfile();open('profile');}else open('welcome');};
+$('dmLogin').onclick=()=>{if(profile){renderProfile();step('profile');}else step('name');};
+$('dmStart').onclick=()=>step('name');
+$('dmJoin').onclick=()=>step('welcome');
+$('dmLater').onclick=close;
+function warn(id,message){$(id).textContent=message;}
+$('dmSaveInterest').onclick=async()=>{
+const inp=$('dmEmail'),v=inp.value.trim().toLowerCase(),btn=$('dmSaveInterest');
+warn('dmSaveMessage','');
+if(!v||!inp.checkValidity()){warn('dmSaveMessage','Please enter a valid email.');inp.focus();return;}
+if(!selected.size){warn('dmSaveMessage','Select at least one topic.');return;}
+btn.disabled=true;btn.textContent='Saving…';
+try{
+const response=await fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','apikey':KEY},body:JSON.stringify({p_email:v,p_topic_ids:[...selected],p_locale:document.documentElement.dataset.lang||'zh'})});
+const data=await response.json().catch(()=>({}));
+if(!response.ok||data.ok===false)throw new Error(data.message||'Save failed');
+email=v;
+if(profile){profile.topics=[...new Set([...(profile.topics||[]),...selected])];localStorage.setItem(storeKey,JSON.stringify(profile));}
+step('benefits');
+}catch(err){warn('dmSaveMessage','无法保存兴趣，请稍后再试。 / Could not save.');console.error(err);}
+finally{btn.disabled=false;btn.textContent='保存兴趣 →';}
+};
+$('dmNameNext').onclick=()=>{if(!$('dmName').value.trim()){$('dmName').focus();return;}step('username');};
+$('dmUsernameNext').onclick=()=>{
+const name=$('dmUsername').value.trim().replace(/^@/,'').toLowerCase();
+if(!/^[a-z0-9][a-z0-9._-]{2,23}$/.test(name)){$('dmUsernameHint').textContent='3–24 characters; letters, numbers, dot, _ or -';return;}step('badge');
+};
+function renderBadges(container,selectedBadge,handler){
+container.innerHTML='';
+badges.forEach(([glyph,title,desc])=>{
+const el=document.createElement('button');el.type='button';
+el.className='dm-badge'+(selectedBadge===title?' active':'');
+el.innerHTML='<span class="dm-badge-icon">'+glyph+'</span><b>'+title+'</b><small>'+desc+'</small>';
+el.onclick=()=>{handler(title);renderBadges(container,title,handler);};container.append(el);
+});
+}
+renderBadges($('dmOnboardingBadges'),badge,v=>badge=v);
+$('dmFinish').onclick=()=>{
+profile={name:$('dmName').value.trim(),username:$('dmUsername').value.trim().replace(/^@/,'').toLowerCase(),badge,bio:'Exploring AI × Design.',topics:[...selected],email:email||'',avatar:''};
+localStorage.setItem(storeKey,JSON.stringify(profile));renderProfile();step('profile');
+};
+function renderPills(container,ids,onClick){
+container.innerHTML='';
+topics.forEach(([id,title])=>{const el=document.createElement('button');el.className='dm-pill'+(ids.includes(id)?' active':'');el.type='button';el.textContent=title;el.onclick=()=>onClick(id);container.append(el);});
+}
+function renderProfile(){
+if(!profile)return;
+$('dmProfileName').textContent=profile.name||'Designer';
+$('dmProfileHandle').textContent='@'+profile.username;
+$('dmProfileBio').textContent=profile.bio||'Exploring AI × Design.';
+$('dmAvatar').textContent=(profile.name||'D').trim().charAt(0).toUpperCase();
+$('dmIdentity').textContent=(badges.find(x=>x[1]===profile.badge)||badges[0]).slice(0,2).join('  ');
+renderPills($('dmProfileTopics'),profile.topics||[],()=>step('edit'));
+}
+$('dmEdit').onclick=()=>{
+if(!profile)return;
+$('dmEditName').value=profile.name;
+$('dmEditBio').value=profile.bio||'';
+let draft=new Set(profile.topics||[]),newBadge=profile.badge;
+const drawTopics=()=>renderPills($('dmEditTopics'),[...draft],id=>{draft.has(id)?draft.delete(id):draft.add(id);drawTopics();});
+drawTopics();
+renderBadges($('dmEditBadges'),newBadge,v=>newBadge=v);
+$('dmSaveProfile').onclick=()=>{
+profile.name=$('dmEditName').value.trim()||profile.name;
+profile.bio=$('dmEditBio').value.trim();
+profile.topics=[...draft];
+profile.badge=newBadge;
+localStorage.setItem(storeKey,JSON.stringify(profile));
+selected=new Set(profile.topics);syncCards();renderProfile();step('profile');
+};
+step('edit');
+};
+$('dmSignOut').onclick=()=>{close();};
+document.querySelectorAll('.lang-btn').forEach(el=>el.addEventListener('click',()=>setTimeout(setLang,0)));
+setLang();
+const status=document.querySelector('#next .season');
+if(status){status.textContent=document.documentElement.dataset.lang==='en'?'CONVERSATION COMPLETE · Season 02 · #008':'活动已结束 · Season 02 · #008';status.dataset.zh='活动已结束 · Season 02 · #008';status.dataset.en='CONVERSATION COMPLETE · Season 02 · #008';}
+const siteNav=document.querySelector('a[href="#join"]');if(siteNav){siteNav.href='#dm-community';siteNav.dataset.zh='加入社区';siteNav.dataset.en='Join community';siteNav.textContent=document.documentElement.dataset.lang==='en'?'Join community':'加入社区';}
+document.querySelectorAll('#next a[href="#join"]').forEach(el=>{el.href='#dm-community';el.textContent='探索讨论方向 →';el.dataset.zh='探索讨论方向 →';el.dataset.en='Explore topics →';});
+})();
+</script>
