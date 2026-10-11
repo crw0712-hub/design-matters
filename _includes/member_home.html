@@ -49,11 +49,12 @@ document.getElementById('dmCount').textContent=selected.size?selected.size+' top
 });
 });
 document.getElementById('dmNext').addEventListener('click',()=>{
-if(!selected.size)return;sessionStorage.setItem('dm_pending_topics',JSON.stringify([...selected]));location.href='./account.html';
+if(!selected.size)return;localStorage.setItem('dm_pending_topics',JSON.stringify([...selected]));location.href='./account.html';
 });
 document.getElementById('dmAccount').addEventListener('click',()=>location.href='./account.html');
 const oldJoin=document.querySelector('.navlinks a[href="#join"]');if(oldJoin)oldJoin.remove();
 document.querySelectorAll('#next a[href="#join"]').forEach(el=>{el.href='#dm-community';el.textContent='Explore topics →';el.dataset.zh='探索讨论方向 →';el.dataset.en='Explore topics →'});
+const oldStatus=document.querySelector('#next .season');if(oldStatus){oldStatus.textContent='活动已结束 · Season 02 · #008';oldStatus.dataset.zh='活动已结束 · Season 02 · #008';oldStatus.dataset.en='CONVERSATION COMPLETED · Season 02 · #008';}
 const nav=document.querySelector('.navlinks');if(!nav)return;
 const controls=document.createElement('div');controls.className='dm-user-controls';nav.append(controls);
 const menu=document.createElement('div');menu.className='dm-user-menu';menu.hidden=true;nav.append(menu);
