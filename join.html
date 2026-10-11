@@ -18,7 +18,7 @@ a{color:inherit;text-decoration:none}
 .preview-label{width:min(720px,100%);display:flex;align-items:center;justify-content:space-between;gap:15px;font-size:10px;letter-spacing:.09em;font-weight:850;color:#68645e}
 .preview-label span:last-child{text-align:right}
 .topic-dialog{width:min(720px,100%);border:1.5px solid var(--ink);border-radius:26px;background:var(--paper);box-shadow:0 28px 90px rgba(0,0,0,.12);overflow:hidden}
-.topic-step{padding:34px;min-height:520px;display:flex;flex-direction:column}
+.topic-step{padding:34px;min-height:520px;display:flex;flex-direction:column}.topic-step[hidden]{display:none!important}
 .topic-step-top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
 .topic-step-count{font-size:10px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
 .topic-modal-close{width:36px;height:36px;border:1px solid var(--ink);border-radius:50%;background:transparent;font-size:22px;line-height:34px;cursor:pointer;text-align:center}
@@ -37,6 +37,19 @@ a{color:inherit;text-decoration:none}
 .preview-foot{font-size:11px;color:#77736e;text-align:center;line-height:1.6}
 @media(max-width:760px){.preview-bar{padding:12px 16px}.preview-brand{font-size:12px}.preview-return{font-size:11px;padding:8px 10px}.preview-page{padding:18px 10px 30px;justify-content:flex-start}.topic-dialog{border-radius:20px}.topic-step{min-height:calc(100dvh - 180px);padding:26px 22px}.topic-complete-mark{margin-top:46px}.topic-benefit{grid-template-columns:30px 1fr;gap:10px}.preview-label{font-size:9px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important}}
+
+.topic-name-form{margin-top:auto;padding-top:34px}
+.topic-name-form label{display:block;font-size:11px;font-weight:900;letter-spacing:.11em;margin:0 0 12px}
+.topic-name-input{display:block;width:100%;padding:12px 2px 16px;border:0;border-bottom:1.5px solid var(--ink);border-radius:0;background:transparent;color:var(--ink);font:inherit;font-size:clamp(23px,3vw,32px);outline:none}
+.topic-name-input::placeholder{color:#a7a39b}
+.topic-name-input:focus-visible{border-bottom-color:#558400;box-shadow:0 2px 0 #b8ff17}
+.topic-name-hint{min-height:22px;margin:10px 0 4px!important;font-size:12px!important;color:#8e2929!important}
+.topic-name-form .topic-primary{margin-top:16px}
+.topic-name-form .topic-primary:disabled{opacity:.55;cursor:wait}
+.topic-name-step h3{margin-top:88px}
+.topic-name-back{border:1px solid var(--ink);border-radius:99px;padding:8px 14px;background:transparent;color:var(--ink);font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+.topic-name-back:hover{background:var(--acid)}
+@media(max-width:760px){.topic-name-step h3{margin-top:65px}.topic-name-form{padding-top:44px}}
 </style>
 </head>
 <body>
@@ -47,7 +60,7 @@ a{color:inherit;text-decoration:none}
 <main class="preview-page">
   
   <div class="topic-dialog" role="region" aria-label="Design Matters community benefits">
-    <section class="topic-step">
+    <section class="topic-step" id="benefitsStep">
       <div class="topic-step-top"><span class="topic-step-count">02 / DESIGN MATTERS</span><a class="topic-modal-close" href="./" aria-label="Back to homepage">×</a></div>
       <div class="topic-complete-mark" aria-hidden="true">✓</div>
       <h3>兴趣已保存。</h3>
@@ -58,13 +71,74 @@ a{color:inherit;text-decoration:none}
         <div class="topic-benefit"><span class="topic-benefit-no">03</span><div><strong>来自全球的设计师圈层</strong><span>进入一个围绕 AI × Design 真实实践持续连接的全球同行网络。</span></div></div>
       </div>
       <div class="topic-form-area">
-        <a class="topic-primary" href="./profile.html?from=benefits&amp;flow=v3" id="startCommunityProfile">创建我的 profile →</a>
+        <a class="topic-primary" href="./join.html?step=name" id="startCommunityProfile">创建我的 profile →</a>
         <a class="topic-secondary" href="./">暂时不用</a>
       </div>
     </section>
+    <section class="topic-step topic-name-step" id="nameStep" hidden aria-labelledby="nameHeading">
+      <div class="topic-step-top">
+        <span class="topic-step-count">03 / YOUR PROFILE</span>
+        <button type="button" class="topic-name-back" id="backToBenefits">← 返回</button>
+      </div>
+      <h3 id="nameHeading">你希望我们<br>怎么称呼你？</h3>
+      <p>填写一个 Display Name，即可进入你的 Design Matters Profile。其他资料可以稍后完善。</p>
+      <form id="createNameForm" class="topic-name-form">
+        <label for="profileName">DISPLAY NAME</label>
+        <input id="profileName" class="topic-name-input" name="display_name" type="text" autocomplete="nickname" maxlength="80" placeholder="Your name" required>
+        <p class="topic-name-hint" id="profileNameStatus" role="status" aria-live="polite"></p>
+        <button type="submit" class="topic-primary" id="finishProfile">创建我的 Profile →</button>
+      </form>
+    </section>
   </div>
-  
+
 </main>
 
+<script src="./member-flow-benefits-v4.js"></script>
+<script>
+(function(){
+  'use strict';
+  const benefits=document.getElementById('benefitsStep');
+  const nameStep=document.getElementById('nameStep');
+  const input=document.getElementById('profileName');
+  const form=document.getElementById('createNameForm');
+  const status=document.getElementById('profileNameStatus');
+  const submit=document.getElementById('finishProfile');
+  function showName(){
+    benefits.hidden=true;
+    nameStep.hidden=false;
+    status.textContent='';
+    input.focus();
+  }
+  function showBenefits(){
+    nameStep.hidden=true;
+    benefits.hidden=false;
+    status.textContent='';
+  }
+  document.getElementById('startCommunityProfile').addEventListener('click',function(event){
+    event.preventDefault();
+    showName();
+  });
+  document.getElementById('backToBenefits').addEventListener('click',showBenefits);
+  form.addEventListener('submit',function(event){
+    event.preventDefault();
+    if(!form.reportValidity())return;
+    const name=input.value.trim();
+    if(!name){status.textContent='请输入 Display Name。';return;}
+    submit.disabled=true;
+    try{
+      if(!window.DMFlow || !window.DMFlow.createNamedProfile)throw new Error('页面尚未加载完成，请刷新后重试。');
+      window.DMFlow.createNamedProfile(name);
+      status.style.color='#326119';
+      status.textContent='Profile 已创建，正在进入…';
+      window.location.assign('./profile.html');
+    }catch(error){
+      status.style.color='#8e2929';
+      status.textContent=error.message||'保存失败，请重试。';
+      submit.disabled=false;
+    }
+  });
+  if(new URLSearchParams(window.location.search).get('step')==='name')showName();
+})();
+</script>
 </body>
 </html>
