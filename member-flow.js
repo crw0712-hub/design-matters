@@ -51,6 +51,9 @@
   function setupAccount(){
     let enteredEmail='';
     const email=$('email'),name=$('displayName');
+    let signupBadge=null;
+    function drawSignupBadge(){choiceButtons($('signupBadgeChoices'),BADGES,signupBadge,'badge',id=>{signupBadge=signupBadge===id?null:id;drawSignupBadge();});}
+    drawSignupBadge();
     function show(id){
       document.querySelectorAll('.step').forEach(el=>el.hidden=el.id!==id);
       note('');
@@ -78,7 +81,7 @@
       const display_name=name.value.trim();
       if(!enteredEmail){show('emailStep');return;}
       if(!display_name||display_name.length>80){note('请填写 Display Name（最多 80 个字符）。');return;}
-      const p={email:enteredEmail,display_name,bio:'',badge_id:null,topics:pendingTopics(),avatar_data:null,events:[]};
+      const p={email:enteredEmail,display_name,bio:'',badge_id:signupBadge,topics:pendingTopics(),avatar_data:null,events:[]};
       try{
         saveProfile(p);localStorage.removeItem(PENDING);route('profile');
       }catch(error){note('当前浏览器无法保存资料，请确认没有禁止本地存储。');}
@@ -104,6 +107,10 @@
       $('memberEmail').textContent=p.email;
       $('bioText').textContent=p.bio||'Add a little about yourself.';
       $('badgeHeader').replaceChildren();
+      const pin=$('avatarBadge');pin.replaceChildren();pin.hidden=!p.badge_id;
+      const peer=$('badgeCommunityRow');peer.hidden=!p.badge_id;
+      // The site is offline-only for this flow: never invent community-wide member counts.
+      if(p.badge_id){pin.innerHTML=orbit(p.badge_id);}
       if(p.badge_id){
         const badge=BADGES.find(b=>b[0]===p.badge_id);
         const icon=document.createElement('span');icon.innerHTML=orbit(p.badge_id);
@@ -119,10 +126,9 @@
       }
       $('emptyTopics').hidden=(p.topics||[]).length>0;
       const events=$('events');events.replaceChildren();
-      const row=document.createElement('div');row.className='event-row';
-      const title=document.createElement('strong');title.textContent='No registered events yet';
-      const message=document.createElement('span');message.textContent='未来活动开放报名后，这里会显示 Luma 链接。选择兴趣并不代表已报名。';
-      row.append(title,message);events.append(row);
+      const past=(p.events||[]).filter(e=>e.status==='attended');
+      if(!past.length){const row=document.createElement('div');row.className='event-row';const title=document.createElement('strong');title.textContent='No past events yet';const message=document.createElement('span');message.textContent='参加过的圆桌活动会显示在这里。';row.append(title,message);events.append(row);}
+      else past.forEach(e=>{const row=document.createElement('div');row.className='event-row';const title=document.createElement('strong');title.textContent=e.title||e.event_id;row.append(title);if(e.date){const date=document.createElement('span');date.textContent=e.date;row.append(date)}events.append(row);});
     }
     function choices(){
       choiceButtons($('topicChoices'),TOPICS,draftTopics,'topic',id=>{
@@ -140,6 +146,8 @@
     function closeEdit(){overlay.hidden=true;document.body.style.overflow='';}
     $('editProfile').addEventListener('click',openEdit);
     $('editTopics').addEventListener('click',openEdit);
+    $('editAbout').addEventListener('click',openEdit);
+    $('avatarBadge').addEventListener('click',openEdit);
     $('closeEditor').addEventListener('click',closeEdit);
     overlay.addEventListener('click',e=>{if(e.target===overlay)closeEdit();});
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)closeEdit();});
