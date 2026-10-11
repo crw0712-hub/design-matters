@@ -22,6 +22,7 @@
   function readProfiles(){try {const v=JSON.parse(localStorage.getItem(STORAGE)||'{}');return v&&typeof v==='object'?v:{};}catch{return {};}}
   function writeProfiles(v){localStorage.setItem(STORAGE,JSON.stringify(v));}
   function getCurrent(){try{const email=localStorage.getItem(ACTIVE);return email ? (readProfiles()[email]||null) : null;}catch{return null;}}
+  function hasActiveProfile(){const profile=getCurrent();return !!(profile && profile.email && profile.display_name);}
   function pendingTopics(){try{const v=JSON.parse(localStorage.getItem(PENDING)||'[]');return Array.isArray(v)?v.filter(id=>TOPICS.some(t=>t[0]===id)):[];}catch{return [];}}
   function saveProfile(p){const all=readProfiles();all[p.email]=p;writeProfiles(all);localStorage.setItem(ACTIVE,p.email);return p;}
   function route(path){window.location.assign('./'+path+'.html');}
@@ -135,7 +136,7 @@
       $('emptyTopics').hidden=(p.topics||[]).length>0;
       const events=$('events');events.replaceChildren();
       const past=(p.events||[]).filter(e=>e&&typeof e==='object'&&e.status==='attended');
-      if(!past.length){const row=document.createElement('div');row.className='event-row';const title=document.createElement('strong');title.textContent='No past events yet';const message=document.createElement('span');message.textContent='参加过的圆桌活动会显示在这里。';row.append(title,message);events.append(row);}
+      if(!past.length){const row=document.createElement('div');row.className='event-row';const title=document.createElement('span');title.textContent='暂无参加记录';row.append(title);events.append(row);}
       else past.forEach(e=>{const row=document.createElement('div');row.className='event-row';const title=document.createElement('strong');title.textContent=e.title||e.event_id;row.append(title);if(e.date){const date=document.createElement('span');date.textContent=e.date;row.append(date)}events.append(row);});
     }
     function choices(){
@@ -144,22 +145,37 @@
       });
       choiceButtons($('badgeChoices'),BADGES,draftBadge,'badge',id=>{draftBadge=id;choices();});
     }
-    function openEdit(){
+    let openedFromHome=false;
+    function dismissTopicsRequest(){
+      if(!openedFromHome)return;
+      localStorage.removeItem(PENDING);
+      openedFromHome=false;
+      if(window.history && window.history.replaceState){
+        const url=new URL(window.location.href);
+        url.searchParams.delete('edit');
+        window.history.replaceState(null,'',url.href);
+      }
+    }
+    function openEdit(mode){
+      const topicsMode=mode==='topics';
+      openedFromHome=topicsMode;
       $('displayName').value=p.display_name;
       $('bio').value=p.bio||'';
       draftTopics=new Set(p.topics||[]);
+      if(topicsMode)pendingTopics().forEach(id=>draftTopics.add(id));
       draftBadge=p.badge_id||null;
+      $('editorTitle').textContent=topicsMode?'Edit interested topics':'Edit your profile';
       choices();note('');overlay.hidden=false;document.body.style.overflow='hidden';
+      if(topicsMode && $('topicChoices').scrollIntoView)$('topicChoices').scrollIntoView({block:'center',behavior:'auto'});
     }
-    function closeEdit(){overlay.hidden=true;document.body.style.overflow='';}
-    $('editProfile').addEventListener('click',openEdit);
-    $('editTopics').addEventListener('click',openEdit);
-    $('editAbout').addEventListener('click',openEdit);
-    $('avatarBadge').addEventListener('click',openEdit);
+    function closeEdit(){overlay.hidden=true;document.body.style.overflow='';dismissTopicsRequest();}
+    $('editProfile').addEventListener('click',()=>openEdit());
+    $('editTopics').addEventListener('click',()=>openEdit());
+    $('editAbout').addEventListener('click',()=>openEdit());
+    $('avatarBadge').addEventListener('click',()=>openEdit());
     $('closeEditor').addEventListener('click',closeEdit);
     overlay.addEventListener('click',e=>{if(e.target===overlay)closeEdit();});
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)closeEdit();});
-    $('clearBadge').addEventListener('click',()=>{draftBadge=null;choices();});
     $('save').addEventListener('click',()=>{
       const display_name=$('displayName').value.trim();
       const bio=$('bio').value.trim();
@@ -195,6 +211,7 @@
       $('avatarFile').value='';
     });
     render();$('profileContent').hidden=false;$('profileLoading').hidden=true;
+    if(new URLSearchParams(window.location.search).get('edit')==='topics')openEdit('topics');
     } catch(error) {
       console.error('Design Matters Profile failed to initialize',error);
       const loading=$('profileLoading');
@@ -233,5 +250,5 @@
     draw();
     document.addEventListener('click',e=>{if(!controls.contains(e.target)&&!menu.contains(e.target))menu.hidden=true;});
   }
-  window.DMFlow={setupAccount,setupProfile,setupHome};
+  window.DMFlow={setupAccount,setupProfile,setupHome,hasActiveProfile};
 })();
