@@ -52,6 +52,7 @@
     let enteredEmail='';
     const email=$('email'),name=$('displayName');
     let signupBadge=null;
+    let previousProfile=null;
     function drawSignupBadge(){choiceButtons($('signupBadgeChoices'),BADGES,signupBadge,'badge',id=>{signupBadge=signupBadge===id?null:id;drawSignupBadge();});}
     drawSignupBadge();
     function show(id){
@@ -65,15 +66,10 @@
       if(!email.checkValidity())return;
       enteredEmail=email.value.trim().toLowerCase();
       const profiles=readProfiles();
-      const existing=profiles[enteredEmail];
-      if(existing){
-        const p=new Set([...(existing.topics||[]),...pendingTopics()]);
-        existing.topics=[...p];
-        saveProfile(existing);
-        localStorage.removeItem(PENDING);
-        route('my-profile');
-        return;
-      }
+      previousProfile=profiles[enteredEmail]&&typeof profiles[enteredEmail]==='object'?profiles[enteredEmail]:null;
+      name.value=previousProfile?.display_name||'';
+      signupBadge=previousProfile?.badge_id||null;
+      drawSignupBadge();
       show('nameStep');name.focus();
     });
     $('nameForm').addEventListener('submit',event=>{
@@ -81,10 +77,12 @@
       const display_name=name.value.trim();
       if(!enteredEmail){show('emailStep');return;}
       if(!display_name||display_name.length>80){note('请填写 Display Name（最多 80 个字符）。');return;}
-      const p={email:enteredEmail,display_name,bio:'',badge_id:signupBadge,topics:pendingTopics(),avatar_data:null,events:[]};
+      const old=previousProfile||{};
+      const preservedTopics=Array.isArray(old.topics)?old.topics:[];
+      const p={...old,email:enteredEmail,display_name,bio:typeof old.bio==='string'?old.bio:'',badge_id:signupBadge,topics:[...new Set([...preservedTopics,...pendingTopics()])],avatar_data:old.avatar_data||null,events:Array.isArray(old.events)?old.events:[]};
       try{
-        saveProfile(p);localStorage.removeItem(PENDING);route('my-profile');
-      }catch(error){note('当前浏览器无法保存资料，请确认没有禁止本地存储。');}
+        saveProfile(p);localStorage.removeItem(PENDING);route('profile');
+      }catch(error){console.error(error);note('当前浏览器无法保存资料，请确认没有禁止本地存储。');}
     });
   }
   function setupProfile(){
@@ -136,7 +134,7 @@
       }
       $('emptyTopics').hidden=(p.topics||[]).length>0;
       const events=$('events');events.replaceChildren();
-      const past=(p.events||[]).filter(e=>e.status==='attended');
+      const past=(p.events||[]).filter(e=>e&&typeof e==='object'&&e.status==='attended');
       if(!past.length){const row=document.createElement('div');row.className='event-row';const title=document.createElement('strong');title.textContent='No past events yet';const message=document.createElement('span');message.textContent='参加过的圆桌活动会显示在这里。';row.append(title,message);events.append(row);}
       else past.forEach(e=>{const row=document.createElement('div');row.className='event-row';const title=document.createElement('strong');title.textContent=e.title||e.event_id;row.append(title);if(e.date){const date=document.createElement('span');date.textContent=e.date;row.append(date)}events.append(row);});
     }
@@ -226,7 +224,7 @@
         if(p.avatar_data){const img=document.createElement('img');img.src=p.avatar_data;img.alt='My profile';button.append(img);}
         else button.textContent=(p.display_name||'D').charAt(0).toUpperCase();
         button.addEventListener('click',()=>menu.hidden=!menu.hidden);controls.append(button);
-        const profile=document.createElement('a');profile.href='./my-profile.html';profile.textContent='My Profile';
+        const profile=document.createElement('a');profile.href='./profile.html';profile.textContent='My Profile';
         const logout=document.createElement('button');logout.type='button';logout.textContent='Log Out';
         logout.addEventListener('click',()=>{localStorage.removeItem(ACTIVE);draw();});
         menu.append(profile,logout);
