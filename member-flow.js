@@ -4,6 +4,7 @@
   const STORAGE='dm_flow_profiles_v1';
   const ACTIVE='dm_flow_active_email';
   const PENDING='dm_pending_topics';
+  const DRAFT='_dm_local_profile_draft';
   const TOPICS=[
     ['agentic-products-agent-ux','Agentic Products & Agent UX'],
     ['enterprise-ai','Enterprise AI'],
@@ -22,9 +23,15 @@
   function readProfiles(){try {const v=JSON.parse(localStorage.getItem(STORAGE)||'{}');return v&&typeof v==='object'?v:{};}catch{return {};}}
   function writeProfiles(v){localStorage.setItem(STORAGE,JSON.stringify(v));}
   function getCurrent(){try{const email=localStorage.getItem(ACTIVE);return email ? (readProfiles()[email]||null) : null;}catch{return null;}}
-  function hasActiveProfile(){const profile=getCurrent();return !!(profile && profile.email && profile.display_name);}
+  function hasActiveProfile(){const profile=getCurrent();return !!(profile && profile.display_name);}
   function pendingTopics(){try{const v=JSON.parse(localStorage.getItem(PENDING)||'[]');return Array.isArray(v)?v.filter(id=>TOPICS.some(t=>t[0]===id)):[];}catch{return [];}}
-  function saveProfile(p){const all=readProfiles();all[p.email]=p;writeProfiles(all);localStorage.setItem(ACTIVE,p.email);return p;}
+  function saveProfile(p){const key=p.email||DRAFT;const all=readProfiles();all[key]=p;writeProfiles(all);localStorage.setItem(ACTIVE,key);return p;}
+  function beginBenefitsProfile(){
+    const existing=getCurrent();
+    if(existing) return;
+    // Blank local draft. No email, verified identity, or attendance is fabricated.
+    saveProfile({email:'',display_name:'',bio:'',badge_id:null,topics:[],avatar_data:null,events:[],is_draft:true});
+  }
   function route(path){window.location.assign('./'+path+'.html');}
   function note(message){const el=$('status');if(el)el.textContent=message||'';}
   function orbit(id){
@@ -89,7 +96,7 @@
   function setupProfile(){
     try {
     let p=getCurrent();
-    if(!p || !p.email || !p.display_name){
+    if(!p){
       const loading=$('profileLoading');
       if(loading){
         loading.innerHTML='<strong>No profile found in this browser.</strong><p>先输入邮箱并完成 Display Name，即可查看你的 Profile。</p><a href="./account.html" class="btn">Continue with email →</a>';
@@ -112,8 +119,9 @@
       }
     }
     function render(){
-      $('headerName').textContent=p.display_name;
-      $('memberEmail').textContent=p.email;
+      $('headerName').textContent=p.display_name||'Complete your profile';
+      $('memberEmail').textContent=p.email||'';
+      $('memberEmail').hidden=!p.email;
       $('bioText').textContent=p.bio||'Add a little about yourself.';
       $('badgeHeader').replaceChildren();
       const pin=$('avatarBadge');pin.replaceChildren();pin.hidden=!p.badge_id;
@@ -159,14 +167,14 @@
       }
     }
     function openEdit(mode){
-      const topicsMode=mode==='topics';
+      const topicsMode=mode==='topics'||mode==='setup';
       openedFromHome=topicsMode;
       $('displayName').value=p.display_name;
       $('bio').value=p.bio||'';
       draftTopics=new Set(p.topics||[]);
       if(topicsMode)pendingTopics().forEach(id=>draftTopics.add(id));
       draftBadge=p.badge_id||null;
-      $('editorTitle').textContent=topicsMode?'Edit interested topics':'Edit your profile';
+      $('editorTitle').textContent=mode==='setup'?'Create your profile':topicsMode?'Edit interested topics':'Edit your profile';
       choices();note('');overlay.hidden=false;document.body.style.overflow='hidden';
       if(topicsMode && $('topicChoices').scrollIntoView)$('topicChoices').scrollIntoView({block:'center',behavior:'auto'});
     }
@@ -181,7 +189,7 @@
       if(!display_name||display_name.length>80||bio.length>400){
         note('请检查 Display Name 和 About（介绍最多 400 字）。');return;
       }
-      const updated={...p,display_name,bio,badge_id:draftBadge,topics:[...draftTopics]};
+      const updated={...p,display_name,bio,badge_id:draftBadge,topics:[...draftTopics],is_draft:false};
       try{saveProfile(updated);p=updated;render();closeEdit();}
       catch(e){note('保存失败：浏览器存储空间可能不足。');}
     });
@@ -211,7 +219,9 @@
       $('avatarFile').value='';
     });
     render();$('profileContent').hidden=false;$('profileLoading').hidden=true;
-    if(new URLSearchParams(window.location.search).get('edit')==='topics')openEdit('topics');
+    const params=new URLSearchParams(window.location.search);
+    if(params.get('setup')==='1'&&!p.display_name)openEdit('setup');
+    else if(params.get('edit')==='topics')openEdit('topics');
     } catch(error) {
       console.error('Design Matters Profile failed to initialize',error);
       const loading=$('profileLoading');
@@ -231,9 +241,9 @@
     nav.append(controls,menu);
     function draw(){
       const p=getCurrent();controls.replaceChildren();menu.replaceChildren();menu.hidden=true;
-      if(!p){
+      if(!p||!p.display_name){
         for(const [label,cls] of [['Log In','dm-login-link'],['Sign Up','dm-login-link primary']]){
-          const a=document.createElement('a');a.href='./account.html';a.className=cls;a.textContent=label;controls.append(a);
+          const a=document.createElement('a');a.href=label==='Sign Up'?'./join.html':'./account.html';a.className=cls;a.textContent=label;controls.append(a);
         }
       }else{
         const button=document.createElement('button');button.className='dm-avatar-trigger';
@@ -250,5 +260,5 @@
     draw();
     document.addEventListener('click',e=>{if(!controls.contains(e.target)&&!menu.contains(e.target))menu.hidden=true;});
   }
-  window.DMFlow={setupAccount,setupProfile,setupHome,hasActiveProfile};
+  window.DMFlow={setupAccount,setupProfile,setupHome,hasActiveProfile,beginBenefitsProfile};
 })();
