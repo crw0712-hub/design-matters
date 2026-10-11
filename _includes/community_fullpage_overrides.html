@@ -1,0 +1,49 @@
+<style>
+#dm-community{display:block}#dmLayer{display:none!important}
+.dm-topic-card{transition:background .25s,transform .25s}.dm-topic-card .dm-visual svg>*{transition:transform .5s,opacity .5s;transform-origin:center}
+.dm-topic-card:nth-child(1):hover .dm-visual svg circle:last-of-type{transform:translateX(-15px)}
+.dm-topic-card:nth-child(1):hover .dm-visual svg rect{transform:translateX(18px) rotate(22deg)}
+.dm-topic-card:nth-child(2):hover .dm-visual svg rect:nth-of-type(4){transform:translateY(-16px)}
+.dm-topic-card:nth-child(3):hover .dm-visual svg rect:last-of-type{transform:translate(-10px,-6px)}
+.dm-topic-card:nth-child(4):hover .dm-visual svg path:nth-of-type(2){transform:rotate(9deg)}
+.dm-topic-card:nth-child(5):hover .dm-visual svg circle:first-of-type{transform:rotate(45deg) scale(1.12)}
+.dm-topic-card .dm-card-copy h3{font-size:clamp(23px,2vw,30px)}
+.dm-theme-line{font-size:10px;letter-spacing:.08em;font-weight:850;color:#5b5952;margin-bottom:9px;display:block}
+.dm-topic-card.chosen .dm-theme-line{color:#222}
+@media(prefers-reduced-motion:reduce){.dm-topic-card .dm-visual svg>*{transition:none!important;transform:none!important}}
+</style>
+<script>
+(function(){
+const labels={
+'agentic-products-agent-ux':['Agentic Products & Agent UX','When AI acts for us, how do we design control, trust and recovery?'],
+'enterprise-ai':['Enterprise AI','Why do pilots struggle to become real work?'],
+'vibe-coding-design-roles':['Vibe Coding & Prototyping','What changes when designers can prototype and build directly?'],
+'design-judgment-future-work':['Design Roles, Judgment & Future of Work','Where does human judgment matter as execution becomes easier?'],
+'ai-native-startups-product-strategy':['AI-native Startups & AI Product Strategy','How do AI-native teams rethink product, roles and decisions?']
+};
+const cards=[...document.querySelectorAll('#dmTopicGrid .dm-topic-card')];
+cards.forEach(c=>{
+const [title,desc]=labels[c.dataset.id];
+const block=c.querySelector('.dm-card-copy');
+if(!block)return;
+block.innerHTML='<h3>'+title+'</h3><p>'+desc+'</p>';
+});
+const next=document.getElementById('dmNext');
+if(next){
+ const n=next.cloneNode(true);
+ next.replaceWith(n);
+ n.addEventListener('click',()=>{
+ if(n.disabled)return;
+ const selected=cards.filter(c=>c.getAttribute('aria-pressed')==='true').map(c=>c.dataset.id);
+ sessionStorage.setItem('dm_pending_topics',JSON.stringify(selected));
+ location.href='./account.html';
+ });
+}
+const entry=document.getElementById('dmAccount');
+if(entry){
+const n=entry.cloneNode(true);entry.replaceWith(n);
+n.textContent='注册 / 登录社区 →';
+n.addEventListener('click',()=>location.href='./account.html');
+}
+})();
+</script>
