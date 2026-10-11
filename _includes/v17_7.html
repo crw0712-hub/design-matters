@@ -251,5 +251,219 @@ function copyTheme(){
 })();
 </script>
 
+<script>
+(function(){
+  const ENDPOINT_TOPIC = 'https://khhfxkrwgcckgqupncyw.supabase.co/rest/v1/rpc/register_dm_topic_interest_public';
+  const ENDPOINT_PROFILE = 'https://khhfxkrwgcckgqupncyw.supabase.co/rest/v1/rpc/create_dm_profile_public';
+  const APIKEY = 'sb_publishable_oXnMd_aF95wYTPcq6TwGVg_alaNdfTH';
+
+  const cards = [...document.querySelectorAll('.topic-card')];
+  const continueBtn = document.getElementById('topicContinue');
+  const countEl = document.getElementById('topicSelectionCount');
+  const modal = document.getElementById('topicModal');
+  const emailInput = document.getElementById('topicEmail');
+  const submitInterest = document.getElementById('topicSubmitInterest');
+  const interestStatus = document.getElementById('topicInterestStatus');
+  const startProfile = document.getElementById('startProfile');
+  const skipProfile = document.getElementById('skipProfile');
+  const profileName = document.getElementById('profileName');
+  const profileNameNext = document.getElementById('profileNameNext');
+  const profileUsername = document.getElementById('profileUsername');
+  const profileStatus = document.getElementById('profileStatus');
+  const createProfile = document.getElementById('createProfile');
+
+  if(!cards.length || !continueBtn || !modal) return;
+
+  let savedEmail = '';
+  let savedName = '';
+
+  function lang(){
+    return document.documentElement.dataset.lang || 'zh';
+  }
+
+  function selectedTopics(){
+    return cards.filter(c => c.classList.contains('selected')).map(c => c.dataset.topic);
+  }
+
+  function applyTopicLanguage(){
+    const l = lang();
+    document.querySelectorAll('#topics [data-en][data-zh], #topicModal [data-en][data-zh]').forEach(el=>{
+      const value = el.dataset[l];
+      if(value != null) el.textContent = value;
+    });
+    updateSelection();
+  }
+
+  function updateSelection(){
+    const n = selectedTopics().length;
+    continueBtn.disabled = n === 0;
+    const l = lang();
+    if(n === 0){
+      countEl.textContent = l === 'zh' ? '选择你感兴趣的方向' : 'Choose what you’re interested in';
+    }else{
+      countEl.textContent = l === 'zh' ? `已选择 ${n} 个方向` : `${n} selected`;
+    }
+  }
+
+  cards.forEach(card=>{
+    card.addEventListener('click',()=>{
+      card.classList.toggle('selected');
+      const mark = card.querySelector('.topic-card-mark');
+      if(mark) mark.textContent = card.classList.contains('selected') ? '✓' : '+';
+      updateSelection();
+    });
+  });
+
+  function showStep(name){
+    document.querySelectorAll('#topicModal [data-topic-step]').forEach(step=>{
+      step.classList.toggle('active', step.dataset.topicStep === name);
+    });
+  }
+
+  function openModal(){
+    showStep('email');
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    interestStatus.textContent='';
+    setTimeout(()=>emailInput?.focus(),60);
+  }
+
+  function closeModal(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+
+  continueBtn.addEventListener('click', openModal);
+  document.querySelectorAll('#topicModal .topic-modal-close').forEach(btn=>btn.addEventListener('click', closeModal));
+  modal.addEventListener('click',e=>{ if(e.target===modal) closeModal(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape' && modal.classList.contains('open')) closeModal(); });
+
+  submitInterest?.addEventListener('click',async()=>{
+    const l = lang();
+    const email = (emailInput?.value || '').trim().toLowerCase();
+    const topics = selectedTopics();
+
+    interestStatus.classList.remove('error');
+    if(!topics.length){
+      interestStatus.textContent = l === 'zh' ? '请先选择至少一个方向。' : 'Choose at least one topic first.';
+      interestStatus.classList.add('error');
+      return;
+    }
+    if(!email || !emailInput.checkValidity()){
+      interestStatus.textContent = l === 'zh' ? '请输入有效的邮箱地址。' : 'Enter a valid email address.';
+      interestStatus.classList.add('error');
+      emailInput.focus();
+      return;
+    }
+
+    submitInterest.disabled = true;
+    const old = submitInterest.textContent;
+    submitInterest.textContent = l === 'zh' ? '保存中…' : 'Saving…';
+
+    try{
+      const res = await fetch(ENDPOINT_TOPIC,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':APIKEY},
+        body:JSON.stringify({p_email:email,p_topic_ids:topics,p_locale:l})
+      });
+      const data = await res.json().catch(()=>({}));
+      if(!res.ok) throw new Error(data.message || data.error || ('HTTP '+res.status));
+      savedEmail = email;
+      showStep('benefits');
+    }catch(err){
+      console.error(err);
+      interestStatus.textContent = l === 'zh' ? '保存没有成功，请稍后再试。' : 'Could not save. Please try again.';
+      interestStatus.classList.add('error');
+    }finally{
+      submitInterest.disabled = false;
+      submitInterest.textContent = old;
+    }
+  });
+
+  startProfile?.addEventListener('click',()=>{
+    showStep('name');
+    setTimeout(()=>profileName?.focus(),60);
+  });
+
+  skipProfile?.addEventListener('click',closeModal);
+
+  profileNameNext?.addEventListener('click',()=>{
+    const name = (profileName?.value || '').trim();
+    if(!name){
+      profileName?.focus();
+      return;
+    }
+    savedName = name;
+    showStep('username');
+    setTimeout(()=>profileUsername?.focus(),60);
+  });
+
+  profileUsername?.addEventListener('input',()=>{
+    let value = profileUsername.value.trim().toLowerCase().replace(/^@/,'').replace(/[^a-z0-9._-]/g,'');
+    profileUsername.value = value;
+    profileStatus.classList.remove('error');
+    profileStatus.textContent = value.length >= 3
+      ? (lang()==='zh' ? '@'+value+' · 可用于你的 Design Matters 身份' : '@'+value+' · your Design Matters identity')
+      : '';
+  });
+
+  createProfile?.addEventListener('click',async()=>{
+    const l = lang();
+    const username = (profileUsername?.value || '').trim().toLowerCase().replace(/^@/,'');
+    profileStatus.classList.remove('error');
+
+    if(!savedEmail){
+      showStep('email');
+      return;
+    }
+    if(!savedName){
+      showStep('name');
+      return;
+    }
+    if(!/^[a-z0-9][a-z0-9._-]{2,23}$/.test(username)){
+      profileStatus.textContent = l === 'zh' ? '请输入 3–24 位 username，可使用字母、数字、点、下划线或短横线。' : 'Use 3–24 characters: letters, numbers, dots, underscores or hyphens.';
+      profileStatus.classList.add('error');
+      profileUsername.focus();
+      return;
+    }
+
+    createProfile.disabled = true;
+    const old = createProfile.textContent;
+    createProfile.textContent = l === 'zh' ? '创建中…' : 'Creating…';
+
+    try{
+      const res = await fetch(ENDPOINT_PROFILE,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':APIKEY},
+        body:JSON.stringify({p_email:savedEmail,p_full_name:savedName,p_username:username,p_locale:l})
+      });
+      const data = await res.json().catch(()=>({}));
+      if(!res.ok) throw new Error(data.message || data.error || ('HTTP '+res.status));
+      if(data && data.ok === false){
+        profileStatus.textContent = l === 'zh' ? '这个邮箱或 username 已经被使用，请换一个。' : 'That email or username is already in use.';
+        profileStatus.classList.add('error');
+        return;
+      }
+      showStep('done');
+    }catch(err){
+      console.error(err);
+      profileStatus.textContent = l === 'zh' ? '创建没有成功，请稍后再试。' : 'Could not create the profile. Please try again.';
+      profileStatus.classList.add('error');
+    }finally{
+      createProfile.disabled = false;
+      createProfile.textContent = old;
+    }
+  });
+
+  document.querySelectorAll('.lang-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>setTimeout(applyTopicLanguage,0));
+  });
+
+  applyTopicLanguage();
+})();
+</script>
+
 </body>
 </html>
