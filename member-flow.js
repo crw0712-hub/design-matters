@@ -172,8 +172,6 @@
     }
     function closeEdit(){overlay.hidden=true;document.body.style.overflow='';dismissTopicsRequest();}
     $('editProfile').addEventListener('click',()=>openEdit());
-    $('editTopics').addEventListener('click',()=>openEdit());
-    $('editAbout').addEventListener('click',()=>openEdit());
     $('closeEditor').addEventListener('click',closeEdit);
     overlay.addEventListener('click',e=>{if(e.target===overlay)closeEdit();});
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!overlay.hidden)closeEdit();});
