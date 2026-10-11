@@ -21,7 +21,7 @@
   const $=id=>document.getElementById(id);
   function readProfiles(){try {const v=JSON.parse(localStorage.getItem(STORAGE)||'{}');return v&&typeof v==='object'?v:{};}catch{return {};}}
   function writeProfiles(v){localStorage.setItem(STORAGE,JSON.stringify(v));}
-  function getCurrent(){const email=localStorage.getItem(ACTIVE);return email ? (readProfiles()[email]||null) : null;}
+  function getCurrent(){try{const email=localStorage.getItem(ACTIVE);return email ? (readProfiles()[email]||null) : null;}catch{return null;}}
   function pendingTopics(){try{const v=JSON.parse(localStorage.getItem(PENDING)||'[]');return Array.isArray(v)?v.filter(id=>TOPICS.some(t=>t[0]===id)):[];}catch{return [];}}
   function saveProfile(p){const all=readProfiles();all[p.email]=p;writeProfiles(all);localStorage.setItem(ACTIVE,p.email);return p;}
   function route(path){window.location.assign('./'+path+'.html');}
@@ -88,8 +88,18 @@
     });
   }
   function setupProfile(){
+    try {
     let p=getCurrent();
-    if(!p){route('account');return;}
+    if(!p || !p.email || !p.display_name){
+      const loading=$('profileLoading');
+      if(loading){
+        loading.innerHTML='<strong>No profile found in this browser.</strong><p>先输入邮箱并完成 Display Name，即可查看你的 Profile。</p><a href="./account.html" class="btn">Continue with email →</a>';
+      }
+      return;
+    }
+    // Older walkthrough records may not have arrays; normalize before rendering.
+    p.topics=Array.isArray(p.topics)?p.topics.filter(t=>TOPICS.some(x=>x[0]===t)):[];
+    p.events=Array.isArray(p.events)?p.events:[];
     let draftTopics=new Set(p.topics||[]);
     let draftBadge=p.badge_id||null;
     const overlay=$('editor');
@@ -187,6 +197,14 @@
       $('avatarFile').value='';
     });
     render();$('profileContent').hidden=false;$('profileLoading').hidden=true;
+    } catch(error) {
+      console.error('Design Matters Profile failed to initialize',error);
+      const loading=$('profileLoading');
+      if(loading){
+        loading.hidden=false;
+        loading.innerHTML='<strong>Profile could not be opened.</strong><p>请重新进入注册页，使用之前填写的邮箱继续。</p><a class="btn" href="./account.html">Continue with email →</a>';
+      }
+    }
   }
   function setupHome(){
     const nav=document.querySelector('.navlinks');
