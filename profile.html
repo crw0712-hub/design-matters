@@ -19,6 +19,9 @@
 <section class="simple-section about-section">
   <div class="simple-heading"><h2>ABOUT</h2><button type="button" id="editAbout">Edit ↗</button></div><p id="bioText" class="bio-display"></p>
 </section>
-</main><div class="profile-load" id="profileLoading">Loading your profile…</div>
+</main><div class="profile-load" id="profileLoading"><strong>Opening your profile…</strong><p><a href="./account.html">Continue with your email ↗</a></p></div>
 <div class="member-overlay" id="editor" hidden><section class="member-sheet" role="dialog" aria-modal="true" aria-labelledby="editorTitle"><div class="sheet-top"><h2 id="editorTitle">Edit your profile</h2><button class="sheet-close" id="closeEditor" type="button" aria-label="Close">×</button></div><div class="sheet-body"><div class="field"><label for="displayName">DISPLAY NAME</label><input id="displayName" maxlength="80"></div><div class="field"><label for="bio">ABOUT YOU</label><textarea id="bio" maxlength="400" placeholder="A little about what you do and explore…"></textarea></div><div class="field"><label>INTERESTED TOPICS</label><div class="choice-set" id="topicChoices"></div></div><div class="field"><label>COMMUNITY BADGE · OPTIONAL</label><div class="badge-choices" id="badgeChoices"></div></div><p class="muted">Badges express how you relate to AI. They are not ranks.</p><div id="status" class="status" role="status"></div><button class="btn" id="save" type="button">Save changes →</button><button id="clearBadge" class="subtle-btn" type="button">Remove badge</button></div></section></div></div>
-<script src="./member-flow.js"></script><script>DMFlow.setupProfile()</script></body></html>
+<script src="./member-flow.js?v=profile-fix-20261011"></script><script>
+try{if(!window.DMFlow)throw new Error('Profile script unavailable');window.DMFlow.setupProfile();}
+catch(error){console.error(error);const el=document.getElementById('profileLoading');if(el){el.hidden=false;el.innerHTML='<strong>Unable to open your profile.</strong><p>Please return to the email step.</p><a href="./account.html" class="btn">Continue with email →</a>';}}
+</script></body></html>
