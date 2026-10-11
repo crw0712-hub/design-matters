@@ -220,8 +220,7 @@
     });
     render();$('profileContent').hidden=false;$('profileLoading').hidden=true;
     const params=new URLSearchParams(window.location.search);
-    if(params.get('setup')==='1'&&!p.display_name)openEdit('setup');
-    else if(params.get('edit')==='topics')openEdit('topics');
+    if(params.get('edit')==='topics')openEdit('topics');
     } catch(error) {
       console.error('Design Matters Profile failed to initialize',error);
       const loading=$('profileLoading');
