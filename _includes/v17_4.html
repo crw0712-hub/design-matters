@@ -5,6 +5,150 @@
 </section>
 
 
+
+<style>
+  .conversation-board#upcoming,#interestModal{display:none!important}
+  .topic-board{background:var(--paper);border-bottom:1px solid var(--ink)}
+  .topic-board-head{display:grid;grid-template-columns:180px 1fr;gap:44px;padding:58px 56px 34px}
+  .topic-board-head h2{margin:0;max-width:980px;font-size:clamp(42px,5vw,78px);line-height:.98;letter-spacing:-.055em}
+  .topic-board-head p{max-width:780px;margin:22px 0 0;color:#3c3934;font-size:18px;line-height:1.55}
+  .topic-picker-shell{padding:0 56px 64px}
+  .topic-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+  .topic-card{min-height:300px;display:flex;flex-direction:column;justify-content:space-between;gap:28px;padding:28px 24px 24px;border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff;color:var(--ink);text-align:left;cursor:pointer;transition:.18s ease}
+  .topic-card:hover{background:#f8f8f5}.topic-card.selected{background:var(--acid)}
+  .topic-card-title{max-width:240px;font-size:clamp(24px,2.1vw,34px);line-height:1.22;letter-spacing:-.04em;font-weight:820}
+  .topic-card-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+  .topic-card-label{font-size:10px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+  .topic-card.selected .topic-card-label{color:var(--ink)}
+  .topic-card-mark{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--ink);border-radius:50%;font-size:24px;line-height:1;background:var(--paper)}
+  .topic-card.selected .topic-card-mark{background:var(--ink);color:#fff}
+  .topic-actionbar{margin-top:28px;padding:14px 16px 14px 20px;display:flex;align-items:center;justify-content:space-between;gap:18px;border:1.5px solid var(--ink);border-radius:999px;background:var(--ink);color:#fff}
+  .topic-action-copy strong{display:block;font-size:14px;line-height:1.2}.topic-action-copy span{display:block;margin-top:4px;color:#bdbdbd;font-size:11px}
+  .topic-continue{min-width:148px;border:0;border-radius:999px;padding:13px 18px;background:var(--acid);color:var(--ink);font:inherit;font-size:13px;font-weight:900;cursor:pointer}.topic-continue:disabled{opacity:.35;cursor:not-allowed}
+  .topic-modal{position:fixed;inset:0;z-index:1200;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(10,10,10,.45);backdrop-filter:blur(10px)}
+  .topic-modal.open{display:flex}.topic-dialog{width:min(720px,100%);max-height:calc(100vh - 44px);overflow:auto;border:1.5px solid var(--ink);border-radius:26px;background:var(--paper);box-shadow:0 28px 90px rgba(0,0,0,.25)}
+  .topic-step{display:none;min-height:520px;padding:34px}.topic-step.active{display:flex;flex-direction:column}
+  .topic-step-top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.topic-step-count{font-size:10px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+  .topic-step h3{margin:56px 0 12px;max-width:560px;font-size:clamp(34px,4vw,54px);line-height:1;letter-spacing:-.055em}.topic-step p{max-width:560px;margin:0;color:#4a4742;font-size:15px;line-height:1.6}
+  .topic-modal-close{width:36px;height:36px;border:1px solid var(--ink);border-radius:50%;background:transparent;font-size:22px;cursor:pointer}
+  .topic-form-area{margin-top:auto;padding-top:40px}.topic-form-area label{display:block;margin:0 0 8px;font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
+  .topic-input{width:100%;border:0;border-bottom:1.5px solid var(--ink);background:transparent;padding:14px 2px;outline:none;font:inherit;font-size:24px}.topic-input::placeholder{color:#b1aea8}
+  .topic-primary{width:100%;margin-top:22px;padding:16px 20px;border:1.5px solid var(--ink);border-radius:999px;background:var(--ink);color:#fff;font:inherit;font-size:14px;font-weight:900;cursor:pointer}.topic-primary:disabled{opacity:.35;cursor:not-allowed}
+  .topic-helper{min-height:20px;margin-top:10px;color:var(--muted);font-size:11px;line-height:1.45}.topic-helper.error{color:#8d1919;font-weight:750}
+  .topic-benefits{margin:34px 0 0;border-top:1px solid var(--ink)}.topic-benefit{display:grid;grid-template-columns:42px 1fr;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .topic-benefit strong{display:block;font-size:13px}.topic-benefit span{color:#55514b;font-size:13px;line-height:1.45}.topic-benefit-no{font-size:11px;font-weight:900}
+  .topic-secondary{margin-top:12px;border:0;background:transparent;color:var(--muted);text-decoration:underline;cursor:pointer;font:inherit;font-size:12px}
+  .topic-complete-mark{width:62px;height:62px;margin-top:56px;display:grid;place-items:center;border:1.5px solid var(--ink);border-radius:50%;background:var(--acid);font-size:30px;font-weight:950}
+  @media(max-width:1100px){.topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.topic-card:last-child{grid-column:1/-1}}
+  @media(max-width:760px){.topic-board-head{grid-template-columns:1fr;gap:14px;padding:42px 22px 26px}.topic-board-head p{font-size:16px}.topic-picker-shell{padding:0 22px 46px}.topic-grid{grid-template-columns:1fr}.topic-card,.topic-card:last-child{grid-column:auto;min-height:210px;padding:24px 22px 20px}.topic-card-title{max-width:290px;font-size:29px}.topic-actionbar{border-radius:24px;align-items:stretch;flex-direction:column}.topic-continue{width:100%}.topic-modal{padding:10px}.topic-dialog{max-height:calc(100vh - 20px);border-radius:20px}.topic-step{min-height:calc(100vh - 42px);padding:26px 22px}.topic-step h3{margin-top:46px}}
+</style>
+
+<section class="topic-board" id="topics">
+  <div class="topic-board-head">
+    <div class="eyebrow" data-en="WHAT WE’LL<br>EXPLORE NEXT" data-i18n="html" data-zh="接下来我们<br>持续讨论什么">接下来我们<br/>持续讨论什么</div>
+    <div>
+      <h2 data-en="Choose the shifts you want to keep tracking." data-i18n="text" data-zh="选择你想持续追踪的变化。">选择你想持续追踪的变化。</h2>
+      <p data-en="Not fixed sessions. These are the directions Design Matters will keep following across future roundtables. Pick what feels relevant to your work." data-i18n="text" data-zh="不再预设具体场次，而是围绕这些方向持续追踪真实实践。选择与你现在工作最相关的主题。">不再预设具体场次，而是围绕这些方向持续追踪真实实践。选择与你现在工作最相关的主题。</p>
+    </div>
+  </div>
+
+  <div class="topic-picker-shell">
+    <div class="topic-grid" id="topicGrid">
+      <button class="topic-card" type="button" data-topic="agentic-products-agent-ux">
+        <span class="topic-card-title">Agentic Products &amp;<br/>Agent UX</span>
+        <span class="topic-card-bottom"><span class="topic-card-label">PRODUCT × UX</span><span class="topic-card-mark">+</span></span>
+      </button>
+      <button class="topic-card" type="button" data-topic="enterprise-ai">
+        <span class="topic-card-title">Enterprise AI</span>
+        <span class="topic-card-bottom"><span class="topic-card-label">WORKFLOW × ADOPTION</span><span class="topic-card-mark">+</span></span>
+      </button>
+      <button class="topic-card" type="button" data-topic="vibe-coding-design-roles">
+        <span class="topic-card-title">Vibe Coding &amp;<br/>Prototyping ×<br/>Design Roles</span>
+        <span class="topic-card-bottom"><span class="topic-card-label">MAKING × ROLE</span><span class="topic-card-mark">+</span></span>
+      </button>
+      <button class="topic-card" type="button" data-topic="design-judgment-future-work">
+        <span class="topic-card-title">Design Roles,<br/>Judgment &amp;<br/>Future of Work</span>
+        <span class="topic-card-bottom"><span class="topic-card-label">JUDGMENT × WORK</span><span class="topic-card-mark">+</span></span>
+      </button>
+      <button class="topic-card" type="button" data-topic="ai-native-startups-product-strategy">
+        <span class="topic-card-title">AI-native<br/>Startups × AI<br/>Product Strategy</span>
+        <span class="topic-card-bottom"><span class="topic-card-label">STARTUPS × STRATEGY</span><span class="topic-card-mark">+</span></span>
+      </button>
+    </div>
+
+    <div class="topic-actionbar">
+      <div class="topic-action-copy">
+        <strong id="topicSelectionCount" data-en="Choose what you’re interested in" data-zh="选择你感兴趣的方向">选择你感兴趣的方向</strong>
+        <span data-en="We’ll use this to personalize future summaries and registration reminders." data-i18n="text" data-zh="我们会据此匹配后续圆桌总结与活动报名提醒。">我们会据此匹配后续圆桌总结与活动报名提醒。</span>
+      </div>
+      <button class="topic-continue" id="topicContinue" type="button" disabled data-en="Continue →" data-zh="继续 →">继续 →</button>
+    </div>
+  </div>
+</section>
+
+<div class="topic-modal" id="topicModal" aria-hidden="true">
+  <div class="topic-dialog" role="dialog" aria-modal="true">
+    <section class="topic-step active" data-topic-step="email">
+      <div class="topic-step-top"><span class="topic-step-count">01 / INTEREST</span><button class="topic-modal-close" type="button">×</button></div>
+      <h3 data-en="Where should we keep you in the loop?" data-i18n="text" data-zh="留下一个邮箱。">留下一个邮箱。</h3>
+      <p data-en="We’ll send only the roundtable summaries and registration reminders connected to the topics you selected." data-i18n="text" data-zh="我们只会发送与你所选主题相关的圆桌总结和报名提醒。">我们只会发送与你所选主题相关的圆桌总结和报名提醒。</p>
+      <div class="topic-form-area">
+        <label for="topicEmail">EMAIL</label>
+        <input class="topic-input" id="topicEmail" type="email" autocomplete="email" placeholder="name@example.com"/>
+        <button class="topic-primary" id="topicSubmitInterest" type="button" data-en="Save my interests →" data-zh="保存我的兴趣 →">保存我的兴趣 →</button>
+        <div class="topic-helper" id="topicInterestStatus"></div>
+      </div>
+    </section>
+
+    <section class="topic-step" data-topic-step="benefits">
+      <div class="topic-step-top"><span class="topic-step-count">02 / DESIGN MATTERS</span><button class="topic-modal-close" type="button">×</button></div>
+      <div class="topic-complete-mark">✓</div>
+      <h3 data-en="You’re in the loop." data-i18n="text" data-zh="兴趣已保存。">兴趣已保存。</h3>
+      <p data-en="Create a lightweight Design Matters profile to make future participation easier." data-i18n="text" data-zh="再花一分钟创建 Design Matters profile，让之后的参与更顺畅。">再花一分钟创建 Design Matters profile，让之后的参与更顺畅。</p>
+      <div class="topic-benefits">
+        <div class="topic-benefit"><span class="topic-benefit-no">01</span><div><strong data-en="Roundtable summaries" data-i18n="text" data-zh="每一期圆桌总结">每一期圆桌总结</strong><span data-en="Keep the key judgments, tensions, and emerging patterns from each discussion." data-i18n="text" data-zh="持续收到每场讨论里真正值得留下的判断、分歧和变化。">持续收到每场讨论里真正值得留下的判断、分歧和变化。</span></div></div>
+        <div class="topic-benefit"><span class="topic-benefit-no">02</span><div><strong data-en="Relevant registration reminders" data-i18n="text" data-zh="与你相关的活动提醒">与你相关的活动提醒</strong><span data-en="Get notified when a future roundtable matches the themes you care about." data-i18n="text" data-zh="当新的圆桌与你关注的主题匹配时，优先收到报名提醒。">当新的圆桌与你关注的主题匹配时，优先收到报名提醒。</span></div></div>
+        <div class="topic-benefit"><span class="topic-benefit-no">03</span><div><strong data-en="A global designer circle" data-i18n="text" data-zh="来自全球的设计师圈层">来自全球的设计师圈层</strong><span data-en="A curated network of designers, product people, and builders working through similar AI shifts." data-i18n="text" data-zh="进入一个围绕 AI × Design 真实实践持续连接的全球同行网络。">进入一个围绕 AI × Design 真实实践持续连接的全球同行网络。</span></div></div>
+      </div>
+      <div class="topic-form-area">
+        <button class="topic-primary" id="startProfile" type="button" data-en="Create my profile →" data-zh="创建我的 profile →">创建我的 profile →</button>
+        <button class="topic-secondary" id="skipProfile" type="button" data-en="Not now" data-zh="暂时不用">暂时不用</button>
+      </div>
+    </section>
+
+    <section class="topic-step" data-topic-step="name">
+      <div class="topic-step-top"><span class="topic-step-count">03 / PROFILE</span><button class="topic-modal-close" type="button">×</button></div>
+      <h3 data-en="What should we call you?" data-i18n="text" data-zh="你希望我们怎么称呼你？">你希望我们怎么称呼你？</h3>
+      <p data-en="This will be shown on your Design Matters profile." data-i18n="text" data-zh="这个名字会显示在你的 Design Matters profile 中。">这个名字会显示在你的 Design Matters profile 中。</p>
+      <div class="topic-form-area">
+        <label for="profileName" data-en="FULL NAME" data-i18n="text" data-zh="姓名">姓名</label>
+        <input class="topic-input" id="profileName" type="text" maxlength="80" autocomplete="name" placeholder="Rui"/>
+        <button class="topic-primary" id="profileNameNext" type="button" data-en="Next →" data-zh="下一步 →">下一步 →</button>
+      </div>
+    </section>
+
+    <section class="topic-step" data-topic-step="username">
+      <div class="topic-step-top"><span class="topic-step-count">04 / PROFILE</span><button class="topic-modal-close" type="button">×</button></div>
+      <h3 data-en="Choose a username." data-i18n="text" data-zh="选择一个 username。">选择一个 username。</h3>
+      <p data-en="Keep it simple. You’ll use this identity as the community layer grows." data-i18n="text" data-zh="简单一点就好。之后社区功能逐步上线时，会沿用这个身份。">简单一点就好。之后社区功能逐步上线时，会沿用这个身份。</p>
+      <div class="topic-form-area">
+        <label for="profileUsername">USERNAME</label>
+        <input class="topic-input" id="profileUsername" type="text" maxlength="24" autocomplete="username" placeholder="@rui32"/>
+        <div class="topic-helper" id="profileStatus"></div>
+        <button class="topic-primary" id="createProfile" type="button" data-en="Create profile →" data-zh="创建 profile →">创建 profile →</button>
+      </div>
+    </section>
+
+    <section class="topic-step" data-topic-step="done">
+      <div class="topic-step-top"><span class="topic-step-count">DONE</span><button class="topic-modal-close" type="button">×</button></div>
+      <div class="topic-complete-mark">✓</div>
+      <h3 data-en="Profile created." data-i18n="text" data-zh="Profile 已创建。">Profile 已创建。</h3>
+      <p data-en="We’ll keep your interests with your profile and use them to make future Design Matters participation more relevant." data-i18n="text" data-zh="你的兴趣方向已经和 profile 关联起来。之后我们会用它来匹配更相关的内容与圆桌。">你的兴趣方向已经和 profile 关联起来。之后我们会用它来匹配更相关的内容与圆桌。</p>
+      <div class="topic-form-area"><button class="topic-primary topic-modal-close" type="button" data-en="Done" data-zh="完成">完成</button></div>
+    </section>
+  </div>
+</div>
+
 <section class="conversation-board" id="upcoming">
   <div class="conversation-board-head">
     <div class="eyebrow" data-en="SEASON 02<br>PROGRAM" data-i18n="html" data-zh="SEASON 02<br>PROGRAM">SEASON 02<br/>PROGRAM</div>
