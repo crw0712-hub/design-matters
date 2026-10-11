@@ -5,12 +5,6 @@
 .dm-topic-card:hover .dm-visual{transform:none!important}
 .dm-topic-card .dm-card-copy h3{font-size:clamp(22px,1.95vw,29px)}
 .dm-topic-card .dm-visual svg{overflow:visible}
-.dm-topic-card .dm-visual svg>*{transition:transform .5s cubic-bezier(.2,.8,.2,1),stroke-dashoffset .5s,opacity .4s;transform-box:fill-box;transform-origin:center}
-.dm-topic-card:nth-child(1):hover [data-move=delegate]{transform:translateX(24px)}
-.dm-topic-card:nth-child(2):hover [data-move=connect]{transform:translateY(-12px)}
-.dm-topic-card:nth-child(3):hover [data-move=build]{transform:translateY(-12px)}
-.dm-topic-card:nth-child(4):hover [data-move=balance]{transform:rotate(10deg)}
-.dm-topic-card:nth-child(5):hover [data-move=iterate]{transform:rotate(35deg)}
 .dm-topic-card.chosen{background:var(--acid)}
 .dm-topic-card[aria-pressed=true] .dm-card-plus{background:var(--ink);color:#fff}
 .dm-user-controls{display:flex;gap:8px;align-items:center;margin-left:7px}
@@ -23,7 +17,104 @@
 .dm-user-menu a,.dm-user-menu button{display:block;width:100%;border:0;background:transparent;text-align:left;font:inherit;font-size:13px;padding:11px 12px;border-radius:7px;cursor:pointer}
 .dm-user-menu a:hover,.dm-user-menu button:hover{background:var(--acid)}
 @media(max-width:760px){.dm-user-controls{margin-left:2px}.dm-login-link{padding:9px 10px;font-size:11px}.dm-user-menu{right:10px;top:56px}}
-@media(prefers-reduced-motion:reduce){.dm-topic-card .dm-visual svg>*{transition:none!important;transform:none!important}}
+
+
+/* Living Diagrams — transitions describe each topic; card layout is unchanged. */
+.dm-topic-card .dm-living{display:block;overflow:visible}
+.dm-topic-card .dm-living .ld-guide{stroke-dasharray:3 4;opacity:.28;transition:opacity .32s ease}
+.dm-topic-card .dm-living .ld-flow,
+.dm-topic-card .dm-living .ld-loop,
+.dm-topic-card .dm-living .ld-network{
+  stroke-dasharray:100;
+  stroke-dashoffset:100;
+  opacity:0;
+  transition:stroke-dashoffset .56s cubic-bezier(.22,.75,.3,1),opacity .16s ease;
+}
+.dm-topic-card .dm-living .ld-flow-2{transition-delay:0s}
+.dm-topic-card .dm-living .ld-loop{transition-delay:0s}
+.dm-topic-card .dm-living .ld-done{
+  opacity:0;
+  transform:scale(.78);
+  transform-box:fill-box;
+  transform-origin:center;
+  transition:opacity .25s ease,transform .4s cubic-bezier(.18,.8,.2,1);
+}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .dm-living .ld-guide{opacity:.12}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .dm-living .ld-flow{
+  opacity:1;stroke-dashoffset:0;
+}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .dm-living .ld-flow-2{transition-delay:.15s}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .dm-living .ld-done{
+  opacity:1;transform:scale(1);transition-delay:.36s;
+}
+/* 01 / Agentic UX: delegated work travels through two handoffs; human control persists. */
+.dm-topic-card .ld-agent .ld-flow-1{transition-duration:.42s}
+.dm-topic-card .ld-agent .ld-flow-2{transition-duration:.42s}
+/* 02 / Enterprise: an isolated pilot aligns with an operational workflow. */
+.dm-topic-card .ld-enterprise .ld-integrate{
+  transform:translateY(0);
+  transition:transform .46s cubic-bezier(.2,.75,.25,1);
+}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-enterprise .ld-integrate{transform:translateY(-13px)}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-enterprise .ld-loop{
+  opacity:1;stroke-dashoffset:0;transition-delay:.26s;
+}
+.dm-topic-card .ld-enterprise .ld-done{transition-delay:0s}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-enterprise .ld-done{transition-delay:.5s}
+/* 03 / Vibe Coding: intention becomes a usable interface in stages. */
+.dm-topic-card .ld-vibe .ld-ui{
+  opacity:.16;
+  transform:translateY(4px);
+  transition:opacity .26s ease,transform .42s cubic-bezier(.2,.8,.2,1);
+}
+.dm-topic-card .ld-vibe .ld-prompt{opacity:.8;transition:opacity .3s ease}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-vibe .ld-prompt{opacity:.38}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-vibe .ld-ui{opacity:1;transform:translateY(0)}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-vibe .ld-ui-1{transition-delay:.1s}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-vibe .ld-ui-2{transition-delay:.19s}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-vibe .ld-ui-3{transition-delay:.28s}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-vibe .ld-ui-4{transition-delay:.37s}
+/* 04 / Judgment: possible paths narrow to one human-chosen outcome. */
+.dm-topic-card .ld-judgment .ld-option-path{stroke-dasharray:4 4;opacity:.65;transition:opacity .45s ease}
+.dm-topic-card .ld-judgment .ld-option{opacity:.65;transition:opacity .45s ease,fill .35s ease}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-judgment .ld-branch-1,
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-judgment .ld-branch-3,
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-judgment .ld-option-1,
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-judgment .ld-option-3{opacity:.12}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-judgment .ld-branch-2,
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-judgment .ld-option-2{opacity:1}
+/* 05 / AI-native: three linear roles form a network around a shared AI core. */
+.dm-topic-card .ld-native .ld-linear{opacity:.75;transition:opacity .28s ease}
+.dm-topic-card .ld-native .ld-team{
+  transform:translate(0,0);
+  transition:transform .58s cubic-bezier(.2,.8,.2,1);
+}
+.dm-topic-card .ld-native .ld-core,
+.dm-topic-card .ld-native .ld-core-dot{
+  opacity:0;
+  transform:scale(.5);
+  transform-box:fill-box;
+  transform-origin:center;
+  transition:opacity .28s ease,transform .48s cubic-bezier(.2,.8,.2,1);
+}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-native .ld-linear{opacity:0}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-native .ld-team-1{transform:translate(10px,-26px)}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-native .ld-team-2{transform:translate(62px,-26px)}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-native .ld-team-3{transform:translate(-64px,35px)}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-native .ld-network{
+  opacity:1;stroke-dashoffset:0;transition-delay:.25s;
+}
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-native .ld-core,
+.dm-topic-card:is(:hover,:focus-visible,.chosen) .ld-native .ld-core-dot{
+  opacity:1;transform:scale(1);transition-delay:.3s;
+}
+/* Prevent the previous generic SVG animation from interfering; reduced motion switches instantly. */
+@media(prefers-reduced-motion:reduce){
+  .dm-topic-card .dm-living *,
+  .dm-topic-card .dm-living .ld-flow,
+  .dm-topic-card .dm-living .ld-ui{transition:none!important;animation:none!important}
+}
+
 </style>
 
 <script>
