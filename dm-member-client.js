@@ -95,9 +95,9 @@ export async function requestEmailLogin(rawEmail){
 // on the Supabase Auth email template configured for this project.
 export async function verifyEmailLogin(rawEmail,rawCode){
  const email=cleanEmail(rawEmail);
- const token=String(rawCode||"").replace(/\\s/g,"").trim();
+ const token=String(rawCode||"").replace(/\s/g,"").trim();
  const problem=emailHint(email);if(problem)throw Error(problem);
- if(!/^\\d{6,8}$/.test(token))throw Error("请输入邮件中的 6–8 位验证码。");
+ if(!/^\d{6,8}$/.test(token))throw Error("请输入邮件中的 6–8 位验证码。");
  const {data,error}=await supabase.auth.verifyOtp({email,token,type:"email"});
  if(error)throw Error("验证码未通过，请检查是否过期或输入有误："+error.message);
  if(!data.session)throw Error("验证未完成，请尝试邮件中的登录链接。");
