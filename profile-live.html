@@ -11,7 +11,7 @@ let user=null,topics=[],displayName='我的 Design Matters',editorTopics=new Set
 function error(msg){$('loading').textContent=msg;$('loading').className='error'}
 function render(){$('name').textContent=displayName;$('email').textContent=user?.email||'';$('avatar').textContent=(displayName==='我的 Design Matters'?'DM':displayName.slice(0,1)).toUpperCase();$('topics').replaceChildren();for(const [id,label] of names){if(!topics.includes(id))continue;const item=document.createElement('span');item.className='chip';item.textContent=label;$('topics').append(item)}if(!topics.length)$('topics').textContent='尚未选择关注话题';}
 async function syncPending(){
- let raw=null;try{raw=sessionStorage.getItem('dm_verified_onboarding_v1')}catch{}
+ let raw=null;try{raw=localStorage.getItem('dm_verified_onboarding_v1')}catch{}
  if(!raw)return;
  let data;try{data=JSON.parse(raw)}catch{return}
  if(data.email?.toLowerCase()!==user.email?.toLowerCase())return;
@@ -22,7 +22,7 @@ async function syncPending(){
  const {data:existing,error:e2}=await sb.from('dm_member_profiles').select('user_id').eq('user_id',user.id).maybeSingle();if(e2)throw e2;
  if(!existing){const {error:e3}=await sb.from('dm_member_profiles').insert({user_id:user.id,display_name:'我的 Design Matters'});if(e3)throw e3}
  if(nextTopics.length){const {error:e4}=await sb.from('dm_member_topic_preferences').upsert(nextTopics.map(topic_id=>({user_id:user.id,topic_id})),{onConflict:'user_id,topic_id'});if(e4)throw e4}
- sessionStorage.removeItem('dm_verified_onboarding_v1');
+ localStorage.removeItem('dm_verified_onboarding_v1');
 }
 async function load(){
  let {data:{session},error:e}=await sb.auth.getSession();if(e)throw e;
