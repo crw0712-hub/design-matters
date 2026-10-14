@@ -1,4 +1,4 @@
-import {supabase,currentMember,registerMember,requestEmailLogin,logoutMember,EXPECTATIONS,optionLabels,getExpectations,emailHint,cleanEmail} from "./dm-member-client.js?v=20261015-full-zip";
+import {supabase,currentMember,registerMember,requestEmailLogin,verifyEmailLogin,logoutMember,EXPECTATIONS,optionLabels,getExpectations,emailHint,cleanEmail} from "./dm-member-client.js?v=20261015-full-zip";
 const nav=document.querySelector(".navlinks");
 if(nav){
  const style=document.createElement("style");
@@ -100,7 +100,16 @@ if(nav){
     }else{
      await requestEmailLogin(value);
      dialog.querySelector("form").hidden=true;
-     msg.className="dm-note";msg.textContent="登录邮件请求已提交。如果邮箱可以收件，请按邮件中的链接返回 Profile。";
+     msg.className="dm-note";msg.textContent="登录邮件已请求。可点击邮件中的链接登录，或在下方输入邮件验证码。若未收到邮件，请检查垃圾邮件文件夹，并确认邮件服务已配置。";
+     const verifyForm=document.createElement("form");verifyForm.setAttribute("aria-label","Email verification code");
+     verifyForm.innerHTML='<label class="dm-entry-label" for="dm-login-code">EMAIL CODE / 邮件验证码</label><input type="text" id="dm-login-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,8}" maxlength="8" required placeholder="6–8 位验证码"><button type="submit" class="dm-dialog-submit">验证并进入 Profile →</button><div class="dm-error" role="status" aria-live="polite"></div>';
+     dialog.append(verifyForm);
+     verifyForm.addEventListener("submit",async event=>{
+       event.preventDefault();const verifyButton=verifyForm.querySelector("button"),status=verifyForm.querySelector(".dm-error");
+       verifyButton.disabled=true;status.textContent="正在验证…";
+       try{await verifyEmailLogin(value,verifyForm.querySelector("#dm-login-code").value);location.assign("./profile-live.html");}
+       catch(err){status.textContent=err.message||"验证码验证失败";verifyButton.disabled=false;}
+     });
     }
    }catch(err){msg.textContent=err.message||"暂时无法完成操作，请稍后再试";btn.disabled=false}
   });
