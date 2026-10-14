@@ -1,53 +1,70 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My Profile · Design Matters</title>
 <style>:root{--paper:#fbfaf6;--ink:#0a0a0a;--acid:#b8ff17;--line:#d8d5cd}*{box-sizing:border-box}body{background:#f5f3ec;color:var(--ink);font:15px/1.6 Inter,-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;margin:0}header{padding:18px max(20px,calc((100% - 1060px)/2));border-bottom:1px solid;background:var(--paper);display:flex;justify-content:space-between;gap:12px;font-weight:900}a{color:inherit;text-decoration:none}.page{max-width:1060px;margin:35px auto;padding:20px 30px 60px;background:var(--paper);border:1px solid;border-radius:24px}.hero{padding:35px 0;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:22px}.avatar{height:90px;width:90px;background:var(--acid);border:2px solid;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:28px}.identity{flex:1;min-width:0}h1{font-size:clamp(31px,5vw,55px);line-height:1.1;letter-spacing:-.055em;margin:0}h2{font-size:14px;letter-spacing:.11em}.section{padding:30px 0;border-bottom:1px solid var(--line)}.topics{display:flex;flex-wrap:wrap;gap:9px}.chip{padding:9px 14px;border:1px solid;border-radius:50px;background:#eeeae0;font-size:13px;font-weight:800}button{cursor:pointer;font:inherit}.edit,.save{background:#111;color:#fff;border:1px solid #111;border-radius:50px;padding:12px 20px;font-weight:850}.edit:hover,.save:hover{background:var(--acid);color:#111}.muted{color:#716c64}.error{color:#9e3026}.overlay[hidden],#app[hidden]{display:none!important}.overlay{position:fixed;inset:0;background:#0006;display:flex;justify-content:flex-end}.drawer{height:100%;width:min(580px,100%);background:var(--paper);padding:32px;overflow:auto;box-shadow:0 0 60px #0002}input[type=text]{width:100%;font:inherit;border:0;background:transparent;border-bottom:1.5px solid;padding:13px 4px;font-size:23px}.choice{display:block;padding:13px 0;border-bottom:1px solid var(--line)}.status{margin-top:15px;min-height:28px;font-size:13px}@media(max-width:700px){.page{margin:12px 8px;padding:15px}.hero{flex-wrap:wrap}.edit{width:100%}.drawer{padding:20px}}</style></head><body>
-<header><a href="./">▣ DESIGN MATTERS</a><a href="./join-live.html">Community</a></header><main class="page"><div id="loading">正在验证邮箱及登录状态…</div><div id="app" hidden><div class="hero"><div class="avatar" id="avatar">DM</div><div class="identity"><small>YOUR SPACE / 个人空间</small><h1 id="name">我的 Design Matters</h1><div class="muted" id="email"></div></div><button class="edit" id="edit">Edit Profile ↗</button></div><section class="section"><h2>关注的话题</h2><div class="topics" id="topics"></div></section><section class="section"><h2>过往活动</h2><div id="events" class="muted">期待你的第一次参与</div></section><p class="muted">相关圆桌报名提醒将发送至你已验证的邮箱；可在 Profile 中调整关注话题。</p><button id="logout" type="button">退出登录</button></div></main>
-<div class="overlay" id="editor" hidden><aside class="drawer"><h1>Edit Profile</h1><form id="editForm"><label><h2>DISPLAY NAME</h2><input id="display" type="text" maxlength="80" required placeholder="我的 Design Matters"></label><h2>关注的话题</h2><div id="topicChoices"></div><div class="status" id="status"></div><button class="save" type="submit">Save changes →</button> <button id="cancel" type="button">Cancel</button></form></aside></div>
+<header><a href="./">▣ DESIGN MATTERS</a><a href="./join-live.html">Community</a></header><main class="page"><div id="loading">正在验证邮箱及登录状态…</div><div id="app" hidden><div class="hero"><div class="avatar" id="avatar">DM</div><div class="identity"><small>YOUR SPACE / 个人空间</small><h1 id="name">我的 Design Matters</h1><div class="muted" id="email"></div></div><button class="edit" id="edit">Edit Profile ↗</button></div><section class="section"><h2>关注的话题</h2><div class="topics" id="topics"></div></section><section class="section"><h2>过往活动</h2><div id="events" class="muted">期待你的第一次参与</div></section><p class="muted">如果相关话题有新的圆桌开放报名，我们会按订阅偏好联系你；你可随时编辑关注话题。</p><button id="logout" type="button">退出登录</button></div></main>
+<div class="overlay" id="editor" hidden><aside class="drawer"><h1>Edit Profile</h1><form id="editForm"><label><h2>DISPLAY NAME</h2><input id="display" type="text" maxlength="80" placeholder="我的 Design Matters"></label><h2>关注的话题</h2><div id="topicChoices"></div><div class="status" id="status"></div><button class="save" type="submit">Save changes →</button> <button id="cancel" type="button">Cancel</button></form></aside></div>
 <script type="module">
-import{createClient}from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-const sb=createClient('https://khhfxkrwgcckgqupncyw.supabase.co','sb_publishable_oXnMd_aF95wYTPcq6TwGVg_alaNdfTH');
-const names=[['agentic-products-agent-ux','Agent Experience & Human Control'],['enterprise-ai','Enterprise AI & Workflow Redesign'],['vibe-coding-design-roles','AI-assisted Building & Prototyping'],['design-judgment-future-work','Design Judgment & Agency'],['ai-native-startups-product-strategy','AI-native Products & Teams']];
-const $=id=>document.getElementById(id),valid=new Set(names.map(x=>x[0]));
-let user=null,topics=[],displayName='我的 Design Matters',editorTopics=new Set();
-function error(msg){$('loading').textContent=msg;$('loading').className='error'}
-function render(){$('name').textContent=displayName;$('email').textContent=user?.email||'';$('avatar').textContent=(displayName==='我的 Design Matters'?'DM':displayName.slice(0,1)).toUpperCase();$('topics').replaceChildren();for(const [id,label] of names){if(!topics.includes(id))continue;const item=document.createElement('span');item.className='chip';item.textContent=label;$('topics').append(item)}if(!topics.length)$('topics').textContent='尚未选择关注话题';}
-async function syncPending(){
- let raw=null;try{raw=localStorage.getItem('dm_verified_onboarding_v1')}catch{}
- if(!raw)return;
- let data;try{data=JSON.parse(raw)}catch{return}
- if(data.email?.toLowerCase()!==user.email?.toLowerCase())return;
- if(!data.consent_roundtables)return;
- let nextTopics=(Array.isArray(data.topics)?data.topics:[]).filter(id=>valid.has(id));
- const {error:e1}=await sb.from('dm_member_preferences').upsert({user_id:user.id,expectations:(data.expectations||[]).filter(x=>['insights','cases','invites','peers','deepdives','other'].includes(x)),current_ai_work:(data.current_ai_work||'').slice(0,180),next_ai_goal:(data.next_ai_goal||'').slice(0,180),custom_topic:(data.custom_topic||'').slice(0,180),custom_expectation:(data.custom_expectation||'').slice(0,180),consent_roundtables:true,consent_summaries:!!data.consent_summaries,locale:'zh'},{onConflict:'user_id'});
- if(e1)throw e1;
- const {data:existing,error:e2}=await sb.from('dm_member_profiles').select('user_id').eq('user_id',user.id).maybeSingle();if(e2)throw e2;
- if(!existing){const {error:e3}=await sb.from('dm_member_profiles').insert({user_id:user.id,display_name:'我的 Design Matters'});if(e3)throw e3}
- if(nextTopics.length){const {error:e4}=await sb.from('dm_member_topic_preferences').upsert(nextTopics.map(topic_id=>({user_id:user.id,topic_id})),{onConflict:'user_id,topic_id'});if(e4)throw e4}
- localStorage.removeItem('dm_verified_onboarding_v1');
+import{currentMember,logoutMember,supabase,TOPICS}from "./dm-member-client.js";
+const $=id=>document.getElementById(id);
+let member=null,editing=new Set();
+function showError(text){
+ $("loading").replaceChildren();
+ const p=document.createElement("p");p.className="error";p.textContent=text;
+ const link=document.createElement("a");link.href="./";link.textContent="← 返回首页，使用右上角 Profile 登录"; 
+ $("loading").append(p,link);
+}
+function render(){
+ $("name").textContent=member.display_name||"我的 Design Matters";
+ $("email").textContent=member.email||"";
+ $("avatar").textContent=member.display_name&&member.display_name!=="我的 Design Matters"?member.display_name.slice(0,1).toUpperCase():"DM";
+ $("topics").replaceChildren();
+ let any=false;
+ for(const [id,title] of TOPICS){
+  if(!member.topics?.includes(id))continue;
+  any=true;const chip=document.createElement("span");chip.className="chip";chip.textContent=title;$("topics").append(chip);
+ }
+ if(!any)$("topics").textContent="你还没有选择话题。";
 }
 async function load(){
- let {data:{session},error:e}=await sb.auth.getSession();if(e)throw e;
- if(!session){error('尚未验证邮箱。请通过邮件中的登录链接打开 Profile，或返回社区注册页面。');return}
- user=session.user;
- await syncPending();
- const [p,t,events]=await Promise.all([
- sb.from('dm_member_profiles').select('display_name').eq('user_id',user.id).maybeSingle(),
- sb.from('dm_member_topic_preferences').select('topic_id').eq('user_id',user.id),
- sb.from('dm_member_event_records').select('event_id,status').eq('user_id',user.id)
- ]);
- if(p.error||t.error||events.error)throw p.error||t.error||events.error;
- displayName=p.data?.display_name||'我的 Design Matters';topics=(t.data||[]).map(x=>x.topic_id);
- $('events').textContent='';if(!(events.data||[]).length){$('events').textContent='期待你的第一次参与'}else{for(const ev of events.data){const line=document.createElement('div');line.textContent=ev.event_id+' · '+ev.status;$('events').append(line)}}
- $('loading').hidden=true;$('app').hidden=false;render();
+ const state=await currentMember();
+ if(!state.session){showError("当前没有登录的 Profile。请从首页右上角通过邮箱登录。");return}
+ if(!state.member){showError("此账号尚未建立 Design Matters Profile。请先选择话题或注册。");return}
+ member=state.member;
+ const {data,error}=await supabase.from("dm_member_event_records").select("event_id,status").eq("user_id",member.user_id);
+ const events=$("events");events.replaceChildren();
+ if(error||!data?.length)events.textContent="期待你的第一次参与";
+ else{for(const ev of data){const d=document.createElement("div");d.textContent=ev.event_id+" · "+ev.status;events.append(d)}}
+ $("loading").hidden=true;$("app").hidden=false;render();
 }
-$('edit').addEventListener('click',()=>{editorTopics=new Set(topics);$('display').value=displayName==='我的 Design Matters'?'':displayName;drawChoices();$('editor').hidden=false});
-$('cancel').addEventListener('click',()=>{$('editor').hidden=true});$('editor').addEventListener('click',e=>{if(e.target===$('editor'))$('editor').hidden=true});
-function drawChoices(){$('topicChoices').replaceChildren();for(const [id,label] of names){const item=document.createElement('label');item.className='choice';const c=document.createElement('input');c.type='checkbox';c.checked=editorTopics.has(id);c.addEventListener('change',()=>c.checked?editorTopics.add(id):editorTopics.delete(id));item.append(c,document.createTextNode(' '+label));$('topicChoices').append(item)}}
-$('editForm').addEventListener('submit',async e=>{e.preventDefault();const next=$('display').value.trim()||'我的 Design Matters';$('status').textContent='保存中…';try{
- const {error:a}=await sb.from('dm_member_profiles').upsert({user_id:user.id,display_name:next},{onConflict:'user_id'});if(a)throw a;
- const {error:b}=await sb.from('dm_member_topic_preferences').delete().eq('user_id',user.id);if(b)throw b;
- if(editorTopics.size){const{error:c}=await sb.from('dm_member_topic_preferences').insert([...editorTopics].map(topic_id=>({user_id:user.id,topic_id})));if(c)throw c}
- displayName=next;topics=[...editorTopics];render();$('editor').hidden=true;$('status').textContent='';
-}catch(err){$('status').textContent=err.message||'保存失败';}});
-$('logout').addEventListener('click',async()=>{await sb.auth.signOut();location.href='./join-live.html'});
-load().catch(e=>error(e.message||'无法载入 Profile，请稍后再试'));
+function drawChoices(){
+ $("topicChoices").replaceChildren();
+ for(const [id,title] of TOPICS){
+  const label=document.createElement("label");label.className="choice";
+  const check=document.createElement("input");check.type="checkbox";check.checked=editing.has(id);
+  check.addEventListener("change",()=>check.checked?editing.add(id):editing.delete(id));
+  label.append(check,document.createTextNode(" "+title));$("topicChoices").append(label);
+ }
+}
+function closeEdit(){$("editor").hidden=true;document.body.style.overflow="";}
+$("edit").addEventListener("click",()=>{
+ if(!member)return;
+ editing=new Set(member.topics||[]);$("display").value=member.display_name==="我的 Design Matters"?"":member.display_name;
+ drawChoices();$("status").textContent="";$("editor").hidden=false;document.body.style.overflow="hidden";
+});
+$("cancel").addEventListener("click",closeEdit);
+$("editor").addEventListener("click",event=>{if(event.target===$("editor"))closeEdit();});
+$("editForm").addEventListener("submit",async(event)=>{
+ event.preventDefault();if(!member)return;
+ const name=$("display").value.trim()||"我的 Design Matters";
+ $("status").textContent="保存中…";
+ const {data,error}=await supabase.from("dm_member_intake")
+   .update({display_name:name,topics:[...editing],updated_at:new Date().toISOString()})
+   .eq("user_id",member.user_id).select().single();
+ if(error){$("status").textContent=error.message||"保存失败，请重试";return}
+ member=data;render();closeEdit();
+});
+$("logout").addEventListener("click",async()=>{
+ try{await logoutMember();location.assign("./");}
+ catch(error){alert(error.message||"登出失败");}
+});
+load().catch(e=>showError(e.message||"Profile 无法载入，请稍后重试"));
 </script></body></html>
