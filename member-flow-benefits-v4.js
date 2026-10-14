@@ -297,7 +297,7 @@
       const p=getCurrent();controls.replaceChildren();menu.replaceChildren();menu.hidden=true;
       if(!p||!p.display_name){
         for(const [label,cls] of [['Log In','dm-login-link'],['Sign Up','dm-login-link primary']]){
-          const a=document.createElement('a');a.href=label==='Sign Up'?'./join.html':'./account.html';a.className=cls;a.textContent=label;controls.append(a);
+          const a=document.createElement('a');a.href='./join-live.html';a.className=cls;a.textContent=label;controls.append(a);
         }
       }else{
         const button=document.createElement('button');button.className='dm-avatar-trigger';
@@ -305,7 +305,7 @@
         if(p.avatar_data){const img=document.createElement('img');img.src=p.avatar_data;img.alt='My profile';button.append(img);}
         else button.textContent=(p.display_name||'D').charAt(0).toUpperCase();
         button.addEventListener('click',()=>menu.hidden=!menu.hidden);controls.append(button);
-        const profile=document.createElement('a');profile.href='./profile.html';profile.textContent='My Profile';
+        const profile=document.createElement('a');profile.href='./profile-live.html';profile.textContent='My Profile';
         const logout=document.createElement('button');logout.type='button';logout.textContent='Log Out';
         logout.addEventListener('click',()=>{localStorage.removeItem(ACTIVE);draw();});
         menu.append(profile,logout);
