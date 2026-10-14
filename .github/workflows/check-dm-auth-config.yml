@@ -1,0 +1,33 @@
+name: Check Design Matters Auth configuration
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/check-dm-auth-config.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  auth-settings:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read public Supabase Auth settings
+        env:
+          DM_URL: https://khhfxkrwgcckgqupncyw.supabase.co/auth/v1/settings
+          DM_ANON_KEY: sb_publishable_oXnMd_aF95wYTPcq6TwGVg_alaNdfTH
+        run: |
+          python - <<'PY'
+          import os,json,urllib.request,urllib.error
+          req=urllib.request.Request(os.environ['DM_URL'],headers={'apikey':os.environ['DM_ANON_KEY']})
+          try:
+              with urllib.request.urlopen(req,timeout=15) as r:
+                  info=json.load(r)
+              for k,v in sorted(info.items()):
+                  if 'anonymous' in k.lower() or k in ('external_email_enabled','mailer_autoconfirm'):
+                      print('%s: %s'%(k,v))
+              print('Auth settings endpoint reachable')
+          except urllib.error.HTTPError as e:
+              print('Auth settings HTTP status:',e.code)
+              print(e.read().decode()[:450])
+              raise
+          PY
