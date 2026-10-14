@@ -75,7 +75,7 @@ if(nav){
   <label class="dm-entry-label" for="dm-dialog-email">EMAIL / 邮箱</label>
   <input type="email" id="dm-dialog-email" required autocomplete="email" placeholder="name@example.com">
   <div id="dm-email-hint" class="dm-note" role="status"></div>
-  ${signup?'<label class="dm-consent"><input id="dm-dialog-consent" type="checkbox" required checked><span>我愿意收到相关圆桌报名提醒与讨论总结，可随时退订。</span></label>':""}
+  ${signup?'<label class="dm-consent"><input id="dm-dialog-consent" type="checkbox" required><span>我愿意收到相关圆桌报名提醒与讨论总结，可随时退订。</span></label>':""}
   <div id="dm-dialog-message" class="dm-error" role="status" aria-live="polite"></div>
   <button type="submit" id="dm-dialog-submit" class="dm-dialog-submit">${signup?"创建我的 Profile →":"发送登录邮件 →"}</button>
   </form>
