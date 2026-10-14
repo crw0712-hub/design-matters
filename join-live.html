@@ -8,7 +8,7 @@
 <label class="field"><input id="consent" type="checkbox" required> 我同意接收 Design Matters 相关圆桌及总结邮件，可随时退订。</label>
 <button class="primary" id="submit" type="submit">订阅相关圆桌与整理 →</button><div class="status" id="status" role="status" aria-live="polite"></div></form>
 </main><script type="module">
-import {TOPICS,EXPECTATIONS,registerMember,cleanEmail,emailHint} from "./dm-member-client.js";
+import {TOPICS,EXPECTATIONS,registerMember,cleanEmail,emailHint} from "./dm-member-client.js?v=20261014-02";
 const TOPIC_NAMES=TOPICS,EXPECTS=EXPECTATIONS;
 const $=id=>document.getElementById(id),form=$("form"),button=$("submit"),email=$("email"),emailStatus=$("emailStatus"),status=$("status");
 function draw(id,entries,name){$(id).innerHTML=entries.map(([key,title])=>'<label class="pill"><input type="checkbox" name="'+name+'" value="'+key+'"><span>'+title+'</span></label>').join("");}
