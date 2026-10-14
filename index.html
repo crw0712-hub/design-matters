@@ -259,9 +259,9 @@ body.dm-dialog-open{overflow:hidden}.flow-step{margin-left:auto;margin-right:18p
 </div>
 </div>
 <button class="email-submit" id="followSubmit" type="button"><span data-en="Get relevant roundtables &amp; notes →" data-i18n="text" data-zh="订阅相关圆桌与整理 →">订阅相关圆桌与整理 →</span></button>
-<p class="flow-error" id="followError" role="alert"></p><p class="dm-preview-disclaimer">首次注册无需验证邮箱；登出后重新登录需要通过此邮箱验证身份。</p>
+<p class="flow-error" id="followError" role="alert"></p><p class="dm-preview-disclaimer">首次注册无需验证邮箱。现阶段登录会保存在此浏览器；邮箱找回尚未开放，请勿登出或清除网站数据。</p>
 <label class="account-row"><input id="accountOpt" required="" type="checkbox"/><span data-en="I agree to receive Design Matters roundtable and recap emails. I can unsubscribe anytime." data-i18n="text" data-zh="我同意接收 Design Matters 相关圆桌与总结邮件，且可随时退订。">我同意接收 Design Matters 相关圆桌与总结邮件，且可随时退订。</span></label>
-<p class="fineprint"><span data-en="Unsubscribe anytime. Your private context isn't public. Email verification is required when signing in again, not on first signup." data-i18n="text" data-zh="可随时退订。你的简介不会公开。邮箱用于关联 Profile；首次注册不需要邮箱验证。">可随时退订。你的简介不会公开。邮箱用于关联 Profile；首次注册不需要邮箱验证。</span></p>
+<p class="fineprint"><span data-en="Unsubscribe anytime. Your private context isn't public. Email recovery is not available yet; keep using this browser to access your profile." data-i18n="text" data-zh="可随时退订。你的简介不会公开。当前阶段请使用同一浏览器访问 Profile，暂时无法通过邮件找回。">可随时退订。你的简介不会公开。当前阶段请使用同一浏览器访问 Profile，暂时无法通过邮件找回。</span></p>
 </form>
 </div>
 </div>
@@ -286,7 +286,7 @@ body.dm-dialog-open{overflow:hidden}.flow-step{margin-left:auto;margin-right:18p
 <div class="profile-field-title" data-en="MY TOPICS" data-i18n="text" data-zh="我的关注">我的关注</div>
 <div class="success-topics" id="successTopics"></div>
 <p class="success-email" id="successEmail"></p>
-<p class="success-note" id="previewDeliveryNote" role="status" aria-live="polite" data-zh="Profile 已创建。邮件通知服务仍在配置中。" data-en="Your Profile is ready. Email notifications are still being configured.">Profile 已创建。邮件通知服务仍在配置中。</p>
+<p class="success-note" id="previewDeliveryNote" role="status" aria-live="polite" data-zh="Profile 已创建。此浏览器将保持登录；邮件找回功能尚未开放。" data-en="Your Profile is ready. Stay signed in on this browser; email account recovery is not yet available.">Profile 已创建。此浏览器将保持登录；邮件找回功能尚未开放。</p>
 </div>
 <div class="success-expect" hidden="" id="successExpect"><div class="selection-recap" id="successExpectPills"></div></div>
 <a class="success-profile-primary" href="./profile-live.html" id="successProfile"><span data-en="View my Profile" data-i18n="text" data-zh="查看我的 Profile">查看我的 Profile</span><span aria-hidden="true">↗</span></a>
@@ -450,7 +450,7 @@ async function subscribeToPreview(e){
   submit.textContent=t('正在创建你的 Profile…','Creating your Profile…');
   feedback.textContent=t('正在安全保存你的关注…','Saving your interests securely…');
   try{
-    const {registerMember,emailHint}=await import('./dm-member-client.js?v=20261015-full-zip');
+    const {registerMember,emailHint}=await import('./dm-member-client.js?v=20261015-browser-session-v1');
     const emailProblem=emailHint(email);
     if(emailProblem){showSubscribeError(emailProblem,emailInput);return;}
     const saved={
@@ -466,7 +466,7 @@ async function subscribeToPreview(e){
     storage.setItem('dm_community_preferences_v4',JSON.stringify(saved));
     $('#successEmail').textContent=t('邮箱：','Email: ')+email;
     const delivery=$('#previewDeliveryNote');
-    if(delivery)delivery.textContent=t('Profile 已创建。圆桌邮件通知功能正在完善中；登出后可通过此邮箱验证重新登录。','Your Profile is ready. Email updates are being prepared; you can verify this address to sign in again later.');
+    if(delivery)delivery.textContent=t('Profile 已创建，登录状态将保存在当前浏览器。请勿登出或清除网站数据；邮件找回和活动提醒稍后开放。','Your Profile is ready and stays signed in on this browser. Do not sign out or clear site data; email recovery and event updates are coming later.');
     syncProfileLinks();
     entry.hidden=true;success.hidden=false;state.success=true;
     updateTopics();updateExpect();$('#flowStep').textContent='✓';
@@ -517,5 +517,5 @@ updateTopics();updateExpect();applyLang(lang());
 const navLinks=$$('.nav-item');const sects=['about','dm-community','next','synthesis','archive'].map(id=>$("#"+id)).filter(Boolean);if('IntersectionObserver' in window){let navObserver=new IntersectionObserver(entries=>{entries.filter(x=>x.isIntersecting).forEach(x=>{let id=x.target.id;if(id==='about')id='dm-community';if(id==='synthesis')id='archive';navLinks.forEach(a=>a.classList.toggle('active',a.dataset.navSection===id))})},{rootMargin:'-24% 0px -56% 0px',threshold:0});sects.forEach(e=>navObserver.observe(e))}
 $$('#archive details.session').forEach(el=>el.addEventListener('toggle',()=>{if(!el.open)return;$$('#archive details.session').forEach(o=>{if(o!==el)o.open=false})}));
 })();
-</script><script type="module" src="./dm-member-nav.js?v=20261015-full-zip"></script>
+</script><script type="module" src="./dm-member-nav.js?v=20261015-browser-session-v1"></script>
 </body></html>
