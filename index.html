@@ -250,7 +250,7 @@ body.dm-dialog-open{overflow:hidden}.flow-step{margin-left:auto;margin-right:18p
 <div class="selection-recap" id="followRecap"></div>
 <div class="email-expect-recap" hidden="" id="emailExpectRecap"><span class="label"><span data-en="YOU'D LIKE" data-i18n="text" data-zh="你更期待">你更期待</span></span><div class="selection-recap" id="chosenExpectations"></div></div>
 <label class="label" for="followEmail"><span data-en="EMAIL *" data-i18n="text" data-zh="邮箱 *">邮箱 *</span></label>
-<input autocomplete="email" class="email" id="followEmail" placeholder="name@example.com" required="" type="email"/><p id="followEmailHint" class="dm-email-hint" aria-live="polite"></p>
+<input autocomplete="off" class="email" id="followEmail" placeholder="name@example.com" required="" type="email"/><p id="followEmailHint" class="dm-email-hint" aria-live="polite"></p>
 <div class="form-context">
 <p class="form-context-intro"><span data-en="Two quick answers help us understand your work and suggest more relevant discussions later." data-i18n="text" data-zh="再用两句话介绍一下自己。之后哪些内容和交流更适合你，我们就更有数。">再用两句话介绍一下自己。之后哪些内容和交流更适合你，我们就更有数。</span></p>
 <div class="context-fields">
@@ -346,7 +346,7 @@ const lang=()=>document.documentElement.dataset.lang||'zh';
 const t=(zh,en)=>lang()==='zh'?zh:en;
 const safeText=(str)=>{let e=document.createElement('span');e.textContent=str;return e};
 const flow=$('#interestFlow'),entry=$('#flowEntry'),success=$('#flowSuccess'),next=$('#dmNext');
-const state={selected:new Set(),expectations:new Set(),saved:read('dm_community_preferences_v4',null),open:false,success:false,stage:'expect',customTopic:'',customExpectation:''};
+const state={selected:new Set(),expectations:new Set(),saved:null,open:false,success:false,stage:'expect',customTopic:'',customExpectation:''};
 let opener=null;
 const backdrop=$('#flowBackdrop');
 const cards=$$('.dm-topic-card');
@@ -394,13 +394,19 @@ function toggleFlow(open){
 }
 function changeStage(step){state.stage=step;$('#expectStage').hidden=step!=='expect';$('#emailStage').hidden=step!=='email';$('#flowStep').textContent=step==='expect'?'01 / 02':'02 / 02';updateTopics();updateExpect();flow.scrollTo({top:0,behavior:'instant'});}
 function openFlow(){if(!state.selected.size&&!state.customTopic.trim())return;success.hidden=true;entry.hidden=false;state.success=false;
- $('#followEmail').value=state.saved?.email||storage.getItem('dm_flow_active_email')||'';
- $('#currentAiWork').value=state.saved?.current_ai_work||'';
- $('#nextAiGoal').value=state.saved?.next_ai_goal||'';
+ // Start each onboarding form empty. Stored interests belong in Profile,
+ // never in a new visitor's topic / registration form.
+ $('#followForm').reset();
+ $('#followEmail').value='';
+ $('#currentAiWork').value='';
+ $('#nextAiGoal').value='';
+ $('#followEmailHint').textContent='';
  $('#followError').textContent='';
- if(state.saved?.expectations)state.expectations=new Set(state.saved.expectations.filter(x=>expectNames[x]));
- if(state.saved?.custom_expectation){state.customExpectation=state.saved.custom_expectation;$('#expectOtherInput').value=state.customExpectation;state.expectations.add('other');$('#expectOtherWrap').hidden=false}
- else $('#expectOtherWrap').hidden=!state.expectations.has('other');
+ for(const id of ['#followEmail','#currentAiWork','#nextAiGoal'])$(id).removeAttribute('aria-invalid');
+ state.expectations.clear();
+ state.customExpectation='';
+ $('#expectOtherInput').value='';
+ $('#expectOtherWrap').hidden=true;
  updateExpect();changeStage('expect');toggleFlow(true);
 }
 next.addEventListener('click',openFlow);
@@ -512,7 +518,18 @@ for(const anchor of [$('#successProfile')]){
 }
 syncProfileLinks();
 $('#successNext').addEventListener('click',()=>toggleFlow(false));
-if(state.saved?.topics?.length||state.saved?.custom_topic){(state.saved.topics||[]).filter(id=>topicNames[id]).forEach(id=>state.selected.add(id));state.expectations=new Set((state.saved.expectations||[]).filter(x=>expectNames[x]));state.customTopic=state.saved.custom_topic||'';state.customExpectation=state.saved.custom_expectation||'';$('#topicOtherInput').value=state.customTopic;$('#expectOtherInput').value=state.customExpectation;if(state.customTopic){$('#topicOtherWrap').hidden=false;$('#topicOtherToggle').setAttribute('aria-expanded','true')}}
+// Do not hydrate the homepage from previously submitted personal data.
+// Returning members keep their saved interests in their authenticated Profile.
+window.addEventListener('pageshow',event=>{
+ if(!event.persisted)return;
+ state.selected.clear();state.expectations.clear();state.customTopic='';state.customExpectation='';state.saved=null;
+ $('#topicOtherInput').value='';$('#topicOtherWrap').hidden=true;$('#topicOtherToggle').setAttribute('aria-expanded','false');
+ $('#expectOtherInput').value='';$('#expectOtherWrap').hidden=true;
+ $('#followForm').reset();$('#followEmailHint').textContent='';$('#followError').textContent='';
+ flow.classList.remove('is-open');backdrop.classList.remove('is-open');flow.hidden=true;backdrop.hidden=true;
+ document.body.classList.remove('dm-dialog-open');state.open=false;state.success=false;success.hidden=true;entry.hidden=false;
+ updateTopics();updateExpect();
+});
 updateTopics();updateExpect();applyLang(lang());
 const navLinks=$$('.nav-item');const sects=['about','dm-community','next','synthesis','archive'].map(id=>$("#"+id)).filter(Boolean);if('IntersectionObserver' in window){let navObserver=new IntersectionObserver(entries=>{entries.filter(x=>x.isIntersecting).forEach(x=>{let id=x.target.id;if(id==='about')id='dm-community';if(id==='synthesis')id='archive';navLinks.forEach(a=>a.classList.toggle('active',a.dataset.navSection===id))})},{rootMargin:'-24% 0px -56% 0px',threshold:0});sects.forEach(e=>navObserver.observe(e))}
 $$('#archive details.session').forEach(el=>el.addEventListener('toggle',()=>{if(!el.open)return;$$('#archive details.session').forEach(o=>{if(o!==el)o.open=false})}));
