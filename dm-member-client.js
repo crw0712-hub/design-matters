@@ -38,9 +38,19 @@ export async function currentMember(){
  const {data:{session},error}=await supabase.auth.getSession();
  if(error)throw error;
  if(!session)return {session:null,member:null};
- const {data,error:dbError}=await supabase.from("dm_member_intake").select("user_id,email,display_name,topics,expectations,custom_topic,custom_expectation,current_ai_work,next_ai_goal,consent,created_at").limit(1).maybeSingle();
- if(dbError)throw dbError;
- return {session,member:data||null};
+ const fields="user_id,email,display_name,topics,expectations,custom_topic,custom_expectation,current_ai_work,next_ai_goal,consent,created_at";
+ // A returned email login has a new Auth user ID if the original signup was
+ // anonymous. Prefer the verified email's existing intake row; access is
+ // permitted only by the database's verified-email RLS policy.
+ const email=session.user?.email_confirmed_at?cleanEmail(session.user.email):"";
+ if(email){
+  const byEmail=await supabase.from("dm_member_intake").select(fields).eq("email",email).maybeSingle();
+  if(byEmail.error)throw byEmail.error;
+  if(byEmail.data)return {session,member:byEmail.data};
+ }
+ const own=await supabase.from("dm_member_intake").select(fields).eq("user_id",session.user.id).maybeSingle();
+ if(own.error)throw own.error;
+ return {session,member:own.data||null};
 }
 export async function registerMember({email,topics=[],expectations=[],custom_topic="",custom_expectation="",current_ai_work="",next_ai_goal="",consent=false}){
  email=cleanEmail(email);
@@ -80,6 +90,18 @@ export async function requestEmailLogin(rawEmail){
  });
  if(error)throw Error("无法发送登录邮件："+error.message);
  return true;
+}
+// Supports both an emailed magic link and a six-digit email OTP, depending
+// on the Supabase Auth email template configured for this project.
+export async function verifyEmailLogin(rawEmail,rawCode){
+ const email=cleanEmail(rawEmail);
+ const token=String(rawCode||"").replace(/\\s/g,"").trim();
+ const problem=emailHint(email);if(problem)throw Error(problem);
+ if(!/^\\d{6,8}$/.test(token))throw Error("请输入邮件中的 6–8 位验证码。");
+ const {data,error}=await supabase.auth.verifyOtp({email,token,type:"email"});
+ if(error)throw Error("验证码未通过，请检查是否过期或输入有误："+error.message);
+ if(!data.session)throw Error("验证未完成，请尝试邮件中的登录链接。");
+ return data.session;
 }
 export async function logoutMember(){const {error}=await supabase.auth.signOut();if(error)throw error;}
 export function optionLabels(host,entries,name,preselected=[]){
