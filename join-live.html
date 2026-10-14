@@ -37,7 +37,7 @@ form.addEventListener("submit",async event=>{
   status.replaceChildren();
   status.append(document.createTextNode(error.message||"暂时无法注册，请稍后重试。"));
   if(String(error.message||"").includes("已经注册")){
-   const a=document.createElement("a");a.href="./#dm-community";a.textContent=" 返回首页 → Profile → 登录";a.style.marginLeft="8px";status.append(a);
+   const a=document.createElement("a");a.href="./?member=login";a.textContent=" 通过邮箱登录 →";a.style.marginLeft="8px";status.append(a);
   }
  }finally{button.disabled=false;}
 });
