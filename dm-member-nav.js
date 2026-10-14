@@ -83,7 +83,7 @@ if(nav){
   <div class="dm-note">${signup?"首次创建无需邮件验证。登出后重新登录时，需要验证邮箱所有权。":"邮件登录会验证邮箱所有权；首次注册无需验证。"}</div>`;
   dialog.querySelector(".dm-dismiss").addEventListener("click",closeDialog);
   dialog.querySelector("#dm-dialog-switch").addEventListener("click",()=>{mode=signup?"login":"signup";renderDialog()});
-  if(signup)optionLabels(dialog.querySelector("#dm-dialog-expects"),EXPECTATIONS,"dm-expect",["insights","invites"]);
+  if(signup)optionLabels(dialog.querySelector("#dm-dialog-expects"),EXPECTATIONS,"dm-expect",[]);
   const email=dialog.querySelector("#dm-dialog-email"),msg=dialog.querySelector("#dm-dialog-message");
   email.addEventListener("blur",()=>{const error=emailHint(email.value);dialog.querySelector("#dm-email-hint").textContent=error||"格式检查通过，账号是否重复将在提交时检查。";});
   dialog.querySelector("#dm-dialog-form").addEventListener("submit",async e=>{
