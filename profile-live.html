@@ -124,7 +124,7 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}
 </aside>
 
 <script type="module">
-import {currentMember,supabase,logoutMember} from './dm-member-client.js?v=20261015-full-zip';
+import {currentMember,supabase,logoutMember} from './dm-member-client.js?v=20261015-browser-session-v1';
 const DEFAULT_NAME='我的 Design Matters';
 const TOPICS=[
 ['agentic-products-agent-ux','Agent 体验与人机控制','Agent Experience & Human Control'],
@@ -195,7 +195,7 @@ async function init(){
  const gate=$('profileGate');
  try{
   const {session,member:result}=await currentMember();
-  if(!session||!result){gate.hidden=false;gate.querySelector('p').textContent=session?'当前登录身份还没有创建 Profile。':'请先登录，查看你在 Design Matters 关注的话题。';return}
+  if(!session||!result){gate.hidden=false;gate.querySelector('p').textContent=session?'当前浏览器还没有创建 Profile，请先从首页选择话题注册。':'请从首页创建 Profile；如果曾经注册，请使用原来的浏览器访问。';return}
   member=result;
   const {data, error}=await supabase.from('dm_member_event_records').select('event_id,status').eq('user_id',member.user_id);
   if(!error&&data?.length){
