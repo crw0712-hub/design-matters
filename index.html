@@ -393,10 +393,17 @@ function toggleFlow(open){
  else{flow.classList.remove('is-open');backdrop.classList.remove('is-open');document.body.classList.remove('dm-dialog-open');setTimeout(()=>{if(!state.open){flow.hidden=true;backdrop.hidden=true;(opener&&opener.focus?opener:next).focus({preventScroll:true})}},310)}
 }
 function changeStage(step){state.stage=step;$('#expectStage').hidden=step!=='expect';$('#emailStage').hidden=step!=='email';$('#flowStep').textContent=step==='expect'?'01 / 02':'02 / 02';updateTopics();updateExpect();flow.scrollTo({top:0,behavior:'instant'});}
+// Reset this default whenever a fresh registration form is presented.
+// The visitor can still manually uncheck it before submitting.
+function resetConsentDefault(){
+ const consent=$('#accountOpt');
+ if(consent){consent.defaultChecked=true;consent.checked=true;}
+}
 function openFlow(){if(!state.selected.size&&!state.customTopic.trim())return;success.hidden=true;entry.hidden=false;state.success=false;
  // Start each onboarding form empty. Stored interests belong in Profile,
  // never in a new visitor's topic / registration form.
  $('#followForm').reset();
+ resetConsentDefault();
  $('#followEmail').value='';
  $('#currentAiWork').value='';
  $('#nextAiGoal').value='';
@@ -521,16 +528,17 @@ $('#successNext').addEventListener('click',()=>toggleFlow(false));
 // Do not hydrate the homepage from previously submitted personal data.
 // Returning members keep their saved interests in their authenticated Profile.
 window.addEventListener('pageshow',event=>{
+ resetConsentDefault();
  if(!event.persisted)return;
  state.selected.clear();state.expectations.clear();state.customTopic='';state.customExpectation='';state.saved=null;
  $('#topicOtherInput').value='';$('#topicOtherWrap').hidden=true;$('#topicOtherToggle').setAttribute('aria-expanded','false');
  $('#expectOtherInput').value='';$('#expectOtherWrap').hidden=true;
- $('#followForm').reset();$('#followEmailHint').textContent='';$('#followError').textContent='';
+ $('#followForm').reset();resetConsentDefault();$('#followEmailHint').textContent='';$('#followError').textContent='';
  flow.classList.remove('is-open');backdrop.classList.remove('is-open');flow.hidden=true;backdrop.hidden=true;
  document.body.classList.remove('dm-dialog-open');state.open=false;state.success=false;success.hidden=true;entry.hidden=false;
  updateTopics();updateExpect();
 });
-updateTopics();updateExpect();applyLang(lang());
+updateTopics();updateExpect();applyLang(lang());resetConsentDefault();
 const navLinks=$$('.nav-item');const sects=['about','dm-community','next','synthesis','archive'].map(id=>$("#"+id)).filter(Boolean);if('IntersectionObserver' in window){let navObserver=new IntersectionObserver(entries=>{entries.filter(x=>x.isIntersecting).forEach(x=>{let id=x.target.id;if(id==='about')id='dm-community';if(id==='synthesis')id='archive';navLinks.forEach(a=>a.classList.toggle('active',a.dataset.navSection===id))})},{rootMargin:'-24% 0px -56% 0px',threshold:0});sects.forEach(e=>navObserver.observe(e))}
 $$('#archive details.session').forEach(el=>el.addEventListener('toggle',()=>{if(!el.open)return;$$('#archive details.session').forEach(o=>{if(o!==el)o.open=false})}));
 })();
