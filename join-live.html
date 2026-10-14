@@ -23,7 +23,7 @@ form.addEventListener('submit',async(ev)=>{ev.preventDefault();status.textConten
 const prefs={email:e.value.trim().toLowerCase(),topics,expectations:[...document.querySelectorAll('[name=expect]:checked')].map(x=>x.value),current_ai_work:document.getElementById('work').value.trim(),next_ai_goal:document.getElementById('goal').value.trim(),consent_roundtables:document.getElementById('consent').checked,consent_summaries:document.getElementById('consent').checked,locale:'zh'};
 submit.disabled=true;status.textContent='正在请求验证邮件…';
 try{
-  sessionStorage.setItem('dm_verified_onboarding_v1',JSON.stringify(prefs));
+  localStorage.setItem('dm_verified_onboarding_v1',JSON.stringify(prefs));
   const redirect=location.origin+location.pathname.replace(/[^/]*$/,'profile-live.html');
   const{error}=await client.auth.signInWithOtp({email:prefs.email,options:{emailRedirectTo:redirect,shouldCreateUser:true}});
   if(error)throw error;
