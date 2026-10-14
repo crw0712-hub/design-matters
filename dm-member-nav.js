@@ -57,7 +57,7 @@ if(nav){
     closeMenu();
     if(action==="login"||action==="signup"){openDialog(action);return}
     if(action==="profile"){location.assign("./profile-live.html");return}
-    try{await logoutMember();signedIn=false;renderMenu();trigger.textContent="Profile ↗";}catch(e){alert(e.message||"登出失败");}
+    try{const {data:{session}}=await supabase.auth.getSession();if(session&&!session.user?.email&&!confirm("此账号注册时未验证邮箱。登出后需要通过注册邮箱接收登录邮件；如果邮件服务尚未配置，可能暂时无法找回 Profile。确定登出吗？"))return;await logoutMember();signedIn=false;renderMenu();trigger.textContent="Profile ↗";}catch(e){alert(e.message||"登出失败");}
    });menu.append(btn);
   }
  }
