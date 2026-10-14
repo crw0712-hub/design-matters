@@ -121,11 +121,11 @@
 (async function(){
 const root=document.getElementById('dm-community'),original=document.getElementById('upcoming');if(root&&original)original.before(root);
 const items=[
-['agentic-products-agent-ux','Agentic Products & Agent UX','When agents act for us, how do we design control, trust and recovery?'],
-['enterprise-ai','Enterprise AI','Why do pilots struggle to become real workflows?'],
-['vibe-coding-design-roles','Vibe Coding & Prototyping','What changes when designers build directly?'],
-['design-judgment-future-work','Design Roles, Judgment & Future of Work','Where does human judgment matter as execution becomes easier?'],
-['ai-native-startups-product-strategy','AI-native Startups & AI Product Strategy','How do teams rethink product, roles and decisions?']
+['agentic-products-agent-ux','Agent Experience & Human Control','As agents take action, how should trust, control and recovery work?'],
+['enterprise-ai','Enterprise AI & Workflow Redesign','What must change to turn AI pilots into real workflows?'],
+['vibe-coding-design-roles','AI-assisted Building & Prototyping','When more people can build, what happens to craft and collaboration?'],
+['design-judgment-future-work','Design Judgment & Agency','Who frames problems, makes the calls and owns outcomes?'],
+['ai-native-startups-product-strategy','AI-native Products & Teams','How does AI-native change products, decisions and teams?']
 ];
 const cards=[...document.querySelectorAll('#dmTopicGrid .dm-topic-card')];let selected=new Set();
 cards.forEach(card=>{
