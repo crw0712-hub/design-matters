@@ -1,0 +1,34 @@
+name: Apply Design Matters full ZIP design
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dm-ui-v3.zip.b64'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore ZIP UI into GitHub Pages
+        run: |
+          python - <<'PY'
+          import base64,zipfile,io,pathlib
+          data=base64.b64decode(pathlib.Path('dm-ui-v3.zip.b64').read_text().strip())
+          with zipfile.ZipFile(io.BytesIO(data)) as z:
+              for name in ('index.html','profile-live.html'):
+                  pathlib.Path(name).write_bytes(z.read(name))
+          PY
+      - name: Commit updated production pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html profile-live.html
+          if git diff --cached --quiet; then
+            echo "Production pages already current"
+          else
+            git commit -m "Publish complete ZIP v3 Design Matters homepage and Profile"
+            git push origin HEAD:main
+          fi
