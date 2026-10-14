@@ -1,34 +1,36 @@
-name: Apply Design Matters full ZIP design
+name: Publish Design Matters full ZIP front-end
 on:
   push:
     branches: [main]
     paths:
-      - 'dm-ui-v3.zip.b64'
+      - 'design-matters-full-v3-production-ready.zip'
   workflow_dispatch:
 permissions:
   contents: write
 jobs:
-  update-pages:
+  publish-zip:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Restore ZIP UI into GitHub Pages
+      - name: Restore complete homepage and Profile from ZIP
         run: |
           python - <<'PY'
-          import base64,zipfile,io,pathlib
-          data=base64.b64decode(''.join(pathlib.Path(p).read_text().strip() for p in ('dm-ui-v3.part1','dm-ui-v3.part2','dm-ui-v3.zip.b64')))
-          with zipfile.ZipFile(io.BytesIO(data)) as z:
-              for name in ('index.html','profile-live.html'):
-                  pathlib.Path(name).write_bytes(z.read(name))
+          from zipfile import ZipFile
+          with ZipFile('design-matters-full-v3-production-ready.zip') as z:
+              for name in ('index.html', 'profile-live.html'):
+                  data=z.read(name)
+                  if b'DESIGN MATTERS' not in data.upper():
+                      raise ValueError('Unexpected ZIP content for '+name)
+                  open(name,'wb').write(data)
           PY
-      - name: Commit updated production pages
+      - name: Publish through normal GitHub Pages branch workflow
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html profile-live.html
           if git diff --cached --quiet; then
-            echo "Production pages already current"
+            echo "Already on latest full ZIP design"
           else
-            git commit -m "Publish complete ZIP v3 Design Matters homepage and Profile"
+            git commit -m "Publish Design Matters ZIP v3 complete front-end"
             git push origin HEAD:main
           fi
