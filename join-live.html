@@ -5,7 +5,7 @@
 <label class="field" for="email">EMAIL / 邮箱</label><input id="email" type="email" autocomplete="email" required placeholder="name@example.com"><div id="emailStatus" class="status" role="status"></div>
 <label class="field" for="work">你现在主要在做什么？</label><input id="work" type="text" required maxlength="180" placeholder="例如：设计企业 Agent 体验">
 <label class="field" for="goal">接下来想探索什么？</label><input id="goal" type="text" required maxlength="180" placeholder="例如：AI-native 产品">
-<label class="field"><input id="consent" type="checkbox" required checked> 我同意接收 Design Matters 相关圆桌及总结邮件，可随时退订。</label>
+<label class="field"><input id="consent" type="checkbox" required> 我同意接收 Design Matters 相关圆桌及总结邮件，可随时退订。</label>
 <button class="primary" id="submit" type="submit">订阅相关圆桌与整理 →</button><div class="status" id="status" role="status" aria-live="polite"></div></form>
 </main><script type="module">
 import {TOPICS,EXPECTATIONS,registerMember,cleanEmail,emailHint} from "./dm-member-client.js";
