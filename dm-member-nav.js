@@ -1,4 +1,6 @@
 import {supabase,currentMember,registerMember,requestEmailLogin,verifyEmailLogin,logoutMember,EXPECTATIONS,optionLabels,getExpectations,emailHint,cleanEmail} from "./dm-member-client.js?v=20261015-browser-session-v1";
+// Re-enable only after SMTP delivery and email recovery are tested end-to-end.
+const EMAIL_RECOVERY_READY=false;
 const nav=document.querySelector(".navlinks");
 if(nav){
  const style=document.createElement("style");
@@ -50,7 +52,7 @@ if(nav){
  function closeMenu(){menu.hidden=true;trigger.setAttribute("aria-expanded","false")}
  function renderMenu(){
   menu.replaceChildren();
-  const links=signedIn?[["My Profile","profile"],["Log Out","logout"]]:[["Log In / 邮箱登录","login"],["Sign Up / 注册","signup"]];
+  const links=signedIn?[["My Profile","profile"],["Log Out","logout"]]:[["Log In / 邮箱登录（稍后开放）","login"],["Sign Up / 注册","signup"]];
   for(const [label,action] of links){
    const btn=document.createElement("button");btn.type="button";btn.setAttribute("role","menuitem");btn.textContent=label;
    btn.addEventListener("click",async()=>{
@@ -69,7 +71,7 @@ if(nav){
   const signup=mode==="signup";
   dialog.innerHTML=`<div class="dm-dialog-head"><span class="dm-eyebrow">DESIGN MATTERS / ${signup?"JOIN OUR COMMUNITY":"WELCOME BACK"}</span><button class="dm-dismiss" type="button" aria-label="关闭">×</button></div>
   <h2>${signup?"加入持续思考的圈子。":"欢迎回来。"} </h2>
-  <p>${signup?"选择你更想在 Design Matters 获得的内容，留下邮箱，就可以进入自己的 Profile。":"输入注册邮箱，我们会发送一封安全登录邮件。点击邮件中的链接即可重新进入 Profile。"}</p>
+  <p>${signup?"选择你更想在 Design Matters 获得的内容，留下邮箱，就可以进入自己的 Profile。":"邮箱登录功能正在配置中。现阶段请在创建 Profile 时使用的同一浏览器继续访问；清除网站数据或登出可能导致无法恢复。"}</p>
   <form id="dm-dialog-form">
   ${signup?'<label class="dm-entry-label">你更想在这里得到什么？</label><div id="dm-dialog-expects" class="dm-options"></div><label class="dm-entry-label" for="dm-dialog-other">其他期待（选填）</label><input type="text" id="dm-dialog-other" maxlength="180" placeholder="还有什么你想获得的？">':""}
   <label class="dm-entry-label" for="dm-dialog-email">EMAIL / 邮箱</label>
@@ -80,10 +82,11 @@ if(nav){
   <button type="submit" id="dm-dialog-submit" class="dm-dialog-submit">${signup?"创建我的 Profile →":"发送登录邮件 →"}</button>
   </form>
   <button type="button" id="dm-dialog-switch" class="dm-switch">${signup?"已有账号？通过邮箱登录 →":"第一次加入？创建 Profile →"}</button>
-  <div class="dm-note">${signup?"当前开放版会在此浏览器保持登录。邮箱找回稍后开放；请勿主动登出或清除浏览器网站数据。":"邮箱登录需要邮件服务支持。尚未配置时，请使用之前创建 Profile 的原浏览器。"}</div>`;
+  <div class="dm-note">${signup?"当前开放版会在此浏览器保持登录。邮箱找回稍后开放；请勿主动登出或清除浏览器网站数据。":"邮箱登录尚未开放；配置 SMTP 并完成真实收件测试后会重新开放。"}</div>`;
   dialog.querySelector(".dm-dismiss").addEventListener("click",closeDialog);
   dialog.querySelector("#dm-dialog-switch").addEventListener("click",()=>{mode=signup?"login":"signup";renderDialog()});
   if(signup)optionLabels(dialog.querySelector("#dm-dialog-expects"),EXPECTATIONS,"dm-expect",[]);
+  if(!signup&&!EMAIL_RECOVERY_READY){dialog.querySelector("#dm-dialog-form").hidden=true;return;}
   const email=dialog.querySelector("#dm-dialog-email"),msg=dialog.querySelector("#dm-dialog-message");
   email.addEventListener("blur",()=>{const error=emailHint(email.value);dialog.querySelector("#dm-email-hint").textContent=error||"格式检查通过，账号是否重复将在提交时检查。";});
   dialog.querySelector("#dm-dialog-form").addEventListener("submit",async e=>{
