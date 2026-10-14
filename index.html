@@ -1,3 +1,521 @@
----
----
-{%- include v17_0.html -%}{%- include v17_1.html -%}{%- include v17_2.html -%}{%- include v17_3.html -%}{%- include v17_4.html -%}{%- include v17_5.html -%}{%- include v17_6.html -%}{%- include v17_7.html -%}
+<!DOCTYPE html>
+
+<html data-lang="zh" lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="Design Matters · A curated AI × Design practice network" name="description"/><title>Design Matters — AI × Design Practice Network</title><style>
+:root{--bg:#f5f3ec;--paper:#fbfaf6;--ink:#0a0a0a;--acid:#b8ff17;--line:#d8d5cd;--muted:#625f58}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:84px}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",Arial,sans-serif;-webkit-font-smoothing:antialiased}button,input{font:inherit}a{color:inherit;text-decoration:none}button{cursor:pointer}.page{width:min(1480px,calc(100% - 32px));margin:16px auto 42px;border:1.5px solid var(--ink);border-radius:30px;overflow:clip;background:var(--paper)}.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:15px;background:rgba(251,250,246,.96);border-bottom:1px solid var(--ink);padding:0 28px;position:sticky;top:0;z-index:70;backdrop-filter:blur(14px)}.brand{display:inline-flex;gap:10px;align-items:center;font-size:14px;font-weight:900;letter-spacing:.02em}.mark{display:grid;place-items:center;width:34px;height:34px;border:1.3px solid var(--ink);background:var(--acid);border-radius:10px;font-weight:950}.navlinks{display:flex;align-items:center;gap:22px}.navlinks a{font-size:12px;font-weight:800}.navlinks a:hover{text-decoration:underline;text-underline-offset:5px}.langs{display:flex;gap:5px;align-items:center}.lang-btn{padding:7px 10px;background:transparent;border:1px solid transparent;border-radius:30px;font-size:11px;font-weight:850}.lang-btn.active{background:var(--acid);border-color:var(--ink)}.kicker,.eyebrow{font-size:11px;font-weight:900;letter-spacing:.11em;line-height:1.6}.section-head{padding:56px 56px 29px;display:grid;grid-template-columns:180px 1fr;gap:36px}.section-head h1{font-size:clamp(49px,5.8vw,88px);font-weight:950;line-height:.97;letter-spacing:-.068em;margin:0 0 19px}.section-head p{font-size:17px;line-height:1.6;margin:0;max-width:680px;color:#4b4841}.topic-wrap{border-bottom:1px solid var(--ink)}.dm-topic-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin:0 56px}.dm-topic-card{position:relative;min-height:345px;padding:20px;text-align:left;background:#fff;border:1px solid var(--ink);border-right:0;color:var(--ink);display:flex;flex-direction:column;justify-content:space-between;gap:10px;transition:background .22s,transform .22s}.dm-topic-card:last-child{border-right:1px solid var(--ink)}.dm-topic-card:hover{background:#f0eee7}.dm-topic-card.chosen{background:var(--acid)}.dm-topic-card:focus-visible,.dm-btn:focus-visible,.lang-btn:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #6a85ed;outline-offset:3px}.dm-card-top{display:flex;justify-content:space-between;align-items:center;font-size:10px;font-weight:900;letter-spacing:.07em}.dm-card-plus{display:grid;place-items:center;width:29px;height:29px;border:1px solid currentColor;border-radius:50%;font-size:20px;line-height:1}.dm-topic-card.chosen .dm-card-plus{background:var(--ink);color:#fff}.dm-visual{display:grid;place-items:center;height:105px;margin:8px 0}.dm-visual svg{display:block;width:100%;height:105px;overflow:visible}.dm-card-copy h3{font-size:clamp(21px,1.85vw,28px);line-height:1.12;letter-spacing:-.05em;margin:0 0 12px}.dm-card-copy p{font-size:12px;line-height:1.55;color:#4e4a43;margin:0}.dm-topic-card .dm-living .ld-guide{stroke-dasharray:3 4;opacity:.28}.dm-topic-card .dm-living .ld-flow,.dm-topic-card .dm-living .ld-loop,.dm-topic-card .dm-living .ld-network{stroke-dasharray:100;stroke-dashoffset:100;opacity:0;transition:stroke-dashoffset .6s,opacity .18s}.dm-topic-card:is(:hover,.chosen) .dm-living :is(.ld-flow,.ld-loop,.ld-network){stroke-dashoffset:0;opacity:1}.dm-topic-card .dm-living .ld-done{opacity:0;transition:opacity .26s}.dm-topic-card:is(:hover,.chosen) .dm-living .ld-done{opacity:1}
+.follow-toolbar{padding:17px 56px 23px;display:flex;justify-content:space-between;gap:22px;align-items:center}.follow-toolbar-left{display:flex;flex:1;min-width:0;align-items:center;gap:14px;flex-wrap:wrap}.thread-label{font-size:10px;font-weight:900;letter-spacing:.1em;white-space:nowrap}.thread-pills{display:flex;gap:7px;flex-wrap:wrap}.thread-chip{background:var(--acid);border:1px solid var(--ink);border-radius:30px;padding:8px 11px;font-size:11px;font-weight:800}.thread-chip:hover{background:var(--ink);color:white}.thread-placeholder{font-size:12px;color:var(--muted)}.dm-btn{background:var(--ink);color:#fff;border:1px solid var(--ink);border-radius:99px;font-size:13px;font-weight:860;padding:15px 21px;white-space:nowrap}.dm-btn:hover:not(:disabled){background:var(--acid);color:var(--ink)}.dm-btn:disabled{opacity:.36;cursor:not-allowed}.inline-flow{margin:0 56px 44px;border:1.5px solid var(--ink);border-radius:23px;background:#fff;overflow:hidden;opacity:0;max-height:0;transform:translateY(-5px);transition:opacity .35s,transform .35s,max-height .6s cubic-bezier(.22,1,.36,1),margin .35s}.inline-flow[hidden]{display:none!important}.inline-flow.is-open{opacity:1;max-height:1100px;transform:translateY(0)}.flow-inner{padding:30px 31px 29px}.flow-top{display:flex;align-items:center;justify-content:space-between;gap:14px;font-size:10px;font-weight:900;letter-spacing:.09em}.flow-close{border:0;background:transparent;border-bottom:1px solid var(--ink);padding:4px 0;font-size:11px;font-weight:800}.flow-content{display:grid;grid-template-columns:.94fr 1.06fr;gap:45px;margin-top:31px}.flow-copy h2,.flow-success h2{font-size:clamp(34px,3.5vw,53px);line-height:1;letter-spacing:-.065em;margin:0 0 18px}.flow-copy>p{font-size:15px;line-height:1.58;color:#4c4941;margin:0;max-width:460px}.flow-benefit{font-size:12px;font-weight:800;display:flex;gap:8px;align-items:center;line-height:1.5;margin:13px 0}.flow-benefit:before{content:'↗';display:grid;place-items:center;flex-shrink:0;width:21px;height:21px;border:1px solid var(--ink);background:var(--acid);border-radius:50%;font-size:12px}.follow-form{border-left:1px solid #d2cec5;padding-left:34px}.follow-form .label{display:block;font-size:10px;font-weight:900;letter-spacing:.07em;margin:0 0 9px}.selection-recap{display:flex;gap:6px;flex-wrap:wrap;min-height:24px;margin-bottom:18px}.selection-recap span,.success-topics span{background:#edeae2;border:1px solid #c9c5bb;border-radius:40px;padding:8px 10px;font-size:11px;font-weight:800}.email{border:1px solid var(--ink);background:var(--paper);border-radius:12px;width:100%;min-width:0;padding:15px 15px;font-size:14px;outline-offset:2px}.email:focus{border-color:#6a85ed}.email-submit{width:100%;margin-top:12px;padding:15px 18px;border:1px solid var(--ink);border-radius:40px;background:var(--ink);color:#fff;font-weight:880;font-size:13px}.email-submit:hover{background:var(--acid);color:var(--ink)}.email-submit:disabled{opacity:.45;cursor:wait}.account-row{margin-top:17px;display:flex;gap:10px;font-size:11px;font-weight:780;line-height:1.55;cursor:pointer}.account-row input{width:16px;height:16px;flex:0 0 16px;accent-color:var(--ink);margin:0}.fineprint{font-size:10px;line-height:1.6;color:#777167;margin:10px 0 0 26px}.optional-toggle{border:0;background:none;text-decoration:underline;text-underline-offset:3px;padding:0;margin:18px 0 0;font-size:11px;color:#69655f}.expect-choices{display:flex;gap:6px;flex-wrap:wrap;margin:11px 0 0}.expect-choices[hidden]{display:none!important}.expect-pill{padding:9px 10px;border:1px solid #c8c5bc;border-radius:40px;background:transparent;font-size:11px;font-weight:770}.expect-pill[aria-pressed=true]{border-color:var(--ink);background:var(--acid)}.flow-error{font-size:12px;min-height:17px;color:#a02a20;margin:8px 0 0}.flow-success[hidden],.flow-entry[hidden]{display:none!important}.flow-success{animation:reveal .5s cubic-bezier(.22,1,.36,1) both}.success-flex{display:grid;grid-template-columns:1fr 1fr;gap:34px;margin-top:29px;align-items:end}.success-mark{display:inline-grid;place-items:center;background:var(--acid);border:1.4px solid var(--ink);border-radius:50%;width:38px;height:38px;font-size:19px;margin-bottom:17px}.flow-success p{font-size:14px;line-height:1.6;color:#4c4941;margin:0}.success-right{border-left:1px solid #d2cec5;padding-left:28px}.success-topics{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 16px}.success-actions{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-top:23px}.success-actions .dm-btn{text-align:center}.quiet-link{background:none;border:0;border-bottom:1px solid var(--ink);font-size:12px;font-weight:850;letter-spacing:0;padding:3px 0}.success-note{margin-top:18px;font-size:10px;color:#777166;line-height:1.55}.saved-inline{padding:0 56px 32px;display:flex;gap:18px;align-items:center;font-size:12px}.saved-inline[hidden]{display:none!important}.saved-inline strong{font-weight:850}.saved-inline a{border-bottom:1px solid currentColor;font-weight:800}
+.editorial{display:grid;grid-template-columns:1.05fr .95fr;border-bottom:1px solid var(--ink)}.editorial-copy{padding:65px 56px 62px}.editorial-copy h2{font-size:clamp(42px,5.8vw,82px);line-height:1;letter-spacing:-.068em;margin:29px 0 18px}.editorial-copy p{font-size:17px;line-height:1.65;max-width:640px;margin:0}.editorial-visual{border-left:1px solid var(--ink);background:var(--acid);display:grid;place-items:center;padding:35px}.editorial-visual svg{max-width:440px;width:100%;height:auto}.editorial-principles{display:flex;gap:14px;flex-wrap:wrap;margin-top:38px}.editorial-principles span{border:1px solid #0a0a0a;border-radius:30px;font-size:11px;font-weight:850;padding:9px 12px}
+.next{display:grid;grid-template-columns:.8fr 1.2fr;border-bottom:1px solid var(--ink)}.next-art{min-height:510px;background:var(--ink);color:var(--acid);padding:40px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}.next-art strong{font-size:clamp(86px,10vw,148px);line-height:.77;letter-spacing:-.11em;font-weight:950}.next-copy{padding:58px 56px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}.next-copy h2{font-size:clamp(43px,5vw,75px);line-height:1.04;letter-spacing:-.065em;margin:24px 0}.next-copy p{font-size:16px;line-height:1.65;color:#48453f;max-width:600px;margin:0 0 22px}.next-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}.next-tags span{border:1px solid #0a0a0a;border-radius:30px;padding:8px 12px;font-size:10px;font-weight:850}.luma-link{display:inline-flex;align-items:center;gap:12px;background:var(--acid);color:var(--ink);border:1px solid var(--ink);border-radius:50px;padding:16px 22px;font-size:13px;font-weight:900}.luma-link:hover{background:var(--ink);color:#fff}.next-hint{font-size:11px;margin-top:10px;color:#817b71}
+.synthesis{padding:74px 56px 77px;border-bottom:1px solid var(--ink)}.synthesis h2{font-size:clamp(46px,5.5vw,78px);line-height:1.02;letter-spacing:-.065em;margin:19px 0 34px;max-width:780px}.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--ink)}.insight{border-right:1px solid var(--ink);padding:25px;min-height:245px;display:flex;flex-direction:column;justify-content:space-between}.insight:last-child{border-right:0}.insight h3{font-size:clamp(24px,2.4vw,34px);letter-spacing:-.054em;line-height:1.14;margin:40px 0 0}.insight .insight-cn{font-size:13px;line-height:1.5;margin-top:13px;color:#5c574f}
+.archive{padding:68px 56px 77px;border-bottom:1px solid var(--ink);display:grid;grid-template-columns:180px 1fr;gap:35px}.archive h2{font-size:clamp(46px,5vw,74px);line-height:1.02;letter-spacing:-.06em;margin:0 0 15px}.archive-intro{font-size:13px;color:#68635c;line-height:1.55;margin:0 0 29px}.session{border-top:1px solid #a6a197}.session:last-child{border-bottom:1px solid #a6a197}.session summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:64px 1fr 35px;gap:16px;align-items:center;padding:18px 4px}.session summary::-webkit-details-marker{display:none}.session summary:hover{background:#eeece6}.session .num{font-weight:900;font-size:13px}.session .session-title{font-size:19px;font-weight:780;letter-spacing:-.035em}.session .plus{width:29px;height:29px;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-size:18px;transition:transform .25s,background .25s}.session[open] .plus{transform:rotate(45deg);background:var(--acid)}.session-detail{margin:0 40px 21px 80px;padding:0 0 0 17px;border-left:3px solid var(--acid);max-width:740px;animation:reveal .25s ease both}.session-detail p{font-size:13px;line-height:1.65;color:#4e4b44;margin:0 0 13px}.session-signal{font-weight:850;font-size:11px;letter-spacing:.015em}.archive-foot{font-size:11px;color:#756f65;margin-top:15px}.footer{padding:55px 56px;background:var(--ink);color:#fff;display:flex;justify-content:space-between;gap:20px;align-items:end}.footer strong{font-size:clamp(34px,4vw,57px);letter-spacing:-.065em;line-height:.88}.footer p{font-size:12px;color:#bdbdbd;text-align:right;line-height:1.55;margin:0}@keyframes reveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@media(max-width:1100px){.dm-topic-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.dm-topic-card{border-right:1px solid var(--ink);border-bottom:0}.dm-topic-card:nth-last-child(-n+2){border-bottom:1px solid var(--ink)}}@media(max-width:760px){.page{width:calc(100% - 16px);margin:8px auto 20px;border-radius:21px}.nav{height:65px;padding:0 17px}.navlinks>a{display:none}.section-head{grid-template-columns:1fr;gap:14px;padding:38px 22px 26px}.section-head h1{font-size:clamp(43px,12vw,60px)}.section-head p{font-size:14px}.dm-topic-grid{margin:0 22px;grid-template-columns:1fr}.dm-topic-card{min-height:215px;padding:17px;flex-direction:row;align-items:center;gap:10px;flex-wrap:wrap;border-right:1px solid var(--ink)!important;border-bottom:0!important}.dm-topic-card:last-child{border-bottom:1px solid var(--ink)!important}.dm-card-top{width:100%}.dm-visual{width:110px;height:75px;margin:0;order:2}.dm-visual svg{height:72px}.dm-card-copy{flex:1;min-width:160px}.dm-card-copy h3{font-size:24px}.dm-card-copy p{font-size:11px}.follow-toolbar{padding:16px 22px 22px;flex-direction:column;align-items:stretch}.follow-toolbar-left{align-items:flex-start;flex-direction:column;gap:9px}.follow-toolbar .dm-btn{width:100%}.inline-flow{margin:0 22px 32px}.flow-inner{padding:20px}.flow-content,.success-flex{display:block;margin-top:19px}.follow-form,.success-right{border:0;border-top:1px solid #d2cec5;padding:22px 0 0;margin-top:23px}.flow-copy h2,.flow-success h2{font-size:38px}.flow-copy>p{font-size:13px}.saved-inline{padding:0 22px 24px;flex-wrap:wrap}.editorial,.next{grid-template-columns:1fr}.editorial-copy,.next-copy{padding:42px 22px}.editorial-copy h2{font-size:52px}.editorial-copy p{font-size:14px}.editorial-visual{border-left:0;border-top:1px solid var(--ink);min-height:260px;padding:15px}.editorial-visual svg{max-width:250px}.next-art{min-height:250px;padding:25px}.next-art strong{font-size:83px}.next-copy h2{font-size:48px}.next-copy p{font-size:14px}.synthesis{padding:47px 22px}.synthesis h2{font-size:47px}.insight-grid{grid-template-columns:1fr}.insight{min-height:150px;border-right:0;border-bottom:1px solid var(--ink)}.insight:last-child{border-bottom:0}.insight h3{margin:24px 0 0}.archive{display:block;padding:47px 22px}.archive h2{margin-top:20px}.session summary{grid-template-columns:43px 1fr 29px;gap:10px}.session .session-title{font-size:16px}.session-detail{margin-left:53px;margin-right:10px}.footer{padding:40px 22px}.footer p{font-size:10px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+
+
+/* V6: refine rather than replace the existing editorial visual system */
+.position-cta{display:inline-flex;align-items:center;margin-top:32px;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--ink);font-size:13px;font-weight:850}
+.position-cta:hover{color:#57564b;transform:translateY(-1px)}
+#about .editorial-copy{padding-top:78px;padding-bottom:69px}
+#about .editorial-copy h2{font-size:clamp(39px,5.15vw,72px);letter-spacing:-.065em;line-height:1.04;margin-top:34px}
+#about .editorial-copy p{max-width:610px;font-size:16px}
+#about .editorial-principles{margin-top:27px}
+#dm-community .section-head{padding-top:68px}
+#dm-community .section-head h1{font-size:clamp(44px,5.55vw,78px)}
+#dm-community .section-head p{font-size:15px}
+#dm-community .follow-toolbar{padding-top:20px}
+#dm-community .thread-label{letter-spacing:.055em}
+#dm-community .inline-flow.is-open{max-height:1550px}
+.flow-inner{padding:31px 34px 32px}
+.flow-stage[hidden],.flow-success[hidden]{display:none!important}
+.flow-stage{animation:reveal .42s cubic-bezier(.22,1,.36,1) both}
+.stage-marker{display:block;font-size:10px;font-weight:880;letter-spacing:.11em;margin-bottom:24px;color:#777268}
+.experience-grid{display:grid;grid-template-columns:.88fr 1.12fr;gap:45px;margin-top:33px}
+.experience-choices{border-left:1px solid #d2cec5;padding-left:36px}
+.experience-choices>.label,.flow-selection-inline>.label{font-size:10px;font-weight:850;letter-spacing:.075em;display:block;margin:2px 0 14px}
+#expectStage .flow-copy h2{font-size:clamp(38px,3.8vw,55px)}
+#expectStage .flow-copy p{max-width:460px}
+.flow-selection-inline{margin-top:38px}
+.flow-selection-inline .selection-recap{margin:0}
+.shape-note{border-top:1px solid #dedbd4;padding-top:18px;margin-top:24px!important;font-size:12px!important;color:#756e63!important}
+.expect-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.expect-card{position:relative;min-height:100px;padding:17px 42px 16px 16px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;background:transparent;border:1.3px solid #c5c1b8;border-radius:15px;transition:background .2s,border-color .2s,transform .2s}
+.expect-card:hover{border-color:var(--ink);background:#f4f1e9;transform:translateY(-1px)}
+.expect-card[aria-pressed=true]{background:var(--acid);border-color:var(--ink)}
+.expect-title{display:block;font-size:14px;font-weight:900;line-height:1.3;letter-spacing:-.025em}
+.expect-desc{display:block;font-size:11px;line-height:1.5;margin-top:6px;color:#555047}
+.expect-sign{position:absolute;right:15px;top:13px;display:grid;place-items:center;width:24px;height:24px;border:1px solid var(--ink);border-radius:50%;font-size:18px;line-height:1}
+.expect-card[aria-pressed=true] .expect-sign{background:var(--ink);color:#fff}
+.experience-footer{margin-top:21px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.experience-footer .dm-btn{font-size:12px}
+.subtle-action{display:inline-flex;border:0;background:transparent;border-bottom:1px solid #928f88;font-size:12px;font-weight:830;color:#706a61;padding:4px 0;white-space:nowrap}
+.subtle-action:hover{color:var(--ink);border-color:var(--ink)}
+#emailStage .flow-content{margin-top:34px}
+#emailStage .flow-copy h2{font-size:clamp(38px,3.7vw,53px)}
+#emailStage .flow-benefits-compact{margin-top:25px}
+.back-expect{margin-top:25px}
+.email-expect-recap{margin-bottom:20px}
+.email-expect-recap[hidden],.success-expect[hidden]{display:none}
+#followRecap .selection-recap{margin-bottom:12px}
+.email-expect-recap .selection-recap{margin:9px 0 0}
+.success-expect{margin-top:19px}
+.success-expect .selection-recap{margin-top:9px}
+.success-email{font-size:11px!important;color:#6b655e!important;word-break:break-word}
+#next .next-copy h2{font-size:clamp(43px,5vw,73px)}
+@media(max-width:900px){.experience-grid{grid-template-columns:1fr;gap:23px}.experience-choices{border-left:0;border-top:1px solid #d2cec5;padding-left:0;padding-top:24px}.flow-selection-inline{margin-top:18px}}
+@media(max-width:760px){#about .editorial-copy{padding:44px 22px 38px}#about .editorial-copy h2{font-size:clamp(36px,9vw,53px)}#about .editorial-copy p{font-size:14px}.position-cta{margin-top:23px}#dm-community .section-head{padding-top:42px}#dm-community .section-head h1{font-size:clamp(39px,9.6vw,55px)}.flow-inner{padding:20px}.experience-grid{margin-top:23px}.experience-grid .flow-copy h2{font-size:37px!important}.expect-grid{grid-template-columns:1fr 1fr;gap:7px}.expect-card{min-height:120px;padding:15px 28px 13px 12px;border-radius:12px}.expect-title{font-size:12px}.expect-desc{font-size:10px}.expect-sign{width:20px;height:20px;font-size:14px;right:9px;top:10px}.experience-footer{flex-wrap:wrap;gap:18px}.experience-footer .dm-btn{flex:1;white-space:normal}.flow-selection-inline{margin-top:20px}#emailStage .flow-content{margin-top:25px}}
+@media(max-width:380px){.expect-grid{grid-template-columns:1fr}.expect-card{min-height:76px}.experience-footer .dm-btn{padding:13px 16px}}
+@media(prefers-reduced-motion:reduce){.flow-stage,.expect-card,.position-cta{transition:none!important;animation:none!important}}
+
+/* V7: semantic header, authored "other", intentional modal hierarchy */
+.navlinks{gap:20px}.nav-item{position:relative;padding:9px 0;font-size:12px;font-weight:800;color:#47433e}.nav-item.active,.nav-item:hover{color:var(--ink)}.nav-item.active:after{content:'';position:absolute;bottom:1px;left:0;right:0;height:2px;background:var(--ink)}.langs{border-left:1px solid #d6d1c7;padding-left:13px;margin-left:3px}
+.dm-card-copy h3{font-size:clamp(20px,1.65vw,27px)}.dm-card-copy p{font-size:12px}
+.other-question{margin:0 56px;border:1px solid #bbb8af;border-top:0;padding:15px 20px;background:#f4f1e9;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}.other-intro{display:flex;align-items:center;gap:17px;flex-wrap:wrap}.other-intro .eyebrow{letter-spacing:.015em}.other-link{border:0;border-bottom:1px solid var(--ink);padding:4px 0;background:none;font-size:12px;font-weight:850}.other-link:hover{color:#515046}.other-input-wrap{display:flex;flex:1 1 380px;align-items:center;gap:10px}.other-input-wrap[hidden],#expectOtherWrap[hidden]{display:none!important}.other-input-wrap label,#expectOtherWrap label{font-size:11px;font-weight:850;white-space:nowrap}.other-input-wrap input,#expectOtherInput{width:100%;min-width:0;background:#fff;border:1px solid var(--ink);border-radius:9px;padding:11px 12px;font-size:12px}.other-clear{background:transparent;border:0;border-bottom:1px solid #aaa69c;font-size:11px;white-space:nowrap;padding:5px 0}
+.expect-other-box{display:contents}.expect-other{width:100%}#expectOtherWrap{grid-column:1/-1;border:1px solid #c8c4b9;background:#f6f4ef;padding:12px;border-radius:11px;display:flex;align-items:center;gap:10px}#expectOtherWrap input{flex:1}
+.flow-backdrop{position:fixed;inset:0;z-index:140;background:rgba(10,10,10,.56);backdrop-filter:blur(5px);opacity:0;transition:opacity .3s}.flow-backdrop.is-open{opacity:1}.flow-backdrop[hidden]{display:none!important}
+#interestFlow.inline-flow{position:fixed;z-index:141;inset:auto;top:50%;left:50%;width:min(1050px,calc(100vw - 38px));max-width:1050px;max-height:min(88dvh,850px);overflow-y:auto;overscroll-behavior:contain;margin:0;transform:translate(-50%,-47%) scale(.97);opacity:0;border:1.5px solid var(--ink);border-radius:25px;background:var(--paper);box-shadow:0 25px 100px rgba(0,0,0,.12);transition:opacity .35s,transform .45s cubic-bezier(.22,1,.36,1)}
+#interestFlow.inline-flow.is-open{max-height:min(88dvh,850px);opacity:1;transform:translate(-50%,-50%) scale(1)}
+body.dm-dialog-open{overflow:hidden}.flow-step{margin-left:auto;margin-right:18px;white-space:nowrap;color:#777269;font-size:10px}.flow-top{border-bottom:1px solid #d5d0c7;padding-bottom:19px}.flow-close{margin-left:0}.flow-inner{padding:27px 36px 36px}#expectStage .experience-grid,#emailStage .flow-content{margin-top:25px}.experience-grid{gap:35px}.experience-choices{padding-left:29px}.flow-success .success-flex{margin-top:26px}
+@media(max-width:1080px){.navlinks{gap:12px}}
+@media(max-width:760px){.nav{padding:0 14px;gap:8px}.navlinks{gap:11px}.nav-item{font-size:10px}.nav-item:first-child{display:none}.brand{font-size:12px}.langs{padding-left:7px;margin-left:0}.other-question{margin:0 18px;padding:13px 13px}.other-intro{gap:8px}.other-intro .eyebrow{font-size:10px}.other-input-wrap{flex:1 1 100%;flex-wrap:wrap}.other-input-wrap label{width:100%}#interestFlow.inline-flow{width:calc(100vw - 18px);max-height:92dvh;border-radius:18px}.flow-inner{padding:19px 19px 26px}.flow-step{margin-right:8px}.flow-content{gap:21px}#expectOtherWrap{display:flex;flex-wrap:wrap}#expectOtherWrap label{width:100%}.experience-choices{padding-left:0}.expect-card{min-height:105px}}
+@media(max-width:420px){.nav-item:nth-child(2){font-size:10px}.navlinks{gap:8px}.langs{gap:1px}.lang-btn{padding:6px 4px}.brand{font-size:11px}.mark{width:29px;height:29px}.other-question{margin:0 14px}}
+@media(prefers-reduced-motion:reduce){.flow-backdrop,#interestFlow.inline-flow{transition:none!important}}
+
+/* V8: benefit-forward opt-in and lightweight participant context */
+#dm-community .section-head h1{font-size:clamp(46px,5.25vw,75px);max-width:990px}
+#dm-community .section-head p{max-width:720px;font-size:16px}
+#emailStage .flow-content{grid-template-columns:1fr 1fr;gap:34px;align-items:start}
+#emailStage .flow-copy{padding:4px 4px 0 0}
+#emailStage .flow-copy h2{font-size:clamp(37px,4vw,58px);max-width:470px;line-height:1.04;letter-spacing:-.065em;margin-top:14px;margin-bottom:13px}
+#emailStage .flow-copy>p{font-size:13px;line-height:1.5;max-width:385px;color:#5b554d}
+.benefit-stack{margin-top:25px;border-top:1px solid #d4d0c7}
+.benefit-row{display:grid;grid-template-columns:38px 1fr;gap:13px;padding:17px 0;border-bottom:1px solid #d4d0c7;align-items:start}
+.benefit-row .benefit-index{width:28px;height:28px;border-radius:50%;border:1px solid var(--ink);background:#eeebe3;display:grid;place-items:center;font-size:11px;font-weight:900;line-height:1}
+.benefit-row:first-child .benefit-index{background:var(--acid)}
+.benefit-row strong{font-size:15px;line-height:1.25;display:block;letter-spacing:-.01em}
+.benefit-row p{margin:6px 0 0!important;color:#514e48;font-size:12px;line-height:1.5}
+#emailStage .back-expect{margin-top:18px;font-size:11px}
+#emailStage .follow-form{padding-left:29px}
+#emailStage .form-lead{display:flex;justify-content:space-between;gap:9px;align-items:baseline;margin-bottom:12px}
+#emailStage .form-lead strong{font-size:15px;letter-spacing:-.025em}
+#emailStage .form-lead small{font-size:10px;color:#716c62;white-space:nowrap}
+#emailStage .form-context{margin:14px 0 0;padding:15px 0 4px;border-top:1px solid #ded9cf}
+#emailStage .form-context-intro{font-size:11px;color:#59554d;margin:0 0 11px;line-height:1.5}
+#emailStage .context-fields{display:grid;gap:12px}
+#emailStage .context-label{font-size:11px;font-weight:850;letter-spacing:0;display:block;margin-bottom:6px}
+#emailStage .context-label em{font-style:normal;font-weight:550;color:#716c62;margin-left:5px}
+#emailStage .context-input{display:block;width:100%;min-width:0;border:1px solid #c4c0b7;background:#fff;border-radius:10px;padding:12px 13px;font-size:12px;outline-offset:2px;transition:border-color .18s}
+#emailStage .context-input:focus{border-color:var(--ink);outline:2px solid #b8ff17}
+#emailStage .context-input::placeholder{color:#878176}
+#emailStage #followEmail{margin-bottom:3px}
+#emailStage .email-submit{margin-top:15px;padding:15px}
+#emailStage .account-row{margin-top:14px;font-weight:730}
+#emailStage .fineprint{margin:7px 0 0 26px}
+#emailStage .selection-recap{margin-bottom:11px;min-height:20px}
+#emailStage .email-expect-recap{margin-bottom:13px}
+#emailStage .email-expect-recap .selection-recap{margin-bottom:6px}
+#emailStage .selection-recap span{padding:6px 9px;font-size:10px}
+#emailStage .luma-footnote{margin-top:16px;font-size:11px;line-height:1.6;color:#514d45}
+#emailStage .luma-footnote a{font-weight:850;text-decoration:underline;text-underline-offset:3px}
+#emailStage .benefit-stack + .subtle-action{margin-top:19px}
+.success-luma-callout{margin:16px 0 0;border-top:1px solid #d4d0c7;padding-top:15px;font-size:12px;line-height:1.55}
+.success-luma-callout a{font-weight:850;text-decoration:underline;text-underline-offset:3px}
+.success-context{margin-top:10px;font-size:11px;color:#57534b;line-height:1.5}
+.success-context[hidden]{display:none}
+@media(min-width:761px) and (max-height:800px){#interestFlow.inline-flow{max-height:92dvh}#emailStage .flow-content{margin-top:17px}#emailStage .benefit-stack{margin-top:17px}.benefit-row{padding:12px 0}#emailStage .context-fields{gap:8px}#emailStage .form-context{margin-top:10px;padding-top:11px}.flow-inner{padding-bottom:23px}}
+@media(max-width:760px){#emailStage .flow-content{grid-template-columns:1fr;gap:25px}#emailStage .follow-form{border-left:0;border-top:1px solid #d5d0c7;padding:23px 0 0}#emailStage .flow-copy h2{font-size:43px;max-width:365px}#emailStage .flow-copy>p{max-width:100%}.benefit-stack{margin-top:19px}.benefit-row{padding:13px 0}.benefit-row strong{font-size:14px}#emailStage .form-lead strong{font-size:15px}#emailStage .flow-content{margin-top:17px}#dm-community .section-head h1{font-size:clamp(38px,9vw,55px)}}
+
+/* V9: stronger value proposition and real required-field behavior */
+.benefit-row .benefit-index{background:var(--acid);border:1.5px solid var(--ink);box-shadow:0 0 0 3px rgba(184,255,23,.12)}
+.benefit-row strong{font-size:15.5px;font-weight:880;line-height:1.28}
+.benefit-row{grid-template-columns:39px 1fr;gap:14px;padding:15px 0}
+#emailStage .flow-copy h2{font-size:clamp(39px,4.1vw,60px)}
+#emailStage .form-context-intro{font-size:12px;font-weight:650;line-height:1.55;color:#514b42}
+#emailStage .context-label em{font-weight:900;color:var(--ink);font-size:12px;margin-left:5px}
+#emailStage .context-input[aria-invalid=true]{border:2px solid #ad372b;background:#fff9f6;outline-color:#ad372b}
+#emailStage .context-input[aria-invalid=true]:focus{outline:2px solid #ad372b}
+@media(min-width:761px) and (max-height:820px){.benefit-row{padding:11px 0}#emailStage .flow-copy>p{font-size:12px}#emailStage .flow-content{margin-top:14px}}
+
+/* Mobile: keep all three benefits visible without pushing the email off the first modal view. */
+@media(max-width:760px){
+#emailStage .flow-content{gap:14px;margin-top:16px}
+#emailStage .flow-copy h2{font-size:34px;line-height:1.02;margin:6px 0 9px}
+#emailStage .flow-copy>p{font-size:12px;line-height:1.45}
+#emailStage .benefit-stack{margin-top:13px}
+#emailStage .benefit-row{grid-template-columns:26px 1fr;gap:9px;padding:8px 0;align-items:center}
+#emailStage .benefit-index{width:24px;height:24px;font-size:10px}
+#emailStage .benefit-row strong{font-size:12.5px}
+#emailStage .benefit-row p{display:none}
+#emailStage .back-expect{margin-top:12px}
+#emailStage .follow-form{padding-top:16px}
+}
+</style><style>
+/* V10: Success state has one primary destination: the member profile. */
+.success-v10 .success-flex{display:grid;grid-template-columns:.94fr 1.06fr;gap:0;margin-top:26px;align-items:stretch;min-height:345px}
+.success-v10 .success-left{padding:31px 46px 20px 0;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+.success-v10 .success-mark{width:50px;height:50px;font-size:24px;margin:0 0 21px}
+.success-v10 .success-left .stage-marker{font-size:11px;color:#68645d;letter-spacing:.115em;font-weight:900;margin-bottom:22px}
+.success-v10 .success-left h2{font-size:clamp(44px,4.9vw,78px);letter-spacing:-.078em;line-height:1.05;margin-bottom:17px}
+.success-v10 .success-left p{max-width:380px;font-size:15px;line-height:1.65;color:#5a564f}
+.success-v10 .success-right{padding:12px 0 12px 43px;border-left:1px solid #d1cdc4;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.success-v10 .success-profile-heading{display:flex;align-items:center;gap:13px;padding-bottom:18px;border-bottom:1px solid #d6d2c9}
+.success-v10 .profile-glyph{background:var(--acid);border:1.5px solid var(--ink);border-radius:17px;width:57px;height:57px;display:grid;place-items:center;font-weight:950;font-size:17px;letter-spacing:-.08em;position:relative;flex-shrink:0}
+.success-v10 .profile-glyph-dot{position:absolute;bottom:6px;right:6px;width:6px;height:6px;background:var(--ink);border-radius:50%}
+.success-v10 .success-profile-heading .stage-marker{font-size:10px;color:#65615c;font-weight:900;letter-spacing:.12em;margin:0 0 5px}
+.success-v10 .success-profile-title{font-size:19px;font-weight:900;letter-spacing:-.035em}
+.success-v10 .success-profile-details{padding:22px 0 0}
+.success-v10 .profile-field-title{font-size:10px;font-weight:900;letter-spacing:.1em;margin-bottom:10px}
+.success-v10 .success-topics{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 16px}
+.success-v10 .success-topics span{font-size:11px;padding:8px 12px}
+.success-v10 #successEmail{font-size:12px!important;color:#68645e!important;margin:0 0 20px;overflow-wrap:anywhere}
+.success-v10 #successExpect{display:none!important}
+.success-v10 .success-profile-primary{width:100%;background:var(--ink);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:14px;border-radius:100px;padding:19px 25px;font-size:15px;font-weight:900;transition:background .2s,color .2s}
+.success-v10 .success-profile-primary:hover{background:var(--acid);color:var(--ink)}
+.success-v10 .success-profile-primary span:last-child{font-size:19px}
+.success-v10 .success-secondary{display:flex;justify-content:center;margin-top:19px}
+.success-v10 .success-secondary a{font-size:12px;font-weight:840;text-decoration:underline;text-underline-offset:5px;padding:5px;color:#36332c}
+.success-v10 .success-secondary a:hover{color:#697c20}
+@media(max-width:760px){
+ .success-v10 .success-flex{display:block;min-height:auto;margin-top:8px}
+ .success-v10 .success-left{padding:8px 0 24px}
+ .success-v10 .success-mark{width:38px;height:38px;font-size:20px;margin-bottom:12px}
+ .success-v10 .success-left .stage-marker{font-size:9px;margin-bottom:9px}
+ .success-v10 .success-left h2{font-size:clamp(39px,11vw,56px);margin-bottom:10px}
+ .success-v10 .success-left p{font-size:12px;max-width:100%}
+ .success-v10 .success-right{padding:21px 0 0;margin-top:0;border-left:0;border-top:1px solid #d1cdc4}
+ .success-v10 .profile-glyph{width:45px;height:45px;border-radius:13px}
+ .success-v10 .success-profile-title{font-size:17px}
+ .success-v10 .success-profile-details{padding-top:16px}
+ .success-v10 #successEmail{margin-bottom:16px}
+ .success-v10 .success-profile-primary{padding:16px 21px}
+ .success-v10 .success-secondary{margin-top:12px}
+}
+</style><style>
+/* v2: immediate, unmistakable form feedback for offline previews */
+#followError{display:block;min-height:0;margin:12px 0 0;padding:0;color:#9a3026;font-size:12px;font-weight:800;line-height:1.55}
+#followError:not(:empty){padding:11px 13px;background:#fff1ed;border:1.5px solid #b54937;border-radius:11px}
+#followForm [aria-invalid="true"]{border:2px solid #b54937!important;background:#fff6f2!important;box-shadow:0 0 0 3px #b5493714}
+#followSubmit{min-height:48px;cursor:pointer}
+#followSubmit:focus-visible{outline:3px solid #b8ff17;outline-offset:3px}
+.dm-preview-disclaimer{font-size:11px;line-height:1.55;color:#615e56;margin:10px 0 0}
+</style><style>
+.dm-email-hint{font-size:12px;line-height:1.5;margin:6px 0 0;min-height:12px}
+.dm-user-controls{flex:0 0 auto}
+@media(max-width:680px){.nav{padding:0 12px}.navlinks{gap:8px}.dm-profile-top{padding:8px 10px!important}}
+</style></head><body data-dm-preview="true"><div class="page"><nav class="nav"><a class="brand" href="#about"><span class="mark">D</span>DESIGN MATTERS</a><div aria-label="Primary navigation" class="navlinks"><a class="nav-item" data-nav-section="dm-community" href="#dm-community"><span data-en="Explore topics" data-i18n="text" data-zh="探索议题">探索议题</span></a><a class="nav-item" data-nav-section="next" href="#next"><span data-en="Next roundtable" data-i18n="text" data-zh="下一场圆桌">下一场圆桌</span></a><a class="nav-item" data-nav-section="archive" href="#archive"><span data-en="Archive" data-i18n="text" data-zh="讨论档案">讨论档案</span></a><div aria-label="Language" class="langs" role="group"><button class="lang-btn active" data-lang="zh" type="button">中</button><span>/</span><button class="lang-btn" data-lang="en" type="button">EN</button></div></div></nav>
+<!-- SECTION 01 / Editorial positioning -->
+<section class="editorial" id="about"><div class="editorial-copy"><span class="eyebrow">01 / WHY DESIGN MATTERS</span><h2><span data-en="AI is changing design.&lt;br&gt;There is no single answer." data-i18n="html" data-zh="AI 正在改变设计。&lt;br&gt;答案不止一种。">AI 正在改变设计。<br/>答案不止一种。</span></h2><p><span data-en="Design Matters brings together AI × Design practitioners across products, teams and organizations. We compare real experience, make sense of what is changing, and keep the questions—and people—worth connecting in the conversation." data-i18n="text" data-zh="Design Matters 聚集不同产品、团队与组织里的 AI × Design 实践者。我们用真实经验彼此对照，看清变化如何发生，并把值得继续讨论的判断和人连接起来。">Design Matters 聚集不同产品、团队与组织里的 AI × Design 实践者。我们用真实经验彼此对照，看清变化如何发生，并把值得继续讨论的判断和人连接起来。</span></p><div class="editorial-principles"><span data-en="REAL PRACTICE" data-i18n="text" data-zh="真实实践">真实实践</span><span data-en="COMPARE CONTEXTS" data-i18n="text" data-zh="对照差异">对照差异</span><span data-en="SHARPEN JUDGMENT" data-i18n="text" data-zh="持续判断">持续判断</span></div><a class="position-cta" href="#dm-community"><span data-en="Find the questions that matter to me ↓" data-i18n="text" data-zh="找到我关心的问题 ↓">找到我关心的问题 ↓</span></a></div><div class="editorial-visual"><svg viewbox="0 0 480 440"><g fill="none" stroke="#0a0a0a" stroke-width="2"><circle cx="232" cy="206" r="80" stroke-dasharray="5 7"></circle><path d="M101 100L232 206L366 92M232 206L105 335M232 206L374 338"></path><circle cx="101" cy="100" fill="#b8ff17" r="47"></circle><circle cx="366" cy="92" r="44"></circle><circle cx="105" cy="335" r="50"></circle><circle cx="374" cy="338" fill="#b8ff17" r="51"></circle><circle cx="232" cy="206" fill="#fbfaf6" r="67"></circle></g><g fill="#0a0a0a" font-family="Arial,sans-serif" font-weight="800" text-anchor="middle"><text font-size="23" x="232" y="209">DESIGN</text><text font-size="12" letter-spacing="2" x="232" y="230">MATTERS</text><text font-size="12" x="101" y="104">BUILD</text><text font-size="12" x="366" y="96">ACT</text><text font-size="12" x="105" y="340">JUDGE</text><text font-size="12" x="374" y="341">EVOLVE</text></g></svg></div></section><section class="topic-wrap" id="dm-community"><div class="section-head"><div class="eyebrow">DESIGN MATTERS / EXPLORE<br/>02 / FIND YOUR THREADS</div><div><h1><span data-en="AI × Design,&lt;br&gt;what are you curious about?" data-i18n="html" data-zh="AI × Design，&lt;br&gt;你对什么最好奇？">AI × Design，<br/>你对什么最好奇？</span></h1><p><span data-en="Some teams are rethinking agents. Others are rebuilding workflows—or the boundaries of design itself. Which of these directions would you like to follow?" data-i18n="text" data-zh="有的团队在重做 Agent，有的在重做工作流，还有的在重新定义设计的边界。哪几个方向，让你想继续看下去？">有的团队在重做 Agent，有的在重做工作流，还有的在重新定义设计的边界。哪几个方向，让你想继续看下去？</span></p></div></div><div class="dm-topic-grid" id="dmTopicGrid"><button aria-label="Select 01 / AGENT EXPERIENCE +" aria-pressed="false" class="dm-topic-card" data-id="agentic-products-agent-ux" type="button"><span class="dm-card-top"><span>01 / AGENT EXPERIENCE</span><span class="dm-card-plus">+</span></span><div class="dm-visual"><svg class="dm-living ld-agent" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 200 100"><circle cx="27" cy="48" r="17"></circle><circle cx="102" cy="48" r="20"></circle><rect height="34" rx="4" width="31" x="162" y="31"></rect><path class="ld-guide" d="M44 48H82M122 48H161"></path><path class="ld-flow ld-flow-1" d="M44 48H82" pathlength="100"></path><path class="ld-flow ld-flow-2" d="M122 48H161" pathlength="100"></path><circle cx="102" cy="48" fill="#b8ff17" r="9"></circle><path d="M102 68V84" stroke-dasharray="3 4"></path><circle cx="102" cy="89" fill="#b8ff17" r="6"></circle><path class="ld-done" d="M169 47L176 54L186 41" stroke-width="2.2"></path></svg></div><div class="dm-card-copy"><h3 data-en="Agent Experience &amp;amp;&lt;br&gt;Human Control" data-i18n="html" data-zh="Agent 体验与&lt;br&gt;人机控制">Agentic Products &amp;<br/>Agent UX</h3><p data-en="As agents take action, how should trust, control and recovery work?" data-i18n="text" data-zh="Agent 开始行动后，如何设计信任、控制与纠错？">当 AI 能替人行动，谁决定边界与控制权？</p></div></button>
+<button aria-label="Select 02 / AI WORKFLOWS +" aria-pressed="false" class="dm-topic-card" data-id="enterprise-ai" type="button"><span class="dm-card-top"><span>02 / AI WORKFLOWS</span><span class="dm-card-plus">+</span></span><div class="dm-visual"><svg class="dm-living ld-enterprise" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 200 100"><rect height="36" rx="4" width="48" x="9" y="29"></rect><g class="ld-integrate"><rect height="36" rx="4" width="48" x="76" y="42"></rect><circle cx="100" cy="60" fill="#b8ff17" r="8"></circle></g><rect height="36" rx="4" width="48" x="143" y="29"></rect><path class="ld-guide" d="M57 47H76M124 47H143"></path><path class="ld-flow ld-flow-1" d="M57 47H76" pathlength="100"></path><path class="ld-flow ld-flow-2" d="M124 47H143" pathlength="100"></path><path class="ld-loop" d="M167 65V87H33V65" pathlength="100"></path><path class="ld-done" d="M26 75L33 65L41 71"></path></svg></div><div class="dm-card-copy"><h3 data-en="Enterprise AI &amp;amp;&lt;br&gt;Workflow Redesign" data-i18n="html" data-zh="企业 AI 与&lt;br&gt;流程重构">Enterprise AI</h3><p data-en="What must change to turn AI pilots into real workflows?" data-i18n="text" data-zh="AI 从试点到真实业务，流程与组织要改变什么？">AI 为什么很难从 demo 走进真实流程？</p></div></button>
+<button aria-label="Select 03 / AI-ASSISTED BUILDING +" aria-pressed="false" class="dm-topic-card" data-id="vibe-coding-design-roles" type="button"><span class="dm-card-top"><span>03 / AI-ASSISTED BUILDING</span><span class="dm-card-plus">+</span></span><div class="dm-visual"><svg class="dm-living ld-vibe" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 200 100"><path d="M11 29H55M11 43H44M11 57H51"></path><circle cx="72" cy="44" fill="#b8ff17" r="9"></circle><path class="ld-flow" d="M81 44H108" pathlength="100"></path><rect height="82" rx="5" width="75" x="117" y="9"></rect><path d="M117 27H192M129 39H175M129 45H164"></path><rect height="22" rx="2" width="27" x="129" y="56"></rect><rect fill="#b8ff17" height="22" rx="2" width="18" x="162" y="56"></rect></svg></div><div class="dm-card-copy"><h3 data-en="AI-assisted Building &amp;amp;&lt;br&gt;Prototyping" data-i18n="html" data-zh="AI 共创、Vibe Coding&lt;br&gt;与原型构建">Vibe Coding &amp;<br/>Prototyping</h3><p data-en="When more people can build, what happens to craft and collaboration?" data-i18n="text" data-zh="当人人都能构建，设计、开发和协作如何改变？">当设计师能直接动手构建，什么会改变？</p></div></button>
+<button aria-label="Select 04 / DESIGN AGENCY +" aria-pressed="false" class="dm-topic-card" data-id="design-judgment-future-work" type="button"><span class="dm-card-top"><span>04 / DESIGN AGENCY</span><span class="dm-card-plus">+</span></span><div class="dm-visual"><svg class="dm-living ld-judgment" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 200 100"><rect height="30" rx="4" width="31" x="8" y="35"></rect><path d="M39 50H65L96 19M39 50H95M39 50H65L96 81" stroke-dasharray="4 4"></path><circle cx="105" cy="18" r="11"></circle><circle cx="105" cy="50" fill="#b8ff17" r="11"></circle><circle cx="105" cy="82" r="11"></circle><path class="ld-flow" d="M116 50H157" pathlength="100"></path><rect height="34" rx="4" width="33" x="159" y="33"></rect><path class="ld-done" d="M165 49L173 57L185 42" stroke-width="2.2"></path></svg></div><div class="dm-card-copy"><h3 data-en="Design Judgment &amp;amp;&lt;br&gt;Agency" data-i18n="html" data-zh="设计判断、影响力&lt;br&gt;与决策权">Design Roles,<br/>Judgment &amp;<br>Future of Work</br></h3><p data-en="Who frames problems, makes the calls and owns outcomes?" data-i18n="text" data-zh="当执行变容易，谁定义问题、做决定并承担结果？">当执行更容易，人的判断还在哪里创造价值？</p></div></button>
+<button aria-label="Select 05 / AI-NATIVE +" aria-pressed="false" class="dm-topic-card" data-id="ai-native-startups-product-strategy" type="button"><span class="dm-card-top"><span>05 / AI-NATIVE</span><span class="dm-card-plus">+</span></span><div class="dm-visual"><svg class="dm-living ld-native" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 200 100"><path d="M56 51H81M119 51H144" stroke-dasharray="4 4"></path><path class="ld-network" d="M101 51L46 25M101 51L162 25M101 51L100 87" pathlength="100"></path><rect height="23" rx="4" width="39" x="17" y="40"></rect><rect height="23" rx="4" width="38" x="81" y="40"></rect><rect height="23" rx="4" width="39" x="144" y="40"></rect><circle cx="101" cy="51" fill="#b8ff17" r="17"></circle><circle cx="101" cy="51" fill="currentColor" r="5"></circle></svg></div><div class="dm-card-copy"><h3 data-en="AI-native Products &amp;amp;&lt;br&gt;Teams" data-i18n="html" data-zh="AI-native 产品&lt;br&gt;与组织重构">AI-native Startups<br/>&amp; AI Product Strategy</h3><p data-en="How does AI-native change products, decisions and teams?" data-i18n="text" data-zh="从产品逻辑到协作方式，什么才是真正的 AI-native？">什么才是 AI-native 的产品与团队？</p></div></button></div><div class="other-question" id="otherTopicRow"><div class="other-intro"><span class="eyebrow" data-en="Have another question in mind?" data-i18n="text" data-zh="还有其他想追踪的问题？">还有其他想追踪的问题？</span><button aria-expanded="false" class="other-link" id="topicOtherToggle" type="button"><span data-en="+ Add my own question" data-i18n="text" data-zh="+ 写下我的问题">+ 写下我的问题</span></button></div><div class="other-input-wrap" hidden="" id="topicOtherWrap"><label data-en="My topic" data-i18n="text" data-zh="我的关注方向" for="topicOtherInput">我的关注方向</label><input data-placeholder-en="e.g. AI in design education, research methods…" data-placeholder-zh="比如：AI 与设计教育、研究方法…" id="topicOtherInput" maxlength="180" placeholder="比如：AI 与设计教育、研究方法…" type="text"/><button class="other-clear" id="topicOtherClear" type="button"><span data-en="Clear" data-i18n="text" data-zh="清除">清除</span></button></div></div><div class="follow-toolbar"><div class="follow-toolbar-left"><span class="thread-label" data-en="YOUR TOPICS / SELECTED" data-i18n="text" data-zh="YOUR TOPICS / 已选择">YOUR TOPICS / 已选择</span><div aria-live="polite" class="thread-pills" id="threadPills"><span class="thread-placeholder"><span data-en="Select any themes to make them yours." data-i18n="text" data-zh="可多选，创建自己的关注方向。">可多选，创建自己的关注方向。</span></span></div></div><button class="dm-btn" disabled="" id="dmNext" type="button"><span data-en="Next · What I want to get →" data-i18n="text" data-zh="下一步 · 我希望获得什么 →">下一步 · 我希望获得什么 →</span></button></div>
+<div class="flow-backdrop" hidden="" id="flowBackdrop"></div><div aria-labelledby="flowDialogTitle" aria-modal="true" class="inline-flow" hidden="" id="interestFlow" role="dialog" tabindex="-1">
+<div class="flow-inner">
+<div class="flow-top"><span class="flow-label" id="flowDialogTitle">DESIGN MATTERS / YOUR SPACE</span><span aria-live="polite" class="flow-step" id="flowStep">01 / 02</span><button class="flow-close" id="flowClose" type="button"><span data-en="Collapse ↑" data-i18n="text" data-zh="收起 ↑">收起 ↑</span></button></div>
+<div class="flow-entry" id="flowEntry">
+<div class="flow-stage" id="expectStage">
+<div class="experience-grid">
+<div class="flow-copy">
+<span class="stage-marker">WHAT YOU VALUE / 01</span>
+<h2><span data-en="Beyond the topics,&lt;br&gt;what would make this valuable?" data-i18n="html" data-zh="除了话题，&lt;br&gt;你还期待什么？">除了话题，<br/>你还期待什么？</span></h2>
+<p><span data-en="A useful community is more than a stream of content. Are you looking for real cases, sharper judgment, or people solving similar problems?" data-i18n="text" data-zh="好的社群不只是提供内容。你希望看到真实项目、带走判断，还是认识正在解决相似问题的人？">好的社群不只是提供内容。你希望看到真实项目、带走判断，还是认识正在解决相似问题的人？</span></p>
+<div class="flow-selection-inline"><span class="label">YOUR TOPICS</span><div class="selection-recap" id="expectTopicRecap"></div></div>
+<p class="shape-note"><span data-en="Your choices help shape what we share, whom we bring together, and what we discuss next." data-i18n="text" data-zh="你的选择会影响我们之后分享什么、邀请谁、组织怎样的讨论。">你的选择会影响我们之后分享什么、邀请谁、组织怎样的讨论。</span></p>
+</div>
+<div class="experience-choices">
+<span class="label"><span data-en="What would you love to get here? (Choose any)" data-i18n="text" data-zh="你更想在这里得到…（可多选）">你更想在这里得到…（可多选）</span></span>
+<div class="expect-grid" id="expectChoices">
+<button aria-pressed="false" class="expect-card" data-choice="insights" type="button"><span class="expect-sign">+</span><span class="expect-title" data-en="Sharper insights" data-i18n="text" data-zh="更有判断力的洞察">更有判断力的洞察</span><span class="expect-desc" data-en="Takeaways from competing perspectives" data-i18n="text" data-zh="把不同观点变成值得带走的结论">把不同观点变成值得带走的结论</span></button>
+<button aria-pressed="false" class="expect-card" data-choice="cases" type="button"><span class="expect-sign">+</span><span class="expect-title" data-en="Real cases &amp; methods" data-i18n="text" data-zh="真实案例与方法">真实案例与方法</span><span class="expect-desc" data-en="How others work and what failed" data-i18n="text" data-zh="别人到底怎么做，踩了哪些坑">别人到底怎么做，踩了哪些坑</span></button>
+<button aria-pressed="false" class="expect-card" data-choice="invites" type="button"><span class="expect-sign">+</span><span class="expect-title" data-en="Relevant roundtable invites" data-i18n="text" data-zh="相关圆桌优先知道">相关圆桌优先知道</span><span class="expect-desc" data-en="Hear about conversations I care about" data-i18n="text" data-zh="不错过我关心的下一场讨论">不错过我关心的下一场讨论</span></button>
+<button aria-pressed="false" class="expect-card" data-choice="peers" type="button"><span class="expect-sign">+</span><span class="expect-title" data-en="Find people working on similar things" data-i18n="text" data-zh="认识在做相似事情的人">认识在做相似事情的人</span><span class="expect-desc" data-en="Discover peers across teams and companies" data-i18n="text" data-zh="跨公司、跨团队找到相近的实践者">跨公司、跨团队找到相近的实践者</span></button>
+<button aria-pressed="false" class="expect-card" data-choice="deepdives" type="button"><span class="expect-sign">+</span><span class="expect-title" data-en="Small-group deep dives" data-i18n="text" data-zh="小范围深度交流">小范围深度交流</span><span class="expect-desc" data-en="Go deeper on one difficult question" data-i18n="text" data-zh="把一个有分歧的问题真正聊透">把一个有分歧的问题真正聊透</span></button><div class="expect-other-box"><button aria-pressed="false" class="expect-card expect-other" data-choice="other" id="expectOtherToggle" type="button"><span class="expect-sign">+</span><span class="expect-title" data-en="Something else" data-i18n="text" data-zh="其他">其他</span><span class="expect-desc" data-en="Tell us what we missed" data-i18n="text" data-zh="告诉我们你真正需要什么">告诉我们你真正需要什么</span></button><div hidden="" id="expectOtherWrap"><label data-en="What else would you value?" data-i18n="text" data-zh="你还希望获得什么？" for="expectOtherInput">你还希望获得什么？</label><input data-placeholder-en="Write your expectation…" data-placeholder-zh="写下你的期待…" id="expectOtherInput" maxlength="180" placeholder="写下你的期待…" type="text"/></div></div>
+</div>
+<div class="experience-footer"><button class="subtle-action" id="expectSkip" type="button"><span data-en="Skip for now" data-i18n="text" data-zh="先跳过">先跳过</span></button><button class="dm-btn" id="expectNext" type="button"><span data-en="Continue · Get relevant updates →" data-i18n="text" data-zh="继续 · 接收相关更新 →">继续 · 接收相关更新 →</span></button></div>
+</div>
+</div>
+</div>
+<div class="flow-stage" hidden="" id="emailStage">
+<div class="flow-content">
+<div class="flow-copy">
+<span class="stage-marker">DESIGN MATTERS / WHAT YOU GET</span>
+<h2><span data-en="Good conversations&lt;br&gt;should go further." data-i18n="html" data-zh="好讨论，&lt;br&gt;不该止于现场。">好讨论，<br/>不该止于现场。</span></h2>
+<p><span data-en="Stay with the questions you care about: when the next session happens, what others are actually building, and who else is working through the same problems." data-i18n="text" data-zh="跟着你关心的问题走：下一场什么时候开，别人实际做了什么，还有谁也在琢磨这件事。">跟着你关心的问题走：下一场什么时候开，别人实际做了什么，还有谁也在琢磨这件事。</span></p>
+<div aria-label="What Design Matters aims to offer" class="benefit-stack">
+<div class="benefit-row"><span class="benefit-index">01</span><div><strong data-en="Topics, dates and registration links" data-i18n="text" data-zh="新一期的议题、时间和报名入口">新一期的议题、时间和报名入口</strong><p data-en="Roundtable news by email, with the Luma registration link in one place." data-i18n="text" data-zh="通过邮件获取圆桌更新，Luma 报名链接不必四处找。">通过邮件获取圆桌更新，Luma 报名链接不必四处找。</p></div></div>
+<div class="benefit-row"><span class="benefit-index">02</span><div><strong data-en="Real methods from other teams" data-i18n="text" data-zh="别的团队正在用的真实方法">别的团队正在用的真实方法</strong><p data-en="Published notes on real cases, lessons from failures and decisions people disagree on." data-i18n="text" data-zh="公开整理中的具体案例、踩过的坑，以及有分歧的判断。">公开整理中的具体案例、踩过的坑，以及有分歧的判断。</p></div></div>
+<div class="benefit-row"><span class="benefit-index">03</span><div><strong data-en="Meet people working on similar problems" data-i18n="text" data-zh="认识在解决同类问题的人">认识在解决同类问题的人</strong><p data-en="When there’s a relevant opportunity—and you’re interested—we may invite you to a smaller peer exchange." data-i18n="text" data-zh="有合适的机会、且你愿意时，再邀请你参加同行交流。">有合适的机会、且你愿意时，再邀请你参加同行交流。</p></div></div>
+</div>
+<button class="subtle-action back-expect" id="backExpect" type="button"><span data-en="← Change what I'd like to receive" data-i18n="text" data-zh="← 修改我想获得的内容">← 修改我想获得的内容</span></button>
+</div>
+<form class="follow-form" id="followForm" novalidate="">
+<div class="form-lead"><strong data-en="Save the topics you care about" data-i18n="text" data-zh="为你保留这些关注">为你保留这些关注</strong><small data-en="About 1 min · Free" data-i18n="text" data-zh="约 1 分钟 · 免费">约 1 分钟 · 免费</small></div>
+<span class="label"><span data-en="YOU FOLLOW" data-i18n="text" data-zh="你的关注">你的关注</span></span>
+<div class="selection-recap" id="followRecap"></div>
+<div class="email-expect-recap" hidden="" id="emailExpectRecap"><span class="label"><span data-en="YOU'D LIKE" data-i18n="text" data-zh="你更期待">你更期待</span></span><div class="selection-recap" id="chosenExpectations"></div></div>
+<label class="label" for="followEmail"><span data-en="EMAIL *" data-i18n="text" data-zh="邮箱 *">邮箱 *</span></label>
+<input autocomplete="email" class="email" id="followEmail" placeholder="name@example.com" required="" type="email"/><p id="followEmailHint" class="dm-email-hint" aria-live="polite"></p>
+<div class="form-context">
+<p class="form-context-intro"><span data-en="Two quick answers help us understand your work and suggest more relevant discussions later." data-i18n="text" data-zh="再用两句话介绍一下自己。之后哪些内容和交流更适合你，我们就更有数。">再用两句话介绍一下自己。之后哪些内容和交流更适合你，我们就更有数。</span></p>
+<div class="context-fields">
+<div><label class="context-label" for="currentAiWork"><span data-en="What are you working on now?" data-i18n="text" data-zh="你现在主要在做什么？">你现在主要在做什么？</span><em aria-hidden="true">*</em></label><input aria-required="true" autocomplete="off" class="context-input" data-placeholder-en="e.g. Designing enterprise agent experiences" data-placeholder-zh="例如：正在做企业 Agent 体验设计" id="currentAiWork" maxlength="180" placeholder="例如：正在做企业 Agent 体验设计" required="" type="text"/></div>
+<div><label class="context-label" for="nextAiGoal"><span data-en="What would you like to explore next in AI?" data-i18n="text" data-zh="接下来想探索什么？（AI 相关）">接下来想探索什么？（AI 相关）</span><em aria-hidden="true">*</em></label><input aria-required="true" autocomplete="off" class="context-input" data-placeholder-en="e.g. Build AI-native products or agent workflows" data-placeholder-zh="例如：想做 AI-native 产品或 Agent 工作流" id="nextAiGoal" maxlength="180" placeholder="例如：想做 AI-native 产品或 Agent 工作流" required="" type="text"/></div>
+</div>
+</div>
+<button class="email-submit" id="followSubmit" type="button"><span data-en="Get relevant roundtables &amp; notes →" data-i18n="text" data-zh="订阅相关圆桌与整理 →">订阅相关圆桌与整理 →</span></button>
+<p class="flow-error" id="followError" role="alert"></p><p class="dm-preview-disclaimer">首次注册无需验证邮箱；登出后重新登录需要通过此邮箱验证身份。</p>
+<label class="account-row"><input id="accountOpt" required="" type="checkbox"/><span data-en="I agree to receive Design Matters roundtable and recap emails. I can unsubscribe anytime." data-i18n="text" data-zh="我同意接收 Design Matters 相关圆桌与总结邮件，且可随时退订。">我同意接收 Design Matters 相关圆桌与总结邮件，且可随时退订。</span></label>
+<p class="fineprint"><span data-en="Unsubscribe anytime. Your private context isn't public. Email verification is required when signing in again, not on first signup." data-i18n="text" data-zh="可随时退订。你的简介不会公开。邮箱用于关联 Profile；首次注册不需要邮箱验证。">可随时退订。你的简介不会公开。邮箱用于关联 Profile；首次注册不需要邮箱验证。</span></p>
+</form>
+</div>
+</div>
+</div>
+<div class="flow-success success-v10" hidden="" id="flowSuccess">
+<div class="success-flex">
+<div class="success-left">
+<span aria-hidden="true" class="success-mark">✓</span>
+<div class="stage-marker" data-en="ALL SET / COMPLETE" data-i18n="text" data-zh="ALL SET / 已完成">ALL SET / 已完成</div>
+<h2><span data-en="Your space&lt;br&gt;is ready." data-i18n="html" data-zh="你的关注，&lt;br&gt;已保存。">你的关注，<br/>已保存。</span></h2>
+<p data-en="Your topics, interests and AI direction are together in your Profile. You can update them anytime." data-i18n="text" data-zh="感兴趣的话题、期待和 AI 方向，都可以在你的 Profile 里查看和调整。">感兴趣的话题、期待和 AI 方向，都可以在你的 Profile 里查看和调整。</p>
+</div>
+<div class="success-right">
+<div class="success-profile-heading">
+<div aria-hidden="true" class="profile-glyph">DM<span class="profile-glyph-dot"></span></div>
+<div>
+<div class="stage-marker" data-en="YOUR SPACE / PROFILE" data-i18n="text" data-zh="YOUR SPACE / 个人空间">YOUR SPACE / 个人空间</div>
+<div class="success-profile-title" data-en="My Design Matters" data-i18n="text" data-zh="我的 Design Matters">我的 Design Matters</div>
+</div>
+</div>
+<div class="success-profile-details">
+<div class="profile-field-title" data-en="MY TOPICS" data-i18n="text" data-zh="我的关注">我的关注</div>
+<div class="success-topics" id="successTopics"></div>
+<p class="success-email" id="successEmail"></p>
+<p class="success-note" id="previewDeliveryNote" role="status" aria-live="polite" data-zh="Profile 已创建。邮件通知服务仍在配置中。" data-en="Your Profile is ready. Email notifications are still being configured.">Profile 已创建。邮件通知服务仍在配置中。</p>
+</div>
+<div class="success-expect" hidden="" id="successExpect"><div class="selection-recap" id="successExpectPills"></div></div>
+<a class="success-profile-primary" href="./profile-live.html" id="successProfile"><span data-en="View my Profile" data-i18n="text" data-zh="查看我的 Profile">查看我的 Profile</span><span aria-hidden="true">↗</span></a>
+<div class="success-secondary"><a href="#next" id="successNext"><span data-en="Explore #009 · AI-native" data-i18n="text" data-zh="继续看第 009 期 · AI-native">继续看第 009 期 · AI-native</span><span aria-hidden="true"> ↓</span></a></div>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+<!-- SECTION 02 / Mission, original design motif retained -->
+<!-- SECTION 03 / One next conversation, directly to the known Luma calendar -->
+<section class="next" id="next"><div class="next-art"><span class="kicker">03 / NEXT CONVERSATION</span><strong>09<br/>—<br/>AI<br/>NATIVE</strong><span class="kicker">FROM AI-ENABLED → AI-NATIVE</span></div><div class="next-copy"><span class="eyebrow">DESIGN MATTERS / ROUNDTABLE #009</span><h2><span data-en="AI-native:&lt;br&gt;what actually changes?" data-i18n="html" data-zh="AI-native，&lt;br&gt;到底改写了什么？">AI-native，<br/>到底改写了什么？</span></h2><p><span data-en="Does AI-native mean adding a Copilot to an existing product—or rethinking the product logic, workflows and roles entirely? Building on our previous conversation, #009 compares real product and organizational approaches to moving beyond AI-enabled." data-i18n="text" data-zh="是给原有产品加一个 Copilot，还是重新定义产品逻辑、工作流与人的角色？继上一轮讨论之后，#009 继续从真实产品与组织情境出发，对照 AI-enabled 与 AI-native 的真正区别。">是给原有产品加一个 Copilot，还是重新定义产品逻辑、工作流与人的角色？继上一轮讨论之后，#009 继续从真实产品与组织情境出发，对照 AI-enabled 与 AI-native 的真正区别。</span></p><div class="next-tags"><span>AI-NATIVE</span><span>PRODUCT LOGIC</span><span>WORKFLOW × TEAM</span></div><a class="luma-link" href="https://luma.com/designmatter" rel="noopener noreferrer" target="_blank"><span data-en="View event &amp; registration on Luma ↗" data-i18n="text" data-zh="在 Luma 查看活动与报名 ↗">在 Luma 查看活动与报名 ↗</span></a><div class="next-hint"><span data-en="Opens the Design Matters Luma calendar; event registration details appear there." data-i18n="text" data-zh="打开 Design Matters 的 Luma 活动页，具体报名以该页为准。">打开 Design Matters 的 Luma 活动页，具体报名以该页为准。</span></div></div></section>
+<!-- SECTION 04 / What multiple conversations have revealed -->
+<section class="synthesis" id="synthesis"><span class="eyebrow">04 / AFTER MULTIPLE CONVERSATIONS · SEASON 01</span><h2><span data-en="After many conversations,&lt;br&gt;patterns start to emerge." data-i18n="html" data-zh="多次讨论之后，&lt;br&gt;有些变化开始浮现。">多次讨论之后，<br/>有些变化开始浮现。</span></h2><div class="insight-grid"><article class="insight"><span class="eyebrow">01 / JUDGMENT</span><div><h3>Execution is getting cheaper. Judgment isn't.</h3><p class="insight-cn"><span data-en="Lower execution costs do not make hard judgment easier." data-i18n="text" data-zh="执行成本下降，不代表做判断更容易。">执行成本下降，不代表做判断更容易。</span></p></div></article><article class="insight"><span class="eyebrow">02 / SYSTEM</span><div><h3>From generation to integration.</h3><p class="insight-cn"><span data-en="The hard part moves from generation to integration and ownership." data-i18n="text" data-zh="挑战开始从生成转向真实系统里的整合与责任。">挑战开始从生成转向真实系统里的整合与责任。</span></p></div></article><article class="insight"><span class="eyebrow">03 / ORGANIZATION</span><div><h3>Same AI. Different teams. Different outcomes.</h3><p class="insight-cn"><span data-en="The same AI creates different outcomes across organizational contexts." data-i18n="text" data-zh="同一种 AI，在不同组织环境里会创造完全不同的结果。">同一种 AI，在不同组织环境里会创造完全不同的结果。</span></p></div></article></div></section>
+<!-- SECTION 05 / Genuine interactive archive, not false links -->
+<section class="archive" id="archive"><div class="eyebrow">05 / ARCHIVE<br/>001—008</div><div><h2><span data-en="Earlier conversations." data-i18n="text" data-zh="之前的讨论。">之前的讨论。</span></h2><p class="archive-intro"><span data-en="Open a session to see what the discussion changed and what remained unresolved." data-i18n="text" data-zh="每一期都让问题向前推进了一点。点击展开，看看当时留下了什么。">每一期都让问题向前推进了一点。点击展开，看看当时留下了什么。</span></p><details class="session" id="session-001"><summary><span class="num">001</span><span class="session-title" data-en="Designers are moving in different directions" data-i18n="text" data-zh="设计师开始分化了">设计师开始分化了</span><span aria-hidden="true" class="plus">+</span></summary><div class="session-detail"><p data-en="The same AI creates different role boundaries across organizations." data-i18n="text" data-zh="不同组织里的同一 AI，正在推动不同的角色边界。">不同组织里的同一 AI，正在推动不同的角色边界。</p><div class="session-signal"><span data-en="SHIFT → From tools to organizational position." data-i18n="text" data-zh="SHIFT → 从工具能力转向组织中的真实位置。">SHIFT → 从工具能力转向组织中的真实位置。</span></div></div></details>
+<details class="session" id="session-002"><summary><span class="num">002</span><span class="session-title" data-en="What remains valuable for designers?" data-i18n="text" data-zh="AI 之后，设计师还剩什么？">AI 之后，设计师还剩什么？</span><span aria-hidden="true" class="plus">+</span></summary><div class="session-detail"><p data-en="Execution becomes cheaper, but framing, prioritization and contextual judgment do not." data-i18n="text" data-zh="执行越来越便宜，但 framing、prioritization 与复杂情境中的判断并没有自动变得容易。">执行越来越便宜，但 framing、prioritization 与复杂情境中的判断并没有自动变得容易。</p><div class="session-signal"><span data-en="SHIFT → Judgment becomes more scarce than output." data-i18n="text" data-zh="SHIFT → 判断比产出更稀缺。">SHIFT → 判断比产出更稀缺。</span></div></div></details>
+<details class="session" id="session-003"><summary><span class="num">003</span><span class="session-title" data-en="Must designers become design engineers?" data-i18n="text" data-zh="必须当“设计程序猿”吗？">必须当“设计程序猿”吗？</span><span aria-hidden="true" class="plus">+</span></summary><div class="session-detail"><p data-en="Building skills broaden the role, but do not automatically grant decision rights." data-i18n="text" data-zh="代码与原型的边界变薄，但新的技能并不自动带来决策权。">代码与原型的边界变薄，但新的技能并不自动带来决策权。</p><div class="session-signal"><span data-en="SHIFT → From skills to ownership." data-i18n="text" data-zh="SHIFT → 从 skill 转向 ownership。">SHIFT → 从 skill 转向 ownership。</span></div></div></details>
+<details class="session" id="session-004"><summary><span class="num">004</span><span class="session-title" data-en="AI Engineer ↔ Product Design" data-i18n="text" data-zh="AI Engineer ↔ Product Design">AI Engineer ↔ Product Design</span><span aria-hidden="true" class="plus">+</span></summary><div class="session-detail"><p data-en="Design and engineering increasingly overlap; who frames the problem and owns trade-offs?" data-i18n="text" data-zh="设计和工程开始双向靠近，关键在于谁能定义问题、负责取舍。">设计和工程开始双向靠近，关键在于谁能定义问题、负责取舍。</p><div class="session-signal"><span data-en="OPEN → Implementation access is not decision authority." data-i18n="text" data-zh="OPEN → 靠近实现，不等于掌控决定。">OPEN → 靠近实现，不等于掌控决定。</span></div></div></details>
+<details class="session" id="session-005"><summary><span class="num">005</span><span class="session-title" data-en="What do designers still get to decide?" data-i18n="text" data-zh="当 AI 做决定，设计师还决定什么？">当 AI 做决定，设计师还决定什么？</span><span aria-hidden="true" class="plus">+</span></summary><div class="session-detail"><p data-en="Designers, PMs and engineers examine ownership from different perspectives." data-i18n="text" data-zh="设计师、产品经理和工程师从不同视角追问 AI 时代的责任归属。">设计师、产品经理和工程师从不同视角追问 AI 时代的责任归属。</p><div class="session-signal"><span data-en="SHIFT → From role boundaries to decision accountability." data-i18n="text" data-zh="SHIFT → 从角色边界到决策责任。">SHIFT → 从角色边界到决策责任。</span></div></div></details>
+<details class="session" id="session-006"><summary><span class="num">006</span><span class="session-title" data-en="How do designers actually vibe code at work?" data-i18n="text" data-zh="设计师在工作中如何 Vibe Coding？">设计师在工作中如何 Vibe Coding？</span><span aria-hidden="true" class="plus">+</span></summary><div class="session-detail"><p data-en="Hands-on practices reveal faster steps and slower systems, including edge cases." data-i18n="text" data-zh="讨论进入真实流程：哪些环节更快，哪些 edge cases 让全局更慢。">讨论进入真实流程：哪些环节更快，哪些 edge cases 让全局更慢。</p><div class="session-signal"><span data-en="PATTERN → Local speed is not system speed." data-i18n="text" data-zh="PATTERN → 单点效率不等于系统效率。">PATTERN → 单点效率不等于系统效率。</span></div></div></details>
+<details class="session" id="session-007"><summary><span class="num">007</span><span class="session-title" data-en="Vibe Coding at Work — Part 02" data-i18n="text" data-zh="Vibe Coding at Work — Part 02">Vibe Coding at Work — Part 02</span><span aria-hidden="true" class="plus">+</span></summary><div class="session-detail"><p data-en="Prompts, context, Skills, MCP and collaboration bring production ownership into focus." data-i18n="text" data-zh="Prompt、Context、Skill、MCP 与多人协作，把问题引向 production 的责任与维护。">Prompt、Context、Skill、MCP 与多人协作，把问题引向 production 的责任与维护。</p><div class="session-signal"><span data-en="SHIFT → The bottleneck moves from generation to integration." data-i18n="text" data-zh="SHIFT → 瓶颈从 generation 转向 integration。">SHIFT → 瓶颈从 generation 转向 integration。</span></div></div></details><details class="session" id="session-008"><summary><span class="num">008</span><span class="session-title" data-en="AI-native: product upgrade or organizational redesign?" data-i18n="text" data-zh="AI-native：产品升级，还是组织重构？">AI-native：产品升级，还是组织重构？</span><span aria-hidden="true" class="plus">+</span></summary><div class="session-detail"><p data-en="Compared AI-native from zero, SaaS transitions, partial enterprise redesign and AI-enabled starting points." data-i18n="text" data-zh="对照 AI-native 从 0 到 1、成熟 SaaS 转型、大组织局部重构，以及从 AI-enabled 出发的不同路径。">对照 AI-native 从 0 到 1、成熟 SaaS 转型、大组织局部重构，以及从 AI-enabled 出发的不同路径。</p><div class="session-signal"><span data-en="DISCUSSION → AI-native means different shifts in product, workflow and ownership across contexts." data-i18n="text" data-zh="DISCUSSION → AI-native 在不同组织里意味着不同的产品、流程与责任变化。">DISCUSSION → AI-native 在不同组织里意味着不同的产品、流程与责任变化。</span></div></div></details><p class="archive-foot"><span data-en="These are session takeaways; full transcripts are not published." data-i18n="text" data-zh="当前展示各期核心判断；完整逐字稿并未公开。">当前展示各期核心判断；完整逐字稿并未公开。</span></p></div></section>
+<footer class="footer"><strong>DESIGN<br/>MATTERS.</strong><p>Shared change. Different systems.<br/>Changing judgment. © 2026</p></footer></div>
+<script>/* Design Matters full ZIP design; progressive interests -> expectations -> signup */
+(function(){
+'use strict';
+const storage=(()=>{
+  const memory=Object.create(null);
+  let nativeStore=null;
+  try {
+    const candidate=window.localStorage;
+    const probe='__dm_preview_storage_test__';
+    candidate.setItem(probe,'1');candidate.removeItem(probe);
+    nativeStore=candidate;
+  } catch (_) {}
+  return {
+    get persistent(){return !!nativeStore;},
+    getItem(key){
+      if(nativeStore){try{return nativeStore.getItem(key)}catch(_){nativeStore=null}}
+      return Object.prototype.hasOwnProperty.call(memory,key)?memory[key]:null;
+    },
+    setItem(key,value){
+      memory[key]=String(value);
+      if(nativeStore){try{nativeStore.setItem(key,String(value))}catch(_){nativeStore=null}}
+    },
+    removeItem(key){
+      delete memory[key];
+      if(nativeStore){try{nativeStore.removeItem(key)}catch(_){nativeStore=null}}
+    }
+  };
+})();
+const topicNames={'agentic-products-agent-ux':'Agent UX','enterprise-ai':'Enterprise AI','vibe-coding-design-roles':'Vibe Coding','design-judgment-future-work':'Judgment','ai-native-startups-product-strategy':'AI-native'};
+const expectNames={insights:['判断与洞察','Insights'],cases:['真实案例','Real cases'],invites:['圆桌动态','Roundtables'],peers:['同行连接','Peer connections'],deepdives:['深度交流','Deep dives'],other:['其他期待','Other request']};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const read=(k,d)=>{try{return JSON.parse(storage.getItem(k))??d}catch(_){return d}};
+const lang=()=>document.documentElement.dataset.lang||'zh';
+const t=(zh,en)=>lang()==='zh'?zh:en;
+const safeText=(str)=>{let e=document.createElement('span');e.textContent=str;return e};
+const flow=$('#interestFlow'),entry=$('#flowEntry'),success=$('#flowSuccess'),next=$('#dmNext');
+const state={selected:new Set(),expectations:new Set(),saved:read('dm_community_preferences_v4',null),open:false,success:false,stage:'expect',customTopic:'',customExpectation:''};
+let opener=null;
+const backdrop=$('#flowBackdrop');
+const cards=$$('.dm-topic-card');
+function updateTopics(){
+  cards.forEach(c=>{let picked=state.selected.has(c.dataset.id);c.classList.toggle('chosen',picked);c.setAttribute('aria-pressed',String(picked));c.querySelector('.dm-card-plus').textContent=picked?'✓':'+';});
+  const p=$('#threadPills');p.replaceChildren();
+  if(!state.selected.size&&!state.customTopic.trim()){let e=safeText(t('选中你关心的主题，下一步可以定制你想获得的内容。','Choose what matters to you, then tailor what you receive.'));e.className='thread-placeholder';p.append(e)}
+  [...state.selected].forEach(id=>{const b=document.createElement('button');b.type='button';b.className='thread-chip';b.textContent=topicNames[id]+' ×';b.addEventListener('click',()=>setTopic(id,false));b.setAttribute('aria-label',t('移除 ','Remove ')+topicNames[id]);p.append(b)});
+  if(state.customTopic.trim()){const other=document.createElement('button');other.type='button';other.className='thread-chip';other.textContent=state.customTopic.trim()+' ×';other.addEventListener('click',()=>{$('#topicOtherInput').value='';state.customTopic='';updateTopics()});p.append(other)}
+  next.disabled=!(state.selected.size||state.customTopic.trim());
+  next.textContent=t('继续 · 选择我想获得什么 →','Continue · What would help me most →');
+  for(let sel of ['#followRecap','#expectTopicRecap','#successTopics']) $(sel).replaceChildren(...[...state.selected].map(id=>safeText(topicNames[id])),...(state.customTopic.trim()?[safeText(state.customTopic.trim())]:[]));
+}
+function setTopic(id,on){if(on)state.selected.add(id);else state.selected.delete(id);updateTopics();}
+cards.forEach(c=>c.addEventListener('click',()=>setTopic(c.dataset.id,!state.selected.has(c.dataset.id))));
+function updateExpect(){
+  $$('.expect-card').forEach(b=>{let on=state.expectations.has(b.dataset.choice);b.setAttribute('aria-pressed',String(on));b.querySelector('.expect-sign').textContent=on?'✓':'+';});
+  const selected=[...state.expectations].filter(x=>expectNames[x]&&(x!=='other'||state.customExpectation.trim()));
+  for(const block of [['#chosenExpectations','#emailExpectRecap'],['#successExpectPills','#successExpect']]){
+    $(block[0]).replaceChildren(...selected.map(id=>safeText(id==='other'?state.customExpectation.trim():expectNames[id][lang()==='zh'?0:1])));
+    $(block[1]).hidden=!selected.length;
+  }
+}
+$$('.expect-card').forEach(c=>c.addEventListener('click',()=>{let id=c.dataset.choice;state.expectations.has(id)?state.expectations.delete(id):state.expectations.add(id);updateExpect()}));
+$('#topicOtherToggle').addEventListener('click',()=>{let on=$('#topicOtherWrap').hidden;$('#topicOtherWrap').hidden=!on;$('#topicOtherToggle').setAttribute('aria-expanded',String(on));if(on)$('#topicOtherInput').focus()});
+$('#topicOtherInput').addEventListener('input',e=>{state.customTopic=e.target.value.slice(0,180);updateTopics()});
+$('#topicOtherClear').addEventListener('click',()=>{$('#topicOtherInput').value='';state.customTopic='';updateTopics()});
+$('#expectOtherToggle').addEventListener('click',()=>{const on=state.expectations.has('other');$('#expectOtherWrap').hidden=!on;if(on)$('#expectOtherInput').focus();else{state.customExpectation='';$('#expectOtherInput').value='';updateExpect()}});
+$('#expectOtherInput').addEventListener('input',e=>{state.customExpectation=e.target.value.slice(0,180);updateExpect()});
+
+function applyLang(l){
+ document.documentElement.dataset.lang=l;document.documentElement.lang=l==='zh'?'zh-CN':'en';
+ $$('[data-i18n]').forEach(el=>{let value=el.dataset[l];if(value==null)return;if(el.dataset.i18n==='html')el.innerHTML=value;else el.textContent=value});
+ $$('[data-placeholder-zh]').forEach(el=>{el.placeholder=el.dataset[l==='zh'?'placeholderZh':'placeholderEn']});
+ $$('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===l));
+ try{storage.setItem('designMattersLang',l)}catch(_){}
+ updateTopics();updateExpect();
+}
+const prior=storage.getItem('designMattersLang');applyLang(prior==='zh'||prior==='en'?prior:((navigator.language||'').toLowerCase().startsWith('zh')?'zh':'en'));
+$$('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>applyLang(btn.dataset.lang)));
+function toggleFlow(open){
+ state.open=open;
+ if(open){opener=document.activeElement;flow.hidden=false;backdrop.hidden=false;document.body.classList.add('dm-dialog-open');requestAnimationFrame(()=>{flow.classList.add('is-open');backdrop.classList.add('is-open');flow.focus({preventScroll:true})})}
+ else{flow.classList.remove('is-open');backdrop.classList.remove('is-open');document.body.classList.remove('dm-dialog-open');setTimeout(()=>{if(!state.open){flow.hidden=true;backdrop.hidden=true;(opener&&opener.focus?opener:next).focus({preventScroll:true})}},310)}
+}
+function changeStage(step){state.stage=step;$('#expectStage').hidden=step!=='expect';$('#emailStage').hidden=step!=='email';$('#flowStep').textContent=step==='expect'?'01 / 02':'02 / 02';updateTopics();updateExpect();flow.scrollTo({top:0,behavior:'instant'});}
+function openFlow(){if(!state.selected.size&&!state.customTopic.trim())return;success.hidden=true;entry.hidden=false;state.success=false;
+ $('#followEmail').value=state.saved?.email||storage.getItem('dm_flow_active_email')||'';
+ $('#currentAiWork').value=state.saved?.current_ai_work||'';
+ $('#nextAiGoal').value=state.saved?.next_ai_goal||'';
+ $('#followError').textContent='';
+ if(state.saved?.expectations)state.expectations=new Set(state.saved.expectations.filter(x=>expectNames[x]));
+ if(state.saved?.custom_expectation){state.customExpectation=state.saved.custom_expectation;$('#expectOtherInput').value=state.customExpectation;state.expectations.add('other');$('#expectOtherWrap').hidden=false}
+ else $('#expectOtherWrap').hidden=!state.expectations.has('other');
+ updateExpect();changeStage('expect');toggleFlow(true);
+}
+next.addEventListener('click',openFlow);
+$('#flowClose').addEventListener('click',()=>toggleFlow(false));
+backdrop.addEventListener('click',()=>toggleFlow(false));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.open)toggleFlow(false);if(e.key!=='Tab'||!state.open)return;const f=[...flow.querySelectorAll('a[href],button:not([disabled]),input:not([disabled])')].filter(el=>el.getClientRects().length);if(!f.length)return;const first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}});
+$('#expectNext').addEventListener('click',()=>changeStage('email'));
+$('#expectSkip').addEventListener('click',()=>{state.expectations.clear();changeStage('email')});
+$('#backExpect').addEventListener('click',()=>changeStage('expect'));
+for (const id of ['#currentAiWork','#nextAiGoal']) $(id).addEventListener('input',()=>{$(id).removeAttribute('aria-invalid');$('#followError').textContent='';});
+// Registration writes to Supabase via the shared member module.
+
+function showSubscribeError(message,field){
+  const feedback=$('#followError');
+  feedback.textContent=message;
+  if(field){
+    field.setAttribute('aria-invalid','true');
+    field.focus({preventScroll:false});
+  }
+}
+async function subscribeToPreview(e){
+  if(e)e.preventDefault();
+  const emailInput=$('#followEmail');
+  const email=emailInput.value.trim().toLowerCase();
+  const ids=[...state.selected];
+  const feedback=$('#followError');
+  const submit=$('#followSubmit');
+  feedback.textContent='';
+  for(const element of [emailInput,$('#currentAiWork'),$('#nextAiGoal')])element.removeAttribute('aria-invalid');
+  if(!email||!emailInput.checkValidity()||!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){
+    showSubscribeError(t('请输入格式正确的邮箱地址。','Please check your email address.'),emailInput);return;
+  }
+  if(!ids.length&&!state.customTopic.trim()){
+    showSubscribeError(t('请先在首页选择至少一个关注话题。','Select at least one topic first.'));return;
+  }
+  const work=$('#currentAiWork'),goal=$('#nextAiGoal');
+  if(!work.value.trim()){
+    showSubscribeError(t('请填写「你现在主要在做什么？」','Tell us what you are working on.'),work);return;
+  }
+  if(!goal.value.trim()){
+    showSubscribeError(t('请填写「接下来想探索什么？」','Tell us what you want to explore next.'),goal);return;
+  }
+  if(!$('#accountOpt').checked){
+    showSubscribeError(t('请先同意接收相关圆桌与总结邮件。','Please agree to receive relevant community emails.'),$('#accountOpt'));return;
+  }
+  submit.disabled=true;
+  submit.textContent=t('正在创建你的 Profile…','Creating your Profile…');
+  feedback.textContent=t('正在安全保存你的关注…','Saving your interests securely…');
+  try{
+    const {registerMember,emailHint}=await import('./dm-member-client.js?v=20261015-full-zip');
+    const emailProblem=emailHint(email);
+    if(emailProblem){showSubscribeError(emailProblem,emailInput);return;}
+    const saved={
+      email,topics:ids,custom_topic:state.customTopic.trim(),
+      expectations:[...state.expectations].filter(x=>x!=='other'||state.customExpectation.trim()),
+      custom_expectation:state.customExpectation.trim(),
+      current_ai_work:work.value.trim().slice(0,180),
+      next_ai_goal:goal.value.trim().slice(0,180),
+      consent:true,updated_at:new Date().toISOString()
+    };
+    await registerMember(saved);
+    state.saved=saved;
+    storage.setItem('dm_community_preferences_v4',JSON.stringify(saved));
+    $('#successEmail').textContent=t('邮箱：','Email: ')+email;
+    const delivery=$('#previewDeliveryNote');
+    if(delivery)delivery.textContent=t('Profile 已创建。圆桌邮件通知功能正在完善中；登出后可通过此邮箱验证重新登录。','Your Profile is ready. Email updates are being prepared; you can verify this address to sign in again later.');
+    syncProfileLinks();
+    entry.hidden=true;success.hidden=false;state.success=true;
+    updateTopics();updateExpect();$('#flowStep').textContent='✓';
+    try{flow.scrollTo({top:0,behavior:'instant'})}catch(_){flow.scrollTop=0}
+    $('#flowClose').focus({preventScroll:true});
+    feedback.textContent='';
+  }catch(error){
+    console.error('Membership registration failed:',error);
+    feedback.textContent=error.message||t('暂时无法完成注册，请稍后重试。','Could not register. Please try again.');
+    if(/已经注册|already registered/i.test(String(feedback.textContent))){
+      const link=document.createElement('a');link.href='./?member=login';link.textContent=t(' 已有账号？邮箱登录 →',' Log in with your email →');link.style.textDecoration='underline';
+      feedback.append(link);
+    }
+  }finally{
+    submit.disabled=false;
+    submit.textContent=t('订阅相关圆桌与整理 →','Get relevant roundtables & notes →');
+  }
+}
+$('#followEmail').addEventListener('blur',()=>{
+  const input=$('#followEmail'),hint=$('#followEmailHint');
+  const v=input.value.trim().toLowerCase();
+  if(!hint)return;
+  if(!v){hint.textContent='';return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)){hint.textContent=t('邮箱格式不完整，请检查。','Please check your email address.');hint.style.color='#9c3228';return;}
+  const domain=v.split('@')[1];
+  if(['gmail.con','gamil.com','gmial.com','outlook.con','hotmial.com'].includes(domain)){
+    hint.textContent=t('请检查邮箱域名，可能有拼写错误。','Please check your email domain for a typo.');hint.style.color='#9c3228';return;
+  }
+  hint.textContent=t('邮箱格式已检查；是否已有账号将在提交时检查。','Format checked. Existing accounts are checked when you continue.');hint.style.color='#3b6331';
+});
+$('#followSubmit').addEventListener('click',subscribeToPreview);
+$('#followForm').addEventListener('submit',subscribeToPreview);
+
+// Navigate to the authenticated production Profile page without exposing data in a URL.
+function linkedProfileUrl(){return './profile-live.html';}
+function syncProfileLinks(){
+  for(const anchor of [$('#successProfile')]){
+    if(anchor)anchor.href=linkedProfileUrl();
+  }
+}
+for(const anchor of [$('#successProfile')]){
+  if(anchor)anchor.addEventListener('click',syncProfileLinks);
+}
+syncProfileLinks();
+$('#successNext').addEventListener('click',()=>toggleFlow(false));
+if(state.saved?.topics?.length||state.saved?.custom_topic){(state.saved.topics||[]).filter(id=>topicNames[id]).forEach(id=>state.selected.add(id));state.expectations=new Set((state.saved.expectations||[]).filter(x=>expectNames[x]));state.customTopic=state.saved.custom_topic||'';state.customExpectation=state.saved.custom_expectation||'';$('#topicOtherInput').value=state.customTopic;$('#expectOtherInput').value=state.customExpectation;if(state.customTopic){$('#topicOtherWrap').hidden=false;$('#topicOtherToggle').setAttribute('aria-expanded','true')}}
+updateTopics();updateExpect();applyLang(lang());
+const navLinks=$$('.nav-item');const sects=['about','dm-community','next','synthesis','archive'].map(id=>$("#"+id)).filter(Boolean);if('IntersectionObserver' in window){let navObserver=new IntersectionObserver(entries=>{entries.filter(x=>x.isIntersecting).forEach(x=>{let id=x.target.id;if(id==='about')id='dm-community';if(id==='synthesis')id='archive';navLinks.forEach(a=>a.classList.toggle('active',a.dataset.navSection===id))})},{rootMargin:'-24% 0px -56% 0px',threshold:0});sects.forEach(e=>navObserver.observe(e))}
+$$('#archive details.session').forEach(el=>el.addEventListener('toggle',()=>{if(!el.open)return;$$('#archive details.session').forEach(o=>{if(o!==el)o.open=false})}));
+})();
+</script><script type="module" src="./dm-member-nav.js?v=20261015-full-zip"></script>
+</body></html>
