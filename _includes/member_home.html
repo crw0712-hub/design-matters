@@ -142,10 +142,10 @@ document.getElementById('dmCount').textContent=selected.size?selected.size+' top
 document.getElementById('dmNext').addEventListener('click',()=>{
   if(!selected.size)return;
   localStorage.setItem('dm_pending_topics',JSON.stringify([...selected]));
-  location.href=window.DMFlow?.hasActiveProfile?.()?'./profile.html?edit=topics':'./join-live.html';
+  location.href='./join-live.html';
 });
 document.getElementById('dmAccount').addEventListener('click',()=>{
-  location.href=window.DMFlow?.hasActiveProfile?.()?'./profile.html':'./join-live.html';
+  location.href='./profile-live.html';
 });
 const oldJoin=document.querySelector('.navlinks a[href="#join"]');if(oldJoin)oldJoin.remove();
 document.querySelectorAll('#next a[href="#join"]').forEach(el=>{el.href='#dm-community';el.textContent='Explore topics →';el.dataset.zh='探索讨论方向 →';el.dataset.en='Explore topics →'});
