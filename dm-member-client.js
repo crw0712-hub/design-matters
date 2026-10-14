@@ -59,7 +59,25 @@ export async function registerMember({email,topics=[],expectations=[],custom_top
  if(problem)throw Error(problem);
  if(!consent)throw Error("请同意接收相关社区邮件后继续。");
  const {session,member}=await currentMember();
- if(member){if(member.email===email)return member;throw Error("当前浏览器已有登录账号，请先登出再注册。")}
+ if(member){
+  if(member.email!==email)throw Error("当前浏览器已有 Design Matters Profile。请使用右上角 Profile 查看和修改；邮箱找回尚未开放，请勿登出。");
+  // Existing browser sessions must update their interests, not merely show a
+  // misleading 'saved' success while silently returning the old profile.
+  const selected=[...new Set(topics.filter(x=>topicIDs.has(x)))];
+  const interests=[...new Set(expectations.filter(x=>expectIDs.has(x)))];
+  const change={
+   topics:selected.length?selected:member.topics,
+   expectations:interests.length?interests:member.expectations,
+   custom_topic:safeString(custom_topic),
+   custom_expectation:safeString(custom_expectation),
+   current_ai_work:safeString(current_ai_work)||member.current_ai_work,
+   next_ai_goal:safeString(next_ai_goal)||member.next_ai_goal,
+   updated_at:new Date().toISOString()
+  };
+  const {data,error}=await supabase.from("dm_member_intake").update(change).eq("user_id",member.user_id).select().single();
+  if(error)throw Error("暂时无法更新关注话题："+error.message);
+  return data;
+ }
  let user=session?.user,startedAnonymous=false;
  if(!user){
   const {data,error}=await supabase.auth.signInAnonymously();
