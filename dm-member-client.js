@@ -1,7 +1,8 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 const URL="https://khhfxkrwgcckgqupncyw.supabase.co";
 const KEY="sb_publishable_oXnMd_aF95wYTPcq6TwGVg_alaNdfTH";
-export const supabase=createClient(URL,KEY);
+// Early access: keep the anonymous Auth session on this browser until the user signs out or clears site storage.
+export const supabase=createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 export const TOPICS=[
  ["agentic-products-agent-ux","Agent Experience & Human Control"],
  ["enterprise-ai","Enterprise AI & Workflow Redesign"],
@@ -74,7 +75,7 @@ export async function registerMember({email,topics=[],expectations=[],custom_top
  const {data,error}=await supabase.from("dm_member_intake").insert(row).select().single();
  if(error){
   if(startedAnonymous)await supabase.auth.signOut();
-  if(error.code==="23505")throw Error("此邮箱已经注册 Design Matters，请使用右上角 Profile → 登录，通过邮件验证找回账号。");
+  if(error.code==="23505")throw Error("此邮箱已经注册 Design Matters。邮箱找回暂未开放，请使用创建 Profile 时的原浏览器继续访问。");
   throw Error("暂时无法保存账号："+error.message);
  }
  try{localStorage.removeItem("dm_pending_topics")}catch{}
