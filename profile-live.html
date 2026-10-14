@@ -17,7 +17,7 @@ async function syncPending(){
  if(data.email?.toLowerCase()!==user.email?.toLowerCase())return;
  if(!data.consent_roundtables)return;
  let nextTopics=(Array.isArray(data.topics)?data.topics:[]).filter(id=>valid.has(id));
- const {error:e1}=await sb.from('dm_member_preferences').upsert({user_id:user.id,expectations:(data.expectations||[]).filter(x=>['insights','cases','invites','peers','deepdives','other'].includes(x)),current_ai_work:(data.current_ai_work||'').slice(0,180),next_ai_goal:(data.next_ai_goal||'').slice(0,180),consent_roundtables:true,consent_summaries:!!data.consent_summaries,locale:'zh'},{onConflict:'user_id'});
+ const {error:e1}=await sb.from('dm_member_preferences').upsert({user_id:user.id,expectations:(data.expectations||[]).filter(x=>['insights','cases','invites','peers','deepdives','other'].includes(x)),current_ai_work:(data.current_ai_work||'').slice(0,180),next_ai_goal:(data.next_ai_goal||'').slice(0,180),custom_topic:(data.custom_topic||'').slice(0,180),custom_expectation:(data.custom_expectation||'').slice(0,180),consent_roundtables:true,consent_summaries:!!data.consent_summaries,locale:'zh'},{onConflict:'user_id'});
  if(e1)throw e1;
  const {data:existing,error:e2}=await sb.from('dm_member_profiles').select('user_id').eq('user_id',user.id).maybeSingle();if(e2)throw e2;
  if(!existing){const {error:e3}=await sb.from('dm_member_profiles').insert({user_id:user.id,display_name:'我的 Design Matters'});if(e3)throw e3}
