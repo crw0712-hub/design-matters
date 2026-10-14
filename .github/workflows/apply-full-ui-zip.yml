@@ -16,7 +16,7 @@ jobs:
         run: |
           python - <<'PY'
           import base64,zipfile,io,pathlib
-          data=base64.b64decode(pathlib.Path('dm-ui-v3.zip.b64').read_text().strip())
+          data=base64.b64decode(''.join(pathlib.Path(p).read_text().strip() for p in ('dm-ui-v3.part1','dm-ui-v3.part2','dm-ui-v3.zip.b64')))
           with zipfile.ZipFile(io.BytesIO(data)) as z:
               for name in ('index.html','profile-live.html'):
                   pathlib.Path(name).write_bytes(z.read(name))
