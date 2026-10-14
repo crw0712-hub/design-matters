@@ -7,32 +7,38 @@
 <label class="field" for="goal">接下来想探索什么？</label><input id="goal" type="text" required maxlength="180" placeholder="例如：AI-native 产品">
 <label class="field"><input id="consent" type="checkbox" required checked> 我同意接收 Design Matters 相关圆桌及总结邮件，可随时退订。</label>
 <button class="primary" id="submit" type="submit">订阅相关圆桌与整理 →</button><div class="status" id="status" role="status" aria-live="polite"></div></form>
-<div class="info" id="result" hidden><h2>请查看你的邮箱</h2><p>我们已请求发送安全验证邮件。请通过邮件中的链接验证邮箱并进入 Profile。已经有账号的用户也可以通过邮件链接登录。</p><p class="quiet">如果没有收到，请检查垃圾邮件文件夹。邮箱验证完成前不会宣称注册成功。</p></div>
 </main><script type="module">
-import{createClient}from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-const client=createClient('https://khhfxkrwgcckgqupncyw.supabase.co','sb_publishable_oXnMd_aF95wYTPcq6TwGVg_alaNdfTH');
-const TOPICS=[['agentic-products-agent-ux','Agent Experience & Human Control'],['enterprise-ai','Enterprise AI & Workflow Redesign'],['vibe-coding-design-roles','AI-assisted Building & Prototyping'],['design-judgment-future-work','Design Judgment & Agency'],['ai-native-startups-product-strategy','AI-native Products & Teams']];
-const EXPECTS=[['insights','Sharper insights'],['cases','Real cases & methods'],['invites','Relevant roundtable invites'],['peers','Find peers'],['deepdives','Small-group deep dives'],['other','Something else']];
-function draw(host,entries,name){document.getElementById(host).innerHTML=entries.map(([id,label])=>'<label class="pill"><input type="checkbox" name="'+name+'" value="'+id+'"><span>'+label+'</span></label>').join('')}
-draw('topics',TOPICS,'topic');draw('expects',EXPECTS,'expect');
-try{const pending=JSON.parse(localStorage.getItem('dm_pending_topics')||'[]');document.querySelectorAll('[name=topic]').forEach(i=>i.checked=pending.includes(i.value));}catch{}
-const e=document.getElementById('email'),s=document.getElementById('emailStatus'),form=document.getElementById('form'),submit=document.getElementById('submit'),status=document.getElementById('status');
-function validateEmail(){const v=e.value.trim().toLowerCase();if(!v){s.textContent='请填写邮箱';s.className='status';return false}if(!e.checkValidity()||!v.includes('.')){s.textContent='邮箱格式不正确';s.className='status';return false}s.textContent='格式正确；邮箱所有权将在邮件验证后确认。已有账号可通过同一验证链接登录。';s.className='status good';return true}
-e.addEventListener('blur',validateEmail);
-form.addEventListener('submit',async(ev)=>{ev.preventDefault();status.textContent='';if(!validateEmail()||!form.reportValidity())return;const topics=[...document.querySelectorAll('[name=topic]:checked')].map(x=>x.value);if(!topics.length){status.textContent='请至少选择一个话题';return}
-const prefs={email:e.value.trim().toLowerCase(),topics,custom_topic:document.getElementById('customTopic').value.trim(),custom_expectation:document.getElementById('customExpectation').value.trim(),expectations:[...document.querySelectorAll('[name=expect]:checked')].map(x=>x.value),current_ai_work:document.getElementById('work').value.trim(),next_ai_goal:document.getElementById('goal').value.trim(),consent_roundtables:document.getElementById('consent').checked,consent_summaries:document.getElementById('consent').checked,locale:'zh'};
-submit.disabled=true;status.textContent='正在请求验证邮件…';
-try{
-  localStorage.setItem('dm_verified_onboarding_v1',JSON.stringify(prefs));
-  const {data:{user}}=await client.auth.getUser();
-  if(user && user.email?.toLowerCase()===prefs.email){
-    location.assign('./profile-live.html');
-    return;
+import {TOPICS,EXPECTATIONS,registerMember,cleanEmail,emailHint} from "./dm-member-client.js";
+const TOPIC_NAMES=TOPICS,EXPECTS=EXPECTATIONS;
+const $=id=>document.getElementById(id),form=$("form"),button=$("submit"),email=$("email"),emailStatus=$("emailStatus"),status=$("status");
+function draw(id,entries,name){$(id).innerHTML=entries.map(([key,title])=>'<label class="pill"><input type="checkbox" name="'+name+'" value="'+key+'"><span>'+title+'</span></label>').join("");}
+draw("topics",TOPIC_NAMES,"topic");draw("expects",EXPECTS,"expect");
+try{const preselect=JSON.parse(localStorage.getItem("dm_pending_topics")||"[]");document.querySelectorAll('[name="topic"]').forEach(x=>x.checked=preselect.includes(x.value));}catch{}
+function validateEmail(){
+ const value=cleanEmail(email.value),error=emailHint(value);
+ if(error){emailStatus.textContent=error;emailStatus.className="status";return false;}
+ emailStatus.textContent="邮箱格式有效。提交时会检查是否已有 Design Matters 账号。";
+ emailStatus.className="status good";return true;
+}
+email.addEventListener("blur",validateEmail);
+form.addEventListener("submit",async event=>{
+ event.preventDefault();status.textContent="";
+ if(!validateEmail()||!form.reportValidity())return;
+ const topics=[...document.querySelectorAll('[name="topic"]:checked')].map(x=>x.value);
+ if(!topics.length){status.textContent="请选择至少一个话题。";return;}
+ const formData={email:email.value,topics,expectations:[...document.querySelectorAll('[name="expect"]:checked')].map(x=>x.value),
+  custom_topic:$("customTopic").value,custom_expectation:$("customExpectation").value,
+  current_ai_work:$("work").value,next_ai_goal:$("goal").value,consent:$("consent").checked};
+ button.disabled=true;status.textContent="正在创建你的 Profile…";
+ try{
+  await registerMember(formData);
+  location.assign("./profile-live.html");
+ }catch(error){
+  status.replaceChildren();
+  status.append(document.createTextNode(error.message||"暂时无法注册，请稍后重试。"));
+  if(String(error.message||"").includes("已经注册")){
+   const a=document.createElement("a");a.href="./#dm-community";a.textContent=" 返回首页 → Profile → 登录";a.style.marginLeft="8px";status.append(a);
   }
-  const redirect=location.origin+location.pathname.replace(/[^/]*$/,'profile-live.html');
-  const{error}=await client.auth.signInWithOtp({email:prefs.email,options:{emailRedirectTo:redirect,shouldCreateUser:true}});
-  if(error)throw error;
-  form.hidden=true;document.getElementById('result').hidden=false;status.textContent='';
-}catch(err){status.textContent=err.message||'请求失败，请稍后重试。';submit.disabled=false}
+ }finally{button.disabled=false;}
 });
 </script></body></html>
