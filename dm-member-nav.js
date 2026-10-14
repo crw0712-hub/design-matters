@@ -1,4 +1,4 @@
-import {supabase,currentMember,registerMember,requestEmailLogin,verifyEmailLogin,logoutMember,EXPECTATIONS,optionLabels,getExpectations,emailHint,cleanEmail} from "./dm-member-client.js?v=20261015-full-zip";
+import {supabase,currentMember,registerMember,requestEmailLogin,verifyEmailLogin,logoutMember,EXPECTATIONS,optionLabels,getExpectations,emailHint,cleanEmail} from "./dm-member-client.js?v=20261015-browser-session-v1";
 const nav=document.querySelector(".navlinks");
 if(nav){
  const style=document.createElement("style");
@@ -12,7 +12,7 @@ if(nav){
  .dm-user-menu a:hover,.dm-user-menu button:hover{background:#b8ff17}
  .dm-member-backdrop[hidden],.dm-member-dialog[hidden]{display:none!important}
  .dm-member-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.37);z-index:600}
- .dm-member-dialog{position:fixed;z-index:601;top:50%;left:50%;transform:translate(-50%,-50%);width:min(530px,calc(100vw - 24px));max-height:min(88vh,850px);overflow:auto;background:#fbfaf6;border:1.5px solid #0a0a0a;border-radius:24px;padding:32px;color:#0a0a0a;box-shadow:0 30px 100px #0003}
+ .dm-member-dialog{position:fixed;z-index:601;top:50%;left:50%;transform:translate(-50%,-50%);width:min(530px,calc(100vw - 24px));max-height:min(88dvh,850px);overflow:auto;background:#fbfaf6;border:1.5px solid #0a0a0a;border-radius:24px;padding:32px;color:#0a0a0a;box-shadow:0 30px 100px #0003}
  .dm-member-dialog .dm-dialog-head{display:flex;align-items:start;justify-content:space-between;gap:12px}
  .dm-member-dialog h2{font-size:clamp(30px,4vw,43px);line-height:1.02;letter-spacing:-.06em;margin:16px 0}
  .dm-member-dialog .dm-eyebrow{font-size:11px;font-weight:900;letter-spacing:.1em}
@@ -33,7 +33,7 @@ if(nav){
  .dm-member-dialog .dm-switch{font:inherit;font-size:13px;background:transparent;border:0;text-decoration:underline;padding:13px 0;cursor:pointer}
  .dm-member-dialog .dm-consent{font-size:12px;display:flex;align-items:start;gap:10px;margin-top:17px}
  .dm-member-dialog .dm-consent input{margin-top:3px}
- @media(max-width:760px){.dm-user-controls{margin-left:4px}.dm-profile-top{padding:9px 12px}.dm-member-dialog{padding:24px 20px}.dm-user-menu{right:10px;top:58px}}
+ @media(max-width:760px){.dm-user-controls{margin-left:4px}.dm-profile-top{padding:9px 12px}.dm-member-dialog{padding:24px 20px;max-height:calc(100dvh - 24px)}.dm-user-menu{right:10px;top:58px}}
  `;
  document.head.append(style);
  // Replace all legacy localStorage-based member navigation.
@@ -57,7 +57,7 @@ if(nav){
     closeMenu();
     if(action==="login"||action==="signup"){openDialog(action);return}
     if(action==="profile"){location.assign("./profile-live.html");return}
-    try{const {data:{session}}=await supabase.auth.getSession();if(session&&!session.user?.email&&!confirm("此账号注册时未验证邮箱。登出后需要通过注册邮箱接收登录邮件；如果邮件服务尚未配置，可能暂时无法找回 Profile。确定登出吗？"))return;await logoutMember();signedIn=false;renderMenu();trigger.textContent="Profile ↗";}catch(e){alert(e.message||"登出失败");}
+    try{const {data:{session}}=await supabase.auth.getSession();if(session&&!session.user?.email&&!confirm("当前处于浏览器保持登录阶段，邮箱找回尚未启用。登出后可能无法重新进入此 Profile。确定仍要登出吗？"))return;await logoutMember();signedIn=false;renderMenu();trigger.textContent="Profile ↗";}catch(e){alert(e.message||"登出失败");}
    });menu.append(btn);
   }
  }
@@ -80,7 +80,7 @@ if(nav){
   <button type="submit" id="dm-dialog-submit" class="dm-dialog-submit">${signup?"创建我的 Profile →":"发送登录邮件 →"}</button>
   </form>
   <button type="button" id="dm-dialog-switch" class="dm-switch">${signup?"已有账号？通过邮箱登录 →":"第一次加入？创建 Profile →"}</button>
-  <div class="dm-note">${signup?"首次创建无需邮件验证。登出后重新登录时，需要验证邮箱所有权。":"邮件登录会验证邮箱所有权；首次注册无需验证。"}</div>`;
+  <div class="dm-note">${signup?"当前开放版会在此浏览器保持登录。邮箱找回稍后开放；请勿主动登出或清除浏览器网站数据。":"邮箱登录需要邮件服务支持。尚未配置时，请使用之前创建 Profile 的原浏览器。"}</div>`;
   dialog.querySelector(".dm-dismiss").addEventListener("click",closeDialog);
   dialog.querySelector("#dm-dialog-switch").addEventListener("click",()=>{mode=signup?"login":"signup";renderDialog()});
   if(signup)optionLabels(dialog.querySelector("#dm-dialog-expects"),EXPECTATIONS,"dm-expect",[]);
