@@ -1,4 +1,4 @@
-import {supabase,currentMember,registerMember,requestEmailLogin,logoutMember,EXPECTATIONS,optionLabels,getExpectations,emailHint,cleanEmail} from "./dm-member-client.js?v=20261014-02";
+import {supabase,currentMember,registerMember,requestEmailLogin,logoutMember,EXPECTATIONS,optionLabels,getExpectations,emailHint,cleanEmail} from "./dm-member-client.js?v=20261015-full-zip";
 const nav=document.querySelector(".navlinks");
 if(nav){
  const style=document.createElement("style");
