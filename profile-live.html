@@ -3,7 +3,7 @@
 <header><a href="./">▣ DESIGN MATTERS</a><a href="./join-live.html">Community</a></header><main class="page"><div id="loading">正在验证邮箱及登录状态…</div><div id="app" hidden><div class="hero"><div class="avatar" id="avatar">DM</div><div class="identity"><small>YOUR SPACE / 个人空间</small><h1 id="name">我的 Design Matters</h1><div class="muted" id="email"></div></div><button class="edit" id="edit">Edit Profile ↗</button></div><section class="section"><h2>关注的话题</h2><div class="topics" id="topics"></div></section><section class="section"><h2>过往活动</h2><div id="events" class="muted">期待你的第一次参与</div></section><p class="muted">如果相关话题有新的圆桌开放报名，我们会按订阅偏好联系你；你可随时编辑关注话题。</p><button id="logout" type="button">退出登录</button></div></main>
 <div class="overlay" id="editor" hidden><aside class="drawer"><h1>Edit Profile</h1><form id="editForm"><label><h2>DISPLAY NAME</h2><input id="display" type="text" maxlength="80" placeholder="我的 Design Matters"></label><h2>关注的话题</h2><div id="topicChoices"></div><div class="status" id="status"></div><button class="save" type="submit">Save changes →</button> <button id="cancel" type="button">Cancel</button></form></aside></div>
 <script type="module">
-import{currentMember,logoutMember,supabase,TOPICS}from "./dm-member-client.js";
+import{currentMember,logoutMember,supabase,TOPICS}from "./dm-member-client.js?v=20261014-02";
 const $=id=>document.getElementById(id);
 let member=null,editing=new Set();
 function showError(text){
