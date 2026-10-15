@@ -1,8 +1,8 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-const URL="https://khhfxkrwgcckgqupncyw.supabase.co";
+const SUPABASE_URL="https://khhfxkrwgcckgqupncyw.supabase.co";
 const KEY="sb_publishable_oXnMd_aF95wYTPcq6TwGVg_alaNdfTH";
 // Early access: keep the anonymous Auth session on this browser until the user signs out or clears site storage.
-export const supabase=createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+export const supabase=createClient(SUPABASE_URL,KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 export const TOPICS=[
  ["agentic-products-agent-ux","Agent Experience & Human Control"],
  ["enterprise-ai","Enterprise AI & Workflow Redesign"],
