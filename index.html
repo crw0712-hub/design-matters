@@ -213,6 +213,21 @@ body.dm-dialog-open{overflow:hidden}.flow-step{margin-left:auto;margin-right:18p
 #emailStage .av-edit{margin:4px 0 11px}
 #emailStage .av-edit[hidden]{display:none}
 #emailStage .av-edit input{width:100%;max-width:340px;padding:10px 12px;border:1px solid #aba79c;border-radius:9px;background:white;font-size:12px}
+/* Searchable list of all browser-supported IANA time zones (not a native datalist). */
+#emailStage .av-zone-search{display:flex;position:relative;align-items:center;width:100%;max-width:360px}
+#emailStage .av-zone-search input{max-width:none;padding-right:42px}
+#emailStage .av-zone-all{position:absolute;right:2px;top:2px;bottom:2px;width:38px;border:0;background:transparent;color:#111;font-size:17px;cursor:pointer;border-radius:7px}
+#emailStage .av-zone-all:hover{background:#eeece5}
+#emailStage .av-zone-options{display:grid;gap:0;width:100%;max-width:360px;max-height:245px;overflow-y:auto;overscroll-behavior:contain;margin-top:4px;border:1px solid #bcb8af;border-radius:10px;background:#fff}
+#emailStage .av-zone-options[hidden]{display:none!important}
+#emailStage .av-zone-option{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;padding:10px 12px;border:0;border-bottom:1px solid #ebe8e1;background:#fff;text-align:left;font-size:12px;cursor:pointer;color:#111}
+#emailStage .av-zone-option:last-child{border-bottom:0}
+#emailStage .av-zone-option:hover,#emailStage .av-zone-option[data-active=true]{background:#f1f2e9}
+#emailStage .av-zone-option[aria-selected=true]{background:var(--acid)}
+#emailStage .av-zone-option span:first-child{overflow-wrap:anywhere}
+#emailStage .av-zone-option span:last-child{white-space:nowrap;color:#605c52;font-size:11px}
+#emailStage .av-zone-empty{padding:13px;color:#777167;font-size:12px}
+
 #emailStage .av-error{color:#9d2c20;font-size:11px;margin:6px 0 0}
 #emailStage .av-error:empty{display:none}
 #emailStage .av-help{font-size:10px;color:#79736a;line-height:1.55;margin:4px 0 0}
@@ -285,7 +300,15 @@ body.dm-dialog-open{overflow:hidden}.flow-step{margin-left:auto;margin-right:18p
 <div class="availability" id="roundtableAvailability" aria-labelledby="availabilityLabel">
   <div class="av-head"><strong id="availabilityLabel" data-i18n="text" data-zh="什么时间方便参加圆桌？" data-en="When could you join a roundtable?">什么时间方便参加圆桌？</strong><small data-i18n="text" data-zh="可选 · 可多选" data-en="Optional · Select all that apply">可选 · 可多选</small></div>
   <div class="av-timezone"><span class="av-tz-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-4 5-4 13 0 18M12 3c4 5 4 13 0 18"/></svg><span data-i18n="text" data-zh="你的时区" data-en="Your timezone">你的时区</span></span><span class="av-tz-value" id="timeZoneDisplay"></span><button class="av-change" type="button" id="timeZoneChange" aria-expanded="false" aria-controls="timeZoneEditor" data-i18n="text" data-zh="修改" data-en="Change">修改</button></div>
-  <div class="av-edit" id="timeZoneEditor" hidden><input id="timeZoneInput" type="text" list="timeZoneList" autocomplete="off" spellcheck="false" aria-label="IANA timezone, e.g. Europe/Berlin" placeholder="Europe/Berlin"/><datalist id="timeZoneList"></datalist><p class="av-error" id="timeZoneError" role="alert"></p><p class="av-help" data-i18n="text" data-zh="输入城市并从建议中选择时区，如 Asia/Shanghai。" data-en="Search for your city and choose its timezone, e.g. Asia/Shanghai.">输入城市并从建议中选择时区，如 Asia/Shanghai。</p></div>
+  <div class="av-edit" id="timeZoneEditor" hidden>
+    <div class="av-zone-search">
+      <input id="timeZoneInput" type="text" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="timeZoneOptions" aria-label="Search any IANA time zone" data-placeholder-zh="搜索城市或地区，如 Shanghai、Berlin" data-placeholder-en="Search city or region, e.g. Shanghai, Berlin" placeholder="搜索城市或地区，如 Shanghai、Berlin"/>
+      <button type="button" class="av-zone-all" id="timeZoneAll" aria-label="浏览全部时区" title="浏览全部时区">▾</button>
+    </div>
+    <div class="av-zone-options" id="timeZoneOptions" role="listbox" aria-label="所有时区" hidden></div>
+    <p class="av-error" id="timeZoneError" role="alert"></p>
+    <p class="av-help" data-i18n="text" data-zh="可浏览所有时区，或输入城市名搜索后选择。" data-en="Browse all time zones or search by city name.">可浏览所有时区，或输入城市名搜索后选择。</p>
+  </div>
   <div class="av-slots" id="timeSlots" role="group" aria-label="Roundtable availability">
     <button class="av-slot" type="button" data-slot="weekday_evening" aria-pressed="false" data-i18n="text" data-zh="工作日晚上" data-en="Weekday evenings">工作日晚上</button>
     <button class="av-slot" type="button" data-slot="weekend_morning" aria-pressed="false" data-i18n="text" data-zh="周末上午" data-en="Weekend mornings">周末上午</button>
@@ -391,44 +414,117 @@ const zoneIsValid=z=>{try{new Intl.DateTimeFormat('en-US',{timeZone:z}).format(n
 const zoneOffset=z=>{try{const fmt=new Intl.DateTimeFormat('en-US',{timeZone:z,timeZoneName:'shortOffset'});const v=fmt.formatToParts(new Date()).find(p=>p.type==='timeZoneName')?.value||'';return v.replace(/^GMT/,'UTC').replace('UTC+0','UTC').replace('UTC-0','UTC')}catch{return ''}};
 let preferredZone=detectedTimeZone;
 let preferredTimes=new Set();
+let zoneChoices=[];
+let filteredZones=[];
+let activeZoneIndex=-1;
+const offsetCache=new Map();
+const getZoneOffset=z=>{
+ if(!offsetCache.has(z))offsetCache.set(z,zoneOffset(z));
+ return offsetCache.get(z);
+};
 function showTimeZone(){
  const display=$('#timeZoneDisplay'),input=$('#timeZoneInput'),error=$('#timeZoneError');
- if(display)display.textContent=preferredZone+' · '+zoneOffset(preferredZone);
+ if(display)display.textContent=preferredZone+' · '+getZoneOffset(preferredZone);
  if(input)input.value=preferredZone;
  if(error)error.textContent='';
 }
+function hideTimeZoneList(){
+ const list=$('#timeZoneOptions'),input=$('#timeZoneInput');
+ if(list)list.hidden=true;
+ if(input)input.setAttribute('aria-expanded','false');
+}
+function renderTimeZoneList(query=''){
+ const list=$('#timeZoneOptions'),input=$('#timeZoneInput');
+ if(!list||!input)return;
+ const term=query.trim().toLowerCase().replace(/\s+/g,'_');
+ filteredZones=zoneChoices.filter(z=>z.toLowerCase().replace(/_/g,'_').includes(term));
+ activeZoneIndex=-1;
+ list.replaceChildren();
+ if(!filteredZones.length){
+  const empty=document.createElement('div');empty.className='av-zone-empty';
+  empty.textContent=t('没有匹配的时区，可继续输入完整 IANA 时区名称。','No matching time zones. You can enter a valid IANA time zone directly.');
+  list.append(empty);
+ }else{
+  const fragment=document.createDocumentFragment();
+  for(const z of filteredZones){
+   const option=document.createElement('button');option.type='button';option.className='av-zone-option';
+   option.setAttribute('role','option');option.setAttribute('aria-selected',String(z===preferredZone));
+   const name=document.createElement('span');name.textContent=z;
+   const offset=document.createElement('span');offset.textContent=getZoneOffset(z);
+   option.append(name,offset);
+   option.addEventListener('click',()=>chooseTimeZone(z));
+   fragment.append(option);
+  }
+  list.append(fragment);
+ }
+ list.hidden=false;input.setAttribute('aria-expanded','true');
+}
+function chooseTimeZone(z){
+ if(!zoneIsValid(z))return false;
+ preferredZone=z;showTimeZone();toggleZoneEditor(false);return true;
+}
 function toggleZoneEditor(show){
- const editor=$('#timeZoneEditor'),button=$('#timeZoneChange');
+ const editor=$('#timeZoneEditor'),button=$('#timeZoneChange'),input=$('#timeZoneInput');
  if(!editor)return;
  editor.hidden=!show;
  if(button)button.setAttribute('aria-expanded',String(show));
- if(show)$('#timeZoneInput')?.focus();
+ if(show&&input){
+  input.value='';
+  renderTimeZoneList('');
+  input.focus();
+ }else hideTimeZoneList();
 }
 function acceptZone(){
  const input=$('#timeZoneInput'),error=$('#timeZoneError');
  if(!input)return true;
- const z=input.value.trim();
+ const typed=input.value.trim();
+ const match=zoneChoices.find(z=>z.toLowerCase()===typed.toLowerCase());
+ const z=match||typed;
  if(!zoneIsValid(z)){
   if(error)error.textContent=t('请选择有效的时区，例如 Europe/Berlin。','Choose a valid timezone, e.g. Europe/Berlin.');
   return false;
  }
- preferredZone=z;showTimeZone();toggleZoneEditor(false);return true;
+ return chooseTimeZone(z);
 }
 function drawTimeSlots(){
  $$('#timeSlots .av-slot').forEach(b=>b.setAttribute('aria-pressed',String(preferredTimes.has(b.dataset.slot))));
 }
 function initRoundtableAvailability(){
  try{
-  const names=(()=>{try{
-   const supported=typeof Intl.supportedValuesOf==='function'?Intl.supportedValuesOf('timeZone'):[];
-   return Array.from(new Set(['UTC',detectedTimeZone,...supported])).sort();
-  }catch{return ['UTC',detectedTimeZone,'Europe/Berlin','Europe/London','America/New_York','America/Los_Angeles','Asia/Shanghai','Asia/Tokyo','Australia/Sydney']}})();
-  const list=$('#timeZoneList');
-  if(list)list.replaceChildren(...names.map(z=>{const o=document.createElement('option');o.value=z;return o}));
+  // Intl exposes all canonical IANA time zones known to the user's browser.
+  // When unsupported, free-form input still accepts any valid IANA name.
+  const supported=typeof Intl.supportedValuesOf==='function'?Intl.supportedValuesOf('timeZone'):[];
+  zoneChoices=Array.from(new Set(['UTC',detectedTimeZone,...supported])).sort((a,b)=>a.localeCompare(b));
   $('#timeZoneChange')?.addEventListener('click',()=>toggleZoneEditor($('#timeZoneEditor').hidden));
-  $('#timeZoneInput')?.addEventListener('change',()=>acceptZone());
-  $('#timeZoneInput')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();acceptZone()}});
-  $('#timeZoneInput')?.addEventListener('input',()=>{const error=$('#timeZoneError');if(error)error.textContent=''});
+  $('#timeZoneAll')?.addEventListener('click',()=>{
+   const input=$('#timeZoneInput');if(!input)return;
+   input.value='';renderTimeZoneList('');input.focus();
+  });
+  $('#timeZoneInput')?.addEventListener('focus',()=>{
+   if($('#timeZoneOptions')?.hidden)renderTimeZoneList($('#timeZoneInput').value===preferredZone?'':$('#timeZoneInput').value);
+  });
+  $('#timeZoneInput')?.addEventListener('input',()=>{
+   const error=$('#timeZoneError');if(error)error.textContent='';
+   renderTimeZoneList($('#timeZoneInput').value);
+  });
+  $('#timeZoneInput')?.addEventListener('keydown',e=>{
+   const list=$('#timeZoneOptions');
+   if(e.key==='Escape'){e.preventDefault();toggleZoneEditor(false);return}
+   if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+    e.preventDefault();
+    if(list?.hidden)renderTimeZoneList($('#timeZoneInput').value);
+    if(!filteredZones.length)return;
+    activeZoneIndex=(activeZoneIndex+(e.key==='ArrowDown'?1:-1)+filteredZones.length)%filteredZones.length;
+    const options=list.querySelectorAll('.av-zone-option');
+    options.forEach((option,index)=>option.dataset.active=String(index===activeZoneIndex));
+    options[activeZoneIndex]?.scrollIntoView({block:'nearest'});return;
+   }
+   if(e.key==='Enter'){
+    e.preventDefault();
+    if(activeZoneIndex>=0&&filteredZones[activeZoneIndex])chooseTimeZone(filteredZones[activeZoneIndex]);
+    else if(!acceptZone()&&filteredZones.length===1)chooseTimeZone(filteredZones[0]);
+   }
+  });
   $$('#timeSlots .av-slot').forEach(b=>b.addEventListener('click',()=>{
    const id=b.dataset.slot;
    if(id==='flexible')preferredTimes=preferredTimes.has(id)?new Set():new Set([id]);
