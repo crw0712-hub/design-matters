@@ -385,24 +385,59 @@ const flow=$('#interestFlow'),entry=$('#flowEntry'),success=$('#flowSuccess'),ne
 const state={selected:new Set(),expectations:new Set(),saved:null,open:false,success:false,stage:'expect',customTopic:'',customExpectation:''};
 let opener=null;
 
-// Only registration-time scheduling preferences: no geolocation permission.
+// Optional scheduling controls must never interrupt homepage topic-card setup.
 const detectedTimeZone=(()=>{try{return Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC'}catch{return 'UTC'}})();
 const zoneIsValid=z=>{try{new Intl.DateTimeFormat('en-US',{timeZone:z}).format(new Date());return !!z}catch{return false}};
 const zoneOffset=z=>{try{const fmt=new Intl.DateTimeFormat('en-US',{timeZone:z,timeZoneName:'shortOffset'});const v=fmt.formatToParts(new Date()).find(p=>p.type==='timeZoneName')?.value||'';return v.replace(/^GMT/,'UTC').replace('UTC+0','UTC').replace('UTC-0','UTC')}catch{return ''}};
-const timeZones=Array.from(new Set(['UTC',detectedTimeZone,...(Intl.supportedValuesOf?Intl.supportedValuesOf('timeZone'):['Europe/Berlin','Europe/London','America/New_York','America/Los_Angeles','Asia/Shanghai','Asia/Tokyo','Australia/Sydney'])])).sort();
-$('#timeZoneList').replaceChildren(...timeZones.map(z=>{let o=document.createElement('option');o.value=z;return o}));
 let preferredZone=detectedTimeZone;
 let preferredTimes=new Set();
-function showTimeZone(){ $('#timeZoneDisplay').textContent=preferredZone+' · '+zoneOffset(preferredZone);$('#timeZoneInput').value=preferredZone;$('#timeZoneError').textContent=''; }
-function toggleZoneEditor(show){$('#timeZoneEditor').hidden=!show;$('#timeZoneChange').setAttribute('aria-expanded',String(show));if(show)$('#timeZoneInput').focus();}
-function acceptZone(){const z=$('#timeZoneInput').value.trim();if(!zoneIsValid(z)){$('#timeZoneError').textContent=t('请选择有效的时区，例如 Europe/Berlin。','Choose a valid timezone, e.g. Europe/Berlin.');return false;}preferredZone=z;showTimeZone();toggleZoneEditor(false);return true}
-$('#timeZoneChange').addEventListener('click',()=>toggleZoneEditor($('#timeZoneEditor').hidden));
-$('#timeZoneInput').addEventListener('change',()=>acceptZone());
-$('#timeZoneInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();acceptZone()}});
-$('#timeZoneInput').addEventListener('input',()=>$('#timeZoneError').textContent='');
-function drawTimeSlots(){$('#timeSlots .av-slot').forEach(b=>b.setAttribute('aria-pressed',String(preferredTimes.has(b.dataset.slot))));}
-$('#timeSlots .av-slot').forEach(b=>b.addEventListener('click',()=>{let id=b.dataset.slot;if(id==='flexible'){preferredTimes=preferredTimes.has(id)?new Set():new Set([id])}else{preferredTimes.delete('flexible');preferredTimes.has(id)?preferredTimes.delete(id):preferredTimes.add(id)}drawTimeSlots()}));
-showTimeZone();drawTimeSlots();
+function showTimeZone(){
+ const display=$('#timeZoneDisplay'),input=$('#timeZoneInput'),error=$('#timeZoneError');
+ if(display)display.textContent=preferredZone+' · '+zoneOffset(preferredZone);
+ if(input)input.value=preferredZone;
+ if(error)error.textContent='';
+}
+function toggleZoneEditor(show){
+ const editor=$('#timeZoneEditor'),button=$('#timeZoneChange');
+ if(!editor)return;
+ editor.hidden=!show;
+ if(button)button.setAttribute('aria-expanded',String(show));
+ if(show)$('#timeZoneInput')?.focus();
+}
+function acceptZone(){
+ const input=$('#timeZoneInput'),error=$('#timeZoneError');
+ if(!input)return true;
+ const z=input.value.trim();
+ if(!zoneIsValid(z)){
+  if(error)error.textContent=t('请选择有效的时区，例如 Europe/Berlin。','Choose a valid timezone, e.g. Europe/Berlin.');
+  return false;
+ }
+ preferredZone=z;showTimeZone();toggleZoneEditor(false);return true;
+}
+function drawTimeSlots(){
+ $$('#timeSlots .av-slot').forEach(b=>b.setAttribute('aria-pressed',String(preferredTimes.has(b.dataset.slot))));
+}
+function initRoundtableAvailability(){
+ try{
+  const names=(()=>{try{
+   const supported=typeof Intl.supportedValuesOf==='function'?Intl.supportedValuesOf('timeZone'):[];
+   return Array.from(new Set(['UTC',detectedTimeZone,...supported])).sort();
+  }catch{return ['UTC',detectedTimeZone,'Europe/Berlin','Europe/London','America/New_York','America/Los_Angeles','Asia/Shanghai','Asia/Tokyo','Australia/Sydney']}})();
+  const list=$('#timeZoneList');
+  if(list)list.replaceChildren(...names.map(z=>{const o=document.createElement('option');o.value=z;return o}));
+  $('#timeZoneChange')?.addEventListener('click',()=>toggleZoneEditor($('#timeZoneEditor').hidden));
+  $('#timeZoneInput')?.addEventListener('change',()=>acceptZone());
+  $('#timeZoneInput')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();acceptZone()}});
+  $('#timeZoneInput')?.addEventListener('input',()=>{const error=$('#timeZoneError');if(error)error.textContent=''});
+  $$('#timeSlots .av-slot').forEach(b=>b.addEventListener('click',()=>{
+   const id=b.dataset.slot;
+   if(id==='flexible')preferredTimes=preferredTimes.has(id)?new Set():new Set([id]);
+   else{preferredTimes.delete('flexible');preferredTimes.has(id)?preferredTimes.delete(id):preferredTimes.add(id)}
+   drawTimeSlots();
+  }));
+  showTimeZone();drawTimeSlots();
+ }catch(error){console.warn('Optional scheduling controls could not initialize:',error)}
+}
 
 const backdrop=$('#flowBackdrop');
 const cards=$$('.dm-topic-card');
@@ -605,6 +640,8 @@ window.addEventListener('pageshow',event=>{
  updateTopics();updateExpect();
 });
 updateTopics();updateExpect();applyLang(lang());resetConsentDefault();
+// Topic selection handlers are now installed; initialize optional controls last.
+initRoundtableAvailability();
 const navLinks=$$('.nav-item');const sects=['about','dm-community','next','synthesis','archive'].map(id=>$("#"+id)).filter(Boolean);if('IntersectionObserver' in window){let navObserver=new IntersectionObserver(entries=>{entries.filter(x=>x.isIntersecting).forEach(x=>{let id=x.target.id;if(id==='about')id='dm-community';if(id==='synthesis')id='archive';navLinks.forEach(a=>a.classList.toggle('active',a.dataset.navSection===id))})},{rootMargin:'-24% 0px -56% 0px',threshold:0});sects.forEach(e=>navObserver.observe(e))}
 $$('#archive details.session').forEach(el=>el.addEventListener('toggle',()=>{if(!el.open)return;$$('#archive details.session').forEach(o=>{if(o!==el)o.open=false})}));
 })();
