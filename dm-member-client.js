@@ -20,6 +20,7 @@ export const EXPECTATIONS=[
 ];
 const topicIDs=new Set(TOPICS.map(x=>x[0]));
 const expectIDs=new Set(EXPECTATIONS.map(x=>x[0]));
+const availableTimeIDs=new Set(['weekday_evening','weekend_morning','weekend_afternoon','weekend_evening','flexible']);
 export const EMAIL_PATTERN=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 export function cleanEmail(v){return String(v||"").trim().toLowerCase()}
 export function emailHint(v){
@@ -35,11 +36,20 @@ export function selectedValues(root,name,allowed){return [...root.querySelectorA
 export function getTopics(root){return selectedValues(root,"dm-topic",topicIDs)}
 export function getExpectations(root){return selectedValues(root,"dm-expect",expectIDs)}
 export function safeString(v,max=180){return String(v||"").trim().slice(0,max)}
+function sanitizeAvailability(timeZone,preferredTimes){
+ const time_zone=safeString(timeZone,80)||null;
+ if(time_zone){
+  try{new Intl.DateTimeFormat('en-US',{timeZone:time_zone}).format(new Date())}
+  catch{throw Error("请选择有效的时区。")}
+ }
+ const times=[...new Set((Array.isArray(preferredTimes)?preferredTimes:[]).filter(x=>availableTimeIDs.has(x)))];
+ return {time_zone,preferred_times:times.includes('flexible')?['flexible']:times};
+}
 export async function currentMember(){
  const {data:{session},error}=await supabase.auth.getSession();
  if(error)throw error;
  if(!session)return {session:null,member:null};
- const fields="user_id,email,display_name,topics,expectations,custom_topic,custom_expectation,current_ai_work,next_ai_goal,consent,created_at";
+ const fields="user_id,email,display_name,topics,expectations,custom_topic,custom_expectation,current_ai_work,next_ai_goal,time_zone,preferred_times,consent,created_at";
  // A returned email login has a new Auth user ID if the original signup was
  // anonymous. Prefer the verified email's existing intake row; access is
  // permitted only by the database's verified-email RLS policy.
@@ -53,11 +63,12 @@ export async function currentMember(){
  if(own.error)throw own.error;
  return {session,member:own.data||null};
 }
-export async function registerMember({email,topics=[],expectations=[],custom_topic="",custom_expectation="",current_ai_work="",next_ai_goal="",consent=false}){
+export async function registerMember({email,topics=[],expectations=[],custom_topic="",custom_expectation="",current_ai_work="",next_ai_goal="",time_zone,preferred_times,consent=false}){
  email=cleanEmail(email);
  const problem=emailHint(email);
  if(problem)throw Error(problem);
  if(!consent)throw Error("请同意接收相关社区邮件后继续。");
+ const availability=sanitizeAvailability(time_zone,preferred_times);
  const {session,member}=await currentMember();
  if(member){
   if(member.email!==email)throw Error("当前浏览器已有 Design Matters Profile。请使用右上角 Profile 查看和修改；邮箱找回尚未开放，请勿登出。");
@@ -74,6 +85,8 @@ export async function registerMember({email,topics=[],expectations=[],custom_top
    next_ai_goal:safeString(next_ai_goal)||member.next_ai_goal,
    updated_at:new Date().toISOString()
   };
+  if(time_zone!==undefined)change.time_zone=availability.time_zone;
+  if(preferred_times!==undefined)change.preferred_times=availability.preferred_times;
   const {data,error}=await supabase.from("dm_member_intake").update(change).eq("user_id",member.user_id).select().single();
   if(error)throw Error("暂时无法更新关注话题："+error.message);
   return data;
@@ -89,7 +102,7 @@ export async function registerMember({email,topics=[],expectations=[],custom_top
  const row={user_id:user.id,email,display_name:"我的 Design Matters",topics:selected,
   expectations:interests,custom_topic:safeString(custom_topic),
   custom_expectation:safeString(custom_expectation),current_ai_work:safeString(current_ai_work),
-  next_ai_goal:safeString(next_ai_goal),consent:true,locale:"zh"};
+  next_ai_goal:safeString(next_ai_goal),time_zone:availability.time_zone,preferred_times:availability.preferred_times,consent:true,locale:"zh"};
  const {data,error}=await supabase.from("dm_member_intake").insert(row).select().single();
  if(error){
   if(startedAnonymous)await supabase.auth.signOut();
