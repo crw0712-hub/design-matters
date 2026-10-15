@@ -295,7 +295,7 @@ body.dm-dialog-open{overflow:hidden}.flow-step{margin-left:auto;margin-right:18p
   </div><p class="av-help" data-i18n="text" data-zh="以你的当地时间为准，帮助安排跨时区圆桌。" data-en="All times are local to your timezone, so we can plan across regions.">以你的当地时间为准，帮助安排跨时区圆桌。</p>
 </div>
 <button class="email-submit" id="followSubmit" type="button"><span data-en="Get relevant roundtables &amp; notes →" data-i18n="text" data-zh="订阅相关圆桌与整理 →">订阅相关圆桌与整理 →</span></button>
-<p class="flow-error" id="followError" role="alert"></p><p class="dm-preview-disclaimer">首次注册无需验证邮箱。现阶段浏览器会保持登录。邮箱登录正在测试中，请在另一浏览器确认收件及资料恢复成功后再登出。</p>
+<p class="flow-error" id="followError" role="alert"></p>
 <label class="account-row"><input id="accountOpt" checked="" required="" type="checkbox"/><span data-en="I agree to receive Design Matters roundtable and recap emails. I can unsubscribe anytime." data-i18n="text" data-zh="我同意接收 Design Matters 相关圆桌与总结邮件，且可随时退订。">我同意接收 Design Matters 相关圆桌与总结邮件，且可随时退订。</span></label>
 <p class="fineprint"><span data-en="Unsubscribe anytime. Your private context isn't public. Email login is in testing; keep using this browser until recovery is verified." data-i18n="text" data-zh="可随时退订。你的简介不会公开。邮箱验证码登录正在测试，未验证成功前请继续使用同一浏览器访问 Profile。">可随时退订。你的简介不会公开。邮箱验证码登录正在测试，未验证成功前请继续使用同一浏览器访问 Profile。</span></p>
 </form>
@@ -609,7 +609,7 @@ $('#followEmail').addEventListener('blur',()=>{
   if(['gmail.con','gamil.com','gmial.com','outlook.con','hotmial.com'].includes(domain)){
     hint.textContent=t('请检查邮箱域名，可能有拼写错误。','Please check your email domain for a typo.');hint.style.color='#9c3228';return;
   }
-  hint.textContent=t('邮箱格式已检查；是否已有账号将在提交时检查。','Format checked. Existing accounts are checked when you continue.');hint.style.color='#3b6331';
+  hint.textContent='✅';hint.style.color='#3b6331';
 });
 $('#followSubmit').addEventListener('click',subscribeToPreview);
 $('#followForm').addEventListener('submit',subscribeToPreview);
@@ -645,5 +645,5 @@ initRoundtableAvailability();
 const navLinks=$$('.nav-item');const sects=['about','dm-community','next','synthesis','archive'].map(id=>$("#"+id)).filter(Boolean);if('IntersectionObserver' in window){let navObserver=new IntersectionObserver(entries=>{entries.filter(x=>x.isIntersecting).forEach(x=>{let id=x.target.id;if(id==='about')id='dm-community';if(id==='synthesis')id='archive';navLinks.forEach(a=>a.classList.toggle('active',a.dataset.navSection===id))})},{rootMargin:'-24% 0px -56% 0px',threshold:0});sects.forEach(e=>navObserver.observe(e))}
 $$('#archive details.session').forEach(el=>el.addEventListener('toggle',()=>{if(!el.open)return;$$('#archive details.session').forEach(o=>{if(o!==el)o.open=false})}));
 })();
-</script><script type="module" src="./dm-member-nav.js?v=20261015-otp-url-fix-v2"></script>
+</script><script type="module" src="./dm-member-nav.js?v=20261015-clean-signup-labels-v1"></script>
 </body></html>
