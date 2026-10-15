@@ -40,9 +40,17 @@ Deno.serve(async req => {
   if(verified.error || !verified.data?.user)return reply(401,{error:"Unauthorized"});
   const user=verified.data.user;
   const admin=createClient(endpoint,adminKey,{auth:{persistSession:false,autoRefreshToken:false}});
-  const lookup=await admin.from("dm_member_intake").select("user_id,email,created_at").eq("user_id",user.id).maybeSingle();
+  let lookup=await admin.from("dm_member_intake").select("user_id,email,created_at").eq("user_id",user.id).maybeSingle();
   if(lookup.error)return reply(500,{error:"Member lookup failed"});
+  // Supabase OTP users may have a different Auth UID from an early-access
+  // anonymous signup. A verified email is safe to use for recovery.
+  if(!lookup.data && user.email_confirmed_at && user.email){
+    lookup=await admin.from("dm_member_intake")
+      .select("user_id,email,created_at").eq("email",String(user.email).trim().toLowerCase()).maybeSingle();
+    if(lookup.error)return reply(500,{error:"Verified email member lookup failed"});
+  }
   if(!lookup.data?.email)return reply(404,{error:"No profile is linked to this session"});
+  const ownerId=lookup.data.user_id;
   // Old members changing interests must not unexpectedly receive a new welcome.
   // Only members registered in the last day can request a first welcome or retry.
   const joinedAt=Date.parse(lookup.data.created_at||"");
@@ -53,10 +61,10 @@ Deno.serve(async req => {
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))return reply(400,{error:"Invalid recipient"});
 
   // Unique primary key is the lock. A second request cannot send again.
-  const claim=await admin.from(table).insert({user_id:user.id,email,status:"sending",attempts:1}).select("status").maybeSingle();
+  const claim=await admin.from(table).insert({user_id:ownerId,email,status:"sending",attempts:1}).select("status").maybeSingle();
   if(claim.error){
     if(claim.error.code !== "23505")return reply(500,{error:"Unable to claim welcome delivery"});
-    const previous=await admin.from(table).select("status,attempts").eq("user_id",user.id).maybeSingle();
+    const previous=await admin.from(table).select("status,attempts").eq("user_id",ownerId).maybeSingle();
     if(previous.error)return reply(500,{error:"Unable to read delivery status"});
     if(previous.data?.status==="sent")return reply(200,{status:"already_sent"});
     if(previous.data?.status!=="failed")return reply(200,{status:"in_progress"});
@@ -64,7 +72,7 @@ Deno.serve(async req => {
     const retry=await admin.from(table).update({
       status:"sending", attempts:previous.data.attempts+1,
       last_error:null,updated_at:new Date().toISOString()
-    }).eq("user_id",user.id).eq("status","failed").select("status").maybeSingle();
+    }).eq("user_id",ownerId).eq("status","failed").select("status").maybeSingle();
     if(retry.error)return reply(500,{error:"Unable to retry welcome delivery"});
     if(!retry.data)return reply(200,{status:"in_progress"});
   }
@@ -84,14 +92,14 @@ Deno.serve(async req => {
     const marked=await admin.from(table).update({
       status:"sent",sent_at:new Date().toISOString(),
       last_error:null,updated_at:new Date().toISOString()
-    }).eq("user_id",user.id).eq("status","sending");
+    }).eq("user_id",ownerId).eq("status","sending");
     if(marked.error)console.error("Delivery sent but idempotency update failed:",marked.error.message);
     return reply(200,{status:"sent"});
   }catch(error){
     await admin.from(table).update({
       status:"failed",last_error:String(error?.message||"SMTP delivery error").slice(0,250),
       updated_at:new Date().toISOString()
-    }).eq("user_id",user.id).eq("status","sending");
+    }).eq("user_id",ownerId).eq("status","sending");
     console.error("Welcome delivery error:",String(error?.message||error));
     return reply(502,{error:"Welcome delivery failed; registration remains saved"});
   }
