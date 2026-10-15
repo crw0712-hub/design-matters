@@ -1,4 +1,4 @@
-/* Design Matters interaction prototype.
+/* designdran interaction prototype.
  * Demo mode: browser-local data only. No email or account is created. */
 (function(){
   'use strict';
