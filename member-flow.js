@@ -1,4 +1,4 @@
-/* Design Matters: browser-only UX walkthrough. Not authentication. */
+/* designdran: browser-only UX walkthrough. Not authentication. */
 (function () {
   'use strict';
   const STORAGE='dm_flow_profiles_v1';
@@ -229,7 +229,7 @@
     const params=new URLSearchParams(window.location.search);
     if(params.get('edit')==='topics')openEdit('topics');
     } catch(error) {
-      console.error('Design Matters Profile failed to initialize',error);
+      console.error('designdran Profile failed to initialize',error);
       const loading=$('profileLoading');
       if(loading){
         loading.hidden=false;
