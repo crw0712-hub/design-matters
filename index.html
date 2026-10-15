@@ -741,5 +741,5 @@ initRoundtableAvailability();
 const navLinks=$$('.nav-item');const sects=['about','dm-community','next','synthesis','archive'].map(id=>$("#"+id)).filter(Boolean);if('IntersectionObserver' in window){let navObserver=new IntersectionObserver(entries=>{entries.filter(x=>x.isIntersecting).forEach(x=>{let id=x.target.id;if(id==='about')id='dm-community';if(id==='synthesis')id='archive';navLinks.forEach(a=>a.classList.toggle('active',a.dataset.navSection===id))})},{rootMargin:'-24% 0px -56% 0px',threshold:0});sects.forEach(e=>navObserver.observe(e))}
 $$('#archive details.session').forEach(el=>el.addEventListener('toggle',()=>{if(!el.open)return;$$('#archive details.session').forEach(o=>{if(o!==el)o.open=false})}));
 })();
-</script><script type="module" src="./dm-member-nav.js?v=20261016-designdran-rebrand-v1"></script>
+</script><script type="module" src="./dm-member-nav.js?v=20261016-clean-logout-v2"></script>
 </body></html>
