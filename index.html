@@ -198,6 +198,29 @@ body.dm-dialog-open{overflow:hidden}.flow-step{margin-left:auto;margin-right:18p
 .dm-email-hint{font-size:12px;line-height:1.5;margin:6px 0 0;min-height:12px}
 .dm-user-controls{flex:0 0 auto}
 @media(max-width:680px){.nav{padding:0 12px}.navlinks{gap:8px}.dm-profile-top{padding:8px 10px!important}}
+</style><style>
+
+/* Registration modal: roundtable availability (from the supplied reference only). */
+#emailStage .availability{margin-top:15px;padding:13px 0 2px;border-top:1px solid #ded9cf}
+#emailStage .availability .av-head{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+#emailStage .availability .av-head strong{font-size:12px;font-weight:850;letter-spacing:-.01em}
+#emailStage .availability .av-head small{font-size:10px;color:#777167}
+#emailStage .av-timezone{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:11px;margin-bottom:11px}
+#emailStage .av-tz-label{display:inline-flex;align-items:center;gap:6px;color:#5d584f;min-width:0}
+#emailStage .av-tz-label svg{height:16px;width:16px;flex-shrink:0}
+#emailStage .av-tz-value{font-weight:850;color:#111;overflow-wrap:anywhere}
+#emailStage .av-change{border:0;background:transparent;text-decoration:underline;text-underline-offset:3px;padding:2px 3px;font-weight:800;font-size:11px}
+#emailStage .av-edit{margin:4px 0 11px}
+#emailStage .av-edit[hidden]{display:none}
+#emailStage .av-edit input{width:100%;max-width:340px;padding:10px 12px;border:1px solid #aba79c;border-radius:9px;background:white;font-size:12px}
+#emailStage .av-error{color:#9d2c20;font-size:11px;margin:6px 0 0}
+#emailStage .av-error:empty{display:none}
+#emailStage .av-help{font-size:10px;color:#79736a;line-height:1.55;margin:4px 0 0}
+#emailStage .av-slots{display:flex;gap:7px;flex-wrap:wrap}
+#emailStage .av-slot{border:1px solid #bcb8af;background:#fbfaf6;color:#0a0a0a;border-radius:30px;padding:8px 11px;font-size:11px;font-weight:770;line-height:1.2;transition:background .15s}
+#emailStage .av-slot[aria-pressed=true]{background:var(--acid);border-color:#0a0a0a}
+#emailStage .av-slot:focus-visible,#emailStage .av-change:focus-visible{outline:3px solid #6a85ed;outline-offset:2px}
+@media(max-width:760px){#emailStage .availability{padding-top:12px;margin-top:13px}#emailStage .av-slots{gap:6px}#emailStage .av-slot{padding:8px 10px}}
 </style></head><body data-dm-preview="true"><div class="page"><nav class="nav"><a class="brand" href="#about"><span class="mark">D</span>DESIGN MATTERS</a><div aria-label="Primary navigation" class="navlinks"><a class="nav-item" data-nav-section="dm-community" href="#dm-community"><span data-en="Explore topics" data-i18n="text" data-zh="探索议题">探索议题</span></a><a class="nav-item" data-nav-section="next" href="#next"><span data-en="Next roundtable" data-i18n="text" data-zh="下一场圆桌">下一场圆桌</span></a><a class="nav-item" data-nav-section="archive" href="#archive"><span data-en="Archive" data-i18n="text" data-zh="讨论档案">讨论档案</span></a><div aria-label="Language" class="langs" role="group"><button class="lang-btn active" data-lang="zh" type="button">中</button><span>/</span><button class="lang-btn" data-lang="en" type="button">EN</button></div></div></nav>
 <!-- SECTION 01 / Editorial positioning -->
 <section class="editorial" id="about"><div class="editorial-copy"><span class="eyebrow">01 / WHY DESIGN MATTERS</span><h2><span data-en="AI is changing design.&lt;br&gt;There is no single answer." data-i18n="html" data-zh="AI 正在改变设计。&lt;br&gt;答案不止一种。">AI 正在改变设计。<br/>答案不止一种。</span></h2><p><span data-en="Design Matters brings together AI × Design practitioners across products, teams and organizations. We compare real experience, make sense of what is changing, and keep the questions—and people—worth connecting in the conversation." data-i18n="text" data-zh="Design Matters 聚集不同产品、团队与组织里的 AI × Design 实践者。我们用真实经验彼此对照，看清变化如何发生，并把值得继续讨论的判断和人连接起来。">Design Matters 聚集不同产品、团队与组织里的 AI × Design 实践者。我们用真实经验彼此对照，看清变化如何发生，并把值得继续讨论的判断和人连接起来。</span></p><div class="editorial-principles"><span data-en="REAL PRACTICE" data-i18n="text" data-zh="真实实践">真实实践</span><span data-en="COMPARE CONTEXTS" data-i18n="text" data-zh="对照差异">对照差异</span><span data-en="SHARPEN JUDGMENT" data-i18n="text" data-zh="持续判断">持续判断</span></div><a class="position-cta" href="#dm-community"><span data-en="Find the questions that matter to me ↓" data-i18n="text" data-zh="找到我关心的问题 ↓">找到我关心的问题 ↓</span></a></div><div class="editorial-visual"><svg viewbox="0 0 480 440"><g fill="none" stroke="#0a0a0a" stroke-width="2"><circle cx="232" cy="206" r="80" stroke-dasharray="5 7"></circle><path d="M101 100L232 206L366 92M232 206L105 335M232 206L374 338"></path><circle cx="101" cy="100" fill="#b8ff17" r="47"></circle><circle cx="366" cy="92" r="44"></circle><circle cx="105" cy="335" r="50"></circle><circle cx="374" cy="338" fill="#b8ff17" r="51"></circle><circle cx="232" cy="206" fill="#fbfaf6" r="67"></circle></g><g fill="#0a0a0a" font-family="Arial,sans-serif" font-weight="800" text-anchor="middle"><text font-size="23" x="232" y="209">DESIGN</text><text font-size="12" letter-spacing="2" x="232" y="230">MATTERS</text><text font-size="12" x="101" y="104">BUILD</text><text font-size="12" x="366" y="96">ACT</text><text font-size="12" x="105" y="340">JUDGE</text><text font-size="12" x="374" y="341">EVOLVE</text></g></svg></div></section><section class="topic-wrap" id="dm-community"><div class="section-head"><div class="eyebrow">DESIGN MATTERS / EXPLORE<br/>02 / FIND YOUR THREADS</div><div><h1><span data-en="AI × Design,&lt;br&gt;what are you curious about?" data-i18n="html" data-zh="AI × Design，&lt;br&gt;你对什么最好奇？">AI × Design，<br/>你对什么最好奇？</span></h1><p><span data-en="Some teams are rethinking agents. Others are rebuilding workflows—or the boundaries of design itself. Which of these directions would you like to follow?" data-i18n="text" data-zh="有的团队在重做 Agent，有的在重做工作流，还有的在重新定义设计的边界。哪几个方向，让你想继续看下去？">有的团队在重做 Agent，有的在重做工作流，还有的在重新定义设计的边界。哪几个方向，让你想继续看下去？</span></p></div></div><div class="dm-topic-grid" id="dmTopicGrid"><button aria-label="Select 01 / AGENT EXPERIENCE +" aria-pressed="false" class="dm-topic-card" data-id="agentic-products-agent-ux" type="button"><span class="dm-card-top"><span>01 / AGENT EXPERIENCE</span><span class="dm-card-plus">+</span></span><div class="dm-visual"><svg class="dm-living ld-agent" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 200 100"><circle cx="27" cy="48" r="17"></circle><circle cx="102" cy="48" r="20"></circle><rect height="34" rx="4" width="31" x="162" y="31"></rect><path class="ld-guide" d="M44 48H82M122 48H161"></path><path class="ld-flow ld-flow-1" d="M44 48H82" pathlength="100"></path><path class="ld-flow ld-flow-2" d="M122 48H161" pathlength="100"></path><circle cx="102" cy="48" fill="#b8ff17" r="9"></circle><path d="M102 68V84" stroke-dasharray="3 4"></path><circle cx="102" cy="89" fill="#b8ff17" r="6"></circle><path class="ld-done" d="M169 47L176 54L186 41" stroke-width="2.2"></path></svg></div><div class="dm-card-copy"><h3 data-en="Agent Experience &amp;amp;&lt;br&gt;Human Control" data-i18n="html" data-zh="Agent 体验与&lt;br&gt;人机控制">Agentic Products &amp;<br/>Agent UX</h3><p data-en="As agents take action, how should trust, control and recovery work?" data-i18n="text" data-zh="Agent 开始行动后，如何设计信任、控制与纠错？">当 AI 能替人行动，谁决定边界与控制权？</p></div></button>
@@ -257,6 +280,19 @@ body.dm-dialog-open{overflow:hidden}.flow-step{margin-left:auto;margin-right:18p
 <div><label class="context-label" for="currentAiWork"><span data-en="What are you working on now?" data-i18n="text" data-zh="你现在主要在做什么？">你现在主要在做什么？</span><em aria-hidden="true">*</em></label><input aria-required="true" autocomplete="off" class="context-input" data-placeholder-en="e.g. Designing enterprise agent experiences" data-placeholder-zh="例如：正在做企业 Agent 体验设计" id="currentAiWork" maxlength="180" placeholder="例如：正在做企业 Agent 体验设计" required="" type="text"/></div>
 <div><label class="context-label" for="nextAiGoal"><span data-en="What would you like to explore next in AI?" data-i18n="text" data-zh="接下来想探索什么？（AI 相关）">接下来想探索什么？（AI 相关）</span><em aria-hidden="true">*</em></label><input aria-required="true" autocomplete="off" class="context-input" data-placeholder-en="e.g. Build AI-native products or agent workflows" data-placeholder-zh="例如：想做 AI-native 产品或 Agent 工作流" id="nextAiGoal" maxlength="180" placeholder="例如：想做 AI-native 产品或 Agent 工作流" required="" type="text"/></div>
 </div>
+</div>
+
+<div class="availability" id="roundtableAvailability" aria-labelledby="availabilityLabel">
+  <div class="av-head"><strong id="availabilityLabel" data-i18n="text" data-zh="什么时间方便参加圆桌？" data-en="When could you join a roundtable?">什么时间方便参加圆桌？</strong><small data-i18n="text" data-zh="可选 · 可多选" data-en="Optional · Select all that apply">可选 · 可多选</small></div>
+  <div class="av-timezone"><span class="av-tz-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-4 5-4 13 0 18M12 3c4 5 4 13 0 18"/></svg><span data-i18n="text" data-zh="你的时区" data-en="Your timezone">你的时区</span></span><span class="av-tz-value" id="timeZoneDisplay"></span><button class="av-change" type="button" id="timeZoneChange" aria-expanded="false" aria-controls="timeZoneEditor" data-i18n="text" data-zh="修改" data-en="Change">修改</button></div>
+  <div class="av-edit" id="timeZoneEditor" hidden><input id="timeZoneInput" type="text" list="timeZoneList" autocomplete="off" spellcheck="false" aria-label="IANA timezone, e.g. Europe/Berlin" placeholder="Europe/Berlin"/><datalist id="timeZoneList"></datalist><p class="av-error" id="timeZoneError" role="alert"></p><p class="av-help" data-i18n="text" data-zh="输入城市并从建议中选择时区，如 Asia/Shanghai。" data-en="Search for your city and choose its timezone, e.g. Asia/Shanghai.">输入城市并从建议中选择时区，如 Asia/Shanghai。</p></div>
+  <div class="av-slots" id="timeSlots" role="group" aria-label="Roundtable availability">
+    <button class="av-slot" type="button" data-slot="weekday_evening" aria-pressed="false" data-i18n="text" data-zh="工作日晚上" data-en="Weekday evenings">工作日晚上</button>
+    <button class="av-slot" type="button" data-slot="weekend_morning" aria-pressed="false" data-i18n="text" data-zh="周末上午" data-en="Weekend mornings">周末上午</button>
+    <button class="av-slot" type="button" data-slot="weekend_afternoon" aria-pressed="false" data-i18n="text" data-zh="周末下午" data-en="Weekend afternoons">周末下午</button>
+    <button class="av-slot" type="button" data-slot="weekend_evening" aria-pressed="false" data-i18n="text" data-zh="周末晚上" data-en="Weekend evenings">周末晚上</button>
+    <button class="av-slot" type="button" data-slot="flexible" aria-pressed="false" data-i18n="text" data-zh="时间灵活" data-en="I'm flexible">时间灵活</button>
+  </div><p class="av-help" data-i18n="text" data-zh="以你的当地时间为准，帮助安排跨时区圆桌。" data-en="All times are local to your timezone, so we can plan across regions.">以你的当地时间为准，帮助安排跨时区圆桌。</p>
 </div>
 <button class="email-submit" id="followSubmit" type="button"><span data-en="Get relevant roundtables &amp; notes →" data-i18n="text" data-zh="订阅相关圆桌与整理 →">订阅相关圆桌与整理 →</span></button>
 <p class="flow-error" id="followError" role="alert"></p><p class="dm-preview-disclaimer">首次注册无需验证邮箱。现阶段浏览器会保持登录。邮箱登录正在测试中，请在另一浏览器确认收件及资料恢复成功后再登出。</p>
@@ -348,6 +384,26 @@ const safeText=(str)=>{let e=document.createElement('span');e.textContent=str;re
 const flow=$('#interestFlow'),entry=$('#flowEntry'),success=$('#flowSuccess'),next=$('#dmNext');
 const state={selected:new Set(),expectations:new Set(),saved:null,open:false,success:false,stage:'expect',customTopic:'',customExpectation:''};
 let opener=null;
+
+// Only registration-time scheduling preferences: no geolocation permission.
+const detectedTimeZone=(()=>{try{return Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC'}catch{return 'UTC'}})();
+const zoneIsValid=z=>{try{new Intl.DateTimeFormat('en-US',{timeZone:z}).format(new Date());return !!z}catch{return false}};
+const zoneOffset=z=>{try{const fmt=new Intl.DateTimeFormat('en-US',{timeZone:z,timeZoneName:'shortOffset'});const v=fmt.formatToParts(new Date()).find(p=>p.type==='timeZoneName')?.value||'';return v.replace(/^GMT/,'UTC').replace('UTC+0','UTC').replace('UTC-0','UTC')}catch{return ''}};
+const timeZones=Array.from(new Set(['UTC',detectedTimeZone,...(Intl.supportedValuesOf?Intl.supportedValuesOf('timeZone'):['Europe/Berlin','Europe/London','America/New_York','America/Los_Angeles','Asia/Shanghai','Asia/Tokyo','Australia/Sydney'])])).sort();
+$('#timeZoneList').replaceChildren(...timeZones.map(z=>{let o=document.createElement('option');o.value=z;return o}));
+let preferredZone=detectedTimeZone;
+let preferredTimes=new Set();
+function showTimeZone(){ $('#timeZoneDisplay').textContent=preferredZone+' · '+zoneOffset(preferredZone);$('#timeZoneInput').value=preferredZone;$('#timeZoneError').textContent=''; }
+function toggleZoneEditor(show){$('#timeZoneEditor').hidden=!show;$('#timeZoneChange').setAttribute('aria-expanded',String(show));if(show)$('#timeZoneInput').focus();}
+function acceptZone(){const z=$('#timeZoneInput').value.trim();if(!zoneIsValid(z)){$('#timeZoneError').textContent=t('请选择有效的时区，例如 Europe/Berlin。','Choose a valid timezone, e.g. Europe/Berlin.');return false;}preferredZone=z;showTimeZone();toggleZoneEditor(false);return true}
+$('#timeZoneChange').addEventListener('click',()=>toggleZoneEditor($('#timeZoneEditor').hidden));
+$('#timeZoneInput').addEventListener('change',()=>acceptZone());
+$('#timeZoneInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();acceptZone()}});
+$('#timeZoneInput').addEventListener('input',()=>$('#timeZoneError').textContent='');
+function drawTimeSlots(){$('#timeSlots .av-slot').forEach(b=>b.setAttribute('aria-pressed',String(preferredTimes.has(b.dataset.slot))));}
+$('#timeSlots .av-slot').forEach(b=>b.addEventListener('click',()=>{let id=b.dataset.slot;if(id==='flexible'){preferredTimes=preferredTimes.has(id)?new Set():new Set([id])}else{preferredTimes.delete('flexible');preferredTimes.has(id)?preferredTimes.delete(id):preferredTimes.add(id)}drawTimeSlots()}));
+showTimeZone();drawTimeSlots();
+
 const backdrop=$('#flowBackdrop');
 const cards=$$('.dm-topic-card');
 function updateTopics(){
@@ -403,6 +459,7 @@ function openFlow(){if(!state.selected.size&&!state.customTopic.trim())return;su
  // Start each onboarding form empty. Stored interests belong in Profile,
  // never in a new visitor's topic / registration form.
  $('#followForm').reset();
+ preferredZone=detectedTimeZone;preferredTimes.clear();showTimeZone();drawTimeSlots();toggleZoneEditor(false);
  resetConsentDefault();
  $('#followEmail').value='';
  $('#currentAiWork').value='';
@@ -456,6 +513,9 @@ async function subscribeToPreview(e){
   if(!goal.value.trim()){
     showSubscribeError(t('请填写「接下来想探索什么？」','Tell us what you want to explore next.'),goal);return;
   }
+  if(!$('#timeZoneEditor').hidden&&!acceptZone()){
+    $('#timeZoneInput').focus();return;
+  }
   if(!$('#accountOpt').checked){
     showSubscribeError(t('请先同意接收相关圆桌与总结邮件。','Please agree to receive relevant community emails.'),$('#accountOpt'));return;
   }
@@ -463,7 +523,7 @@ async function subscribeToPreview(e){
   submit.textContent=t('正在创建你的 Profile…','Creating your Profile…');
   feedback.textContent=t('正在安全保存你的关注…','Saving your interests securely…');
   try{
-    const {registerMember,emailHint}=await import('./dm-member-client.js?v=20261015-otp-url-fix-v2');
+    const {registerMember,emailHint}=await import('./dm-member-client.js?v=20261015-roundtable-time-v1');
     const emailProblem=emailHint(email);
     if(emailProblem){showSubscribeError(emailProblem,emailInput);return;}
     const saved={
@@ -472,11 +532,12 @@ async function subscribeToPreview(e){
       custom_expectation:state.customExpectation.trim(),
       current_ai_work:work.value.trim().slice(0,180),
       next_ai_goal:goal.value.trim().slice(0,180),
+      time_zone:preferredZone,preferred_times:[...preferredTimes],
       consent:true,updated_at:new Date().toISOString()
     };
     await registerMember(saved);
     // Non-blocking welcome email: user can enter Profile even if SMTP is pending.
-    import('./dm-member-client.js?v=20261015-otp-url-fix-v2')
+    import('./dm-member-client.js?v=20261015-roundtable-time-v1')
       .then(({supabase})=>supabase.functions.invoke('dm-send-welcome',{body:{}}))
       .then(({error})=>{if(error)console.info('Welcome email pending:',error.message)})
       .catch(err=>console.info('Welcome email pending:',err?.message||err));
@@ -538,7 +599,7 @@ window.addEventListener('pageshow',event=>{
  state.selected.clear();state.expectations.clear();state.customTopic='';state.customExpectation='';state.saved=null;
  $('#topicOtherInput').value='';$('#topicOtherWrap').hidden=true;$('#topicOtherToggle').setAttribute('aria-expanded','false');
  $('#expectOtherInput').value='';$('#expectOtherWrap').hidden=true;
- $('#followForm').reset();resetConsentDefault();$('#followEmailHint').textContent='';$('#followError').textContent='';
+ $('#followForm').reset();preferredZone=detectedTimeZone;preferredTimes.clear();showTimeZone();drawTimeSlots();toggleZoneEditor(false);resetConsentDefault();$('#followEmailHint').textContent='';$('#followError').textContent='';
  flow.classList.remove('is-open');backdrop.classList.remove('is-open');flow.hidden=true;backdrop.hidden=true;
  document.body.classList.remove('dm-dialog-open');state.open=false;state.success=false;success.hidden=true;entry.hidden=false;
  updateTopics();updateExpect();
