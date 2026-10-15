@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>我的 Design Matters</title>
+<title>我的 designdran</title>
 <style>
 :root{--bg:#f5f3ec;--paper:#fbfaf6;--ink:#0a0a0a;--acid:#b8ff17;--line:#d8d5cd;--muted:#67635c}
 *{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",Arial,sans-serif;-webkit-font-smoothing:antialiased}
@@ -60,15 +60,15 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}
 <body>
 <div class="page">
   <nav class="nav">
-    <a class="brand" href="./#about"><span class="mark">D</span>DESIGN MATTERS</a>
-    <a class="back-link" href="./#dm-community">← Back to Design Matters</a>
+    <a class="brand" href="./#about"><span class="mark">D</span>designdran</a>
+    <a class="back-link" href="./#dm-community">← Back to designdran</a>
   </nav>
   <div class="dm-profile-gate" id="profileGate"><h2>YOUR SPACE / 个人空间</h2><p>正在载入你的 Profile…</p><a class="back-link" href="./?member=login">邮箱登录 →</a> <a class="back-link" href="./#dm-community">选择话题 →</a></div><main class="main" id="profileMain" hidden>
     <section class="hero">
       <div class="hero-mark">DM</div>
       <div>
         <div class="kicker">YOUR SPACE / 个人空间</div>
-        <h1 class="title" id="profileName">我的 Design Matters</h1>
+        <h1 class="title" id="profileName">我的 designdran</h1>
         <div class="meta" id="profileMeta">你关注的话题和过往参与会显示在这里。</div>
       </div>
       <button class="edit-btn" id="editProfileBtn" type="button">Edit Profile ↗</button>
@@ -109,7 +109,7 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}
   <form class="form" id="editForm">
     <div class="field">
       <label for="nameInput">名字</label>
-      <input class="text-input" id="nameInput" type="text" maxlength="60" placeholder="我的 Design Matters">
+      <input class="text-input" id="nameInput" type="text" maxlength="60" placeholder="我的 designdran">
     </div>
     <div class="field">
       <label>关注的话题</label>
@@ -125,7 +125,7 @@ a{color:inherit;text-decoration:none}button,input{font:inherit}
 
 <script type="module">
 import {currentMember,supabase,logoutMember} from './dm-member-client.js?v=20261015-roundtable-time-v1';
-const DEFAULT_NAME='我的 Design Matters';
+const DEFAULT_NAME='我的 designdran';
 const TOPICS=[
 ['agentic-products-agent-ux','Agent 体验与人机控制','Agent Experience & Human Control'],
 ['enterprise-ai','企业 AI 与流程重构','Enterprise AI & Workflow Redesign'],
