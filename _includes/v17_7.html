@@ -2,7 +2,7 @@ is happening in?" data-placeholder-zh="越具体越好：发生在哪个真实�
 <div class="consent-row">
 <label class="consent-label">
 <input name="consent" required="" type="checkbox" value="yes"/>
-<span data-en="I agree that this information may be used for Design Matters applications and follow-up." data-i18n="text" data-zh="我同意将以上信息用于 Design Matters 报名与后续联系。">我同意将以上信息用于 Design Matters 报名与后续联系。</span>
+<span data-en="I agree that this information may be used for designdran applications and follow-up." data-i18n="text" data-zh="我同意将以上信息用于 designdran 报名与后续联系。">我同意将以上信息用于 designdran 报名与后续联系。</span>
 </label>
 </div>
 <button class="btn primary" data-en="Submit interest →" data-i18n="text" data-zh="提交申请 →" type="submit">提交申请 →</button>
@@ -13,12 +13,12 @@ is happening in?" data-placeholder-zh="越具体越好：发生在哪个真实�
 {%- include community_preview_markup.html -%}
 <footer>
 <div class="footer-brand">DESIGN<br/>MATTERS</div>
-<p data-en="Shared change. Different systems. Changing judgment.&lt;br&gt;© 2026 Design Matters." data-i18n="html" data-zh="共同变化，不同系统，不断变化的判断。&lt;br&gt;© 2026 Design Matters.">共同变化，不同系统，不断变化的判断。<br/>© 2026 Design Matters.</p>
+<p data-en="Shared change. Different systems. Changing judgment.&lt;br&gt;© 2026 designdran." data-i18n="html" data-zh="共同变化，不同系统，不断变化的判断。&lt;br&gt;© 2026 designdran.">共同变化，不同系统，不断变化的判断。<br/>© 2026 designdran.</p>
 </footer>
 </div>
 <script>
 function copyTheme(){
-  const text = "Design Matters #008 — 都在说 AI-native，到底什么才算？";
+  const text = "designdran #008 — 都在说 AI-native，到底什么才算？";
   navigator.clipboard?.writeText(text);
 }
 
@@ -105,8 +105,8 @@ function copyTheme(){
   window.copyTheme = function(){
     const lang = root.dataset.lang || 'zh';
     const text = lang === 'zh'
-      ? 'Design Matters #008 — 都在说 AI-native，到底什么才算？'
-      : 'Design Matters #008 — Everyone says AI-native. What actually counts?';
+      ? 'designdran #008 — 都在说 AI-native，到底什么才算？'
+      : 'designdran #008 — Everyone says AI-native. What actually counts?';
     navigator.clipboard?.writeText(text);
   };
 })();
@@ -158,7 +158,7 @@ function copyTheme(){
     const lang = currentLang();
     if (note) note.textContent = lang === 'zh'
       ? '点击提交，即表示你希望在所选场次开放报名时收到邮件通知。你的邮箱只会用于这些通知。'
-      : 'By submitting, you’re asking Design Matters to email you when registration opens for the conversations you selected. Your email will only be used for these updates.';
+      : 'By submitting, you’re asking designdran to email you when registration opens for the conversations you selected. Your email will only be used for these updates.';
     modal.classList.add('open');
     modal.setAttribute('aria-hidden','false');
     document.body.style.overflow = 'hidden';
@@ -407,7 +407,7 @@ function copyTheme(){
     profileUsername.value = value;
     profileStatus.classList.remove('error');
     profileStatus.textContent = value.length >= 3
-      ? (lang()==='zh' ? '@'+value+' · 可用于你的 Design Matters 身份' : '@'+value+' · your Design Matters identity')
+      ? (lang()==='zh' ? '@'+value+' · 可用于你的 designdran 身份' : '@'+value+' · your designdran identity')
       : '';
   });
 
