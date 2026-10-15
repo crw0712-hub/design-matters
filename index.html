@@ -478,6 +478,8 @@ function acceptZone(){
  const input=$('#timeZoneInput'),error=$('#timeZoneError');
  if(!input)return true;
  const typed=input.value.trim();
+ // Time-zone editing is optional: keep the detected/current zone if unchanged.
+ if(!typed){toggleZoneEditor(false);return true}
  const match=zoneChoices.find(z=>z.toLowerCase()===typed.toLowerCase());
  const z=match||typed;
  if(!zoneIsValid(z)){
