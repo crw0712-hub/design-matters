@@ -71,7 +71,7 @@ export async function registerMember({email,topics=[],expectations=[],custom_top
  const availability=sanitizeAvailability(time_zone,preferred_times);
  const {session,member}=await currentMember();
  if(member){
-  if(member.email!==email)throw Error("当前浏览器已有 Design Matters Profile。请使用右上角 Profile 查看和修改；邮箱找回尚未开放，请勿登出。");
+  if(member.email!==email)throw Error("当前浏览器已有 designdran Profile。请使用右上角 Profile 查看和修改；邮箱找回尚未开放，请勿登出。");
   // Existing browser sessions must update their interests, not merely show a
   // misleading 'saved' success while silently returning the old profile.
   const selected=[...new Set(topics.filter(x=>topicIDs.has(x)))];
@@ -99,14 +99,14 @@ export async function registerMember({email,topics=[],expectations=[],custom_top
  }
  const selected=[...new Set(topics.filter(x=>topicIDs.has(x)))];
  const interests=[...new Set(expectations.filter(x=>expectIDs.has(x)))];
- const row={user_id:user.id,email,display_name:"我的 Design Matters",topics:selected,
+ const row={user_id:user.id,email,display_name:"我的 designdran",topics:selected,
   expectations:interests,custom_topic:safeString(custom_topic),
   custom_expectation:safeString(custom_expectation),current_ai_work:safeString(current_ai_work),
   next_ai_goal:safeString(next_ai_goal),time_zone:availability.time_zone,preferred_times:availability.preferred_times,consent:true,locale:"zh"};
  const {data,error}=await supabase.from("dm_member_intake").insert(row).select().single();
  if(error){
   if(startedAnonymous)await supabase.auth.signOut();
-  if(error.code==="23505")throw Error("此邮箱已经注册 Design Matters。邮箱找回暂未开放，请使用创建 Profile 时的原浏览器继续访问。");
+  if(error.code==="23505")throw Error("此邮箱已经注册 designdran。邮箱找回暂未开放，请使用创建 Profile 时的原浏览器继续访问。");
   throw Error("暂时无法保存账号："+error.message);
  }
  try{localStorage.removeItem("dm_pending_topics")}catch{}
