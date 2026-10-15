@@ -345,7 +345,7 @@ body.dm-dialog-open{overflow:hidden}.flow-step{margin-left:auto;margin-right:18p
 <div class="profile-field-title" data-en="MY TOPICS" data-i18n="text" data-zh="我的关注">我的关注</div>
 <div class="success-topics" id="successTopics"></div>
 <p class="success-email" id="successEmail"></p>
-<p class="success-note" id="previewDeliveryNote" role="status" aria-live="polite" data-zh="Profile 已创建。此浏览器会保持登录；请先验证邮箱登录能恢复资料再登出。" data-en="Your Profile is ready. Stay signed in until email login has been tested on another browser.">Profile 已创建。此浏览器会保持登录；请先验证邮箱登录能恢复资料再登出。</p>
+
 </div>
 <div class="success-expect" hidden="" id="successExpect"><div class="selection-recap" id="successExpectPills"></div></div>
 <a class="success-profile-primary" href="./profile-live.html" id="successProfile"><span data-en="View my Profile" data-i18n="text" data-zh="查看我的 Profile">查看我的 Profile</span><span aria-hidden="true">↗</span></a>
@@ -677,8 +677,6 @@ async function subscribeToPreview(e){
     state.saved=saved;
     storage.setItem('dm_community_preferences_v4',JSON.stringify(saved));
     $('#successEmail').textContent=t('邮箱：','Email: ')+email;
-    const delivery=$('#previewDeliveryNote');
-    if(delivery)delivery.textContent=t('Profile 已创建。请先在另一浏览器测试邮箱验证码能否找回资料，再登出；圆桌邮件提醒稍后开放。','Your Profile is ready. Test email login on another browser before signing out; roundtable updates are coming later.');
     syncProfileLinks();
     entry.hidden=true;success.hidden=false;state.success=true;
     updateTopics();updateExpect();$('#flowStep').textContent='✓';
