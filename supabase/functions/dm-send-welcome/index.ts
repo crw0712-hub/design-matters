@@ -38,9 +38,15 @@ Deno.serve(async req => {
   if(verified.error || !verified.data?.user)return reply(401,{error:"Unauthorized"});
   const user=verified.data.user;
   const admin=createClient(endpoint,adminKey,{auth:{persistSession:false,autoRefreshToken:false}});
-  const lookup=await admin.from("dm_member_intake").select("user_id,email").eq("user_id",user.id).maybeSingle();
+  const lookup=await admin.from("dm_member_intake").select("user_id,email,created_at").eq("user_id",user.id).maybeSingle();
   if(lookup.error)return reply(500,{error:"Member lookup failed"});
   if(!lookup.data?.email)return reply(404,{error:"No profile is linked to this session"});
+  // Old members changing interests must not unexpectedly receive a new welcome.
+  // Only a recently-created member record may trigger the first email.
+  const joinedAt=Date.parse(lookup.data.created_at||"");
+  if(!Number.isFinite(joinedAt)||joinedAt>Date.now()+120000||Date.now()-joinedAt>15*60*1000){
+    return reply(200,{status:"not_a_new_registration"});
+  }
   const email=String(lookup.data.email).trim().toLowerCase();
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))return reply(400,{error:"Invalid recipient"});
 
