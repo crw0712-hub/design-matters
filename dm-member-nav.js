@@ -80,7 +80,7 @@ if(nav){
   <div id="dm-email-hint" class="dm-note" role="status"></div>
   ${signup?'<label class="dm-consent"><input id="dm-dialog-consent" type="checkbox" required><span>我愿意收到相关圆桌报名提醒与讨论总结，可随时退订。</span></label>':""}
   <div id="dm-dialog-message" class="dm-error" role="status" aria-live="polite"></div>
-  <button type="submit" id="dm-dialog-submit" class="dm-dialog-submit">${signup?"创建我的 Profile →":"发送登录邮件 →"}</button>
+  <button type="submit" id="dm-dialog-submit" class="dm-dialog-submit">${signup?"创建我的 Profile →":"发送验证码 →"}</button>
   </form>
   <button type="button" id="dm-dialog-switch" class="dm-switch">${signup?"已有账号？通过邮箱登录 →":"第一次加入？创建 Profile →"}</button>
   <div class="dm-note">${signup?"此浏览器会保持登录；之后可使用邮箱验证码登录。":"验证码将发送至你的邮箱。"}</div>`;
@@ -96,7 +96,7 @@ if(nav){
    const value=cleanEmail(email.value);
    const expects=signup?getExpectations(dialog):[];
    if(signup&&!expects.length){msg.textContent="请至少选择一个你希望获得的内容。";return}
-   btn.disabled=true;msg.textContent=signup?"正在创建你的 Profile…":"正在请求登录邮件…";
+   btn.disabled=true;msg.textContent=signup?"正在创建你的 Profile…":"正在发送验证码…";
    try{
     if(signup){
      await registerMember({email:value,expectations:expects,custom_expectation:dialog.querySelector("#dm-dialog-other").value,consent:dialog.querySelector("#dm-dialog-consent").checked});
@@ -104,7 +104,7 @@ if(nav){
     }else{
      await requestEmailLogin(value);
      dialog.querySelector("form").hidden=true;
-     msg.className="dm-note";msg.textContent="登录邮件已请求。可点击邮件中的链接登录，或在下方输入邮件验证码。若未收到邮件，请检查垃圾邮件文件夹，并确认邮件服务已配置。";
+     msg.className="dm-note";msg.textContent="验证码已发送，请输入邮件中的六位数字。如果没收到，请检查垃圾邮件文件夹。";
      const verifyForm=document.createElement("form");verifyForm.setAttribute("aria-label","Email verification code");
      verifyForm.innerHTML='<label class="dm-entry-label" for="dm-login-code">EMAIL CODE / 邮件验证码</label><input type="text" id="dm-login-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,8}" maxlength="8" required placeholder="6–8 位验证码"><button type="submit" class="dm-dialog-submit">验证并进入 Profile →</button><div class="dm-error" role="status" aria-live="polite"></div>';
      dialog.append(verifyForm);
