@@ -1,11 +1,11 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Join · Design Matters</title><style>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Join · designdran</title><style>
 :root{--paper:#fbfaf6;--ink:#0a0a0a;--acid:#b8ff17}*{box-sizing:border-box}body{margin:0;background:#f5f3ec;color:var(--ink);font:15px/1.55 Inter,-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}header{padding:20px max(22px,calc((100% - 1080px)/2));border-bottom:1px solid;background:var(--paper);font-weight:900}header a{color:inherit;text-decoration:none}.page{max-width:830px;margin:45px auto 80px;padding:36px;border:1.5px solid;border-radius:25px;background:var(--paper)}h1{font-size:clamp(38px,6vw,64px);letter-spacing:-.07em;line-height:1.02;margin:12px 0 25px}h2{font-size:16px}small,.quiet{color:#67635c}label.field{display:block;font-size:12px;font-weight:850;margin:21px 0 7px}input[type=email],input[type=text]{width:100%;padding:15px;border:1px solid #99948a;border-radius:9px;background:white;font:inherit}input:focus{outline:2px solid var(--acid);outline-offset:2px}.topics,.expects{display:flex;flex-wrap:wrap;gap:8px}.pill{position:relative}.pill input{position:absolute;opacity:0}.pill span{display:inline-flex;padding:10px 14px;border:1px solid #b7b3ab;border-radius:99px;cursor:pointer;font-size:13px;font-weight:750}.pill input:checked+span{background:var(--acid);border-color:#111}.line{border-top:1px solid #d7d2c9;padding-top:19px;margin-top:25px}button.primary{width:100%;padding:17px;border:1px solid;border-radius:99px;background:#111;color:white;font:inherit;font-weight:900;cursor:pointer;margin-top:22px}button:disabled{opacity:.5;cursor:wait}.status{min-height:25px;color:#8b3028;font-size:13px;margin-top:8px}.good{color:#2f6822}.info{background:#edeae2;padding:18px;border-radius:13px;margin-top:22px}@media(max-width:700px){.page{margin:18px 10px;padding:22px}}</style></head><body>
-<header><a href="./">▣ DESIGN MATTERS</a></header><main class="page"><small>DESIGN MATTERS / COMMUNITY</small><h1>继续你关心的讨论。</h1><p>注册后可收到圆桌总结、相关活动提醒，并与全球 AI × Design 同行保持联系。</p>
+<header><a href="./">▣ designdran</a></header><main class="page"><small>designdran / COMMUNITY</small><h1>继续你关心的讨论。</h1><p>注册后可收到圆桌总结、相关活动提醒，并与全球 AI × Design 同行保持联系。</p>
 <form id="form"><div class="line"><h2>YOUR TOPICS / 关注的话题</h2><div class="topics" id="topics"></div><label class="field" for="customTopic">其他关注方向（选填）</label><input id="customTopic" maxlength="180" type="text" placeholder="写下你关心的其他问题"></div><div class="line"><h2>WHAT YOU'D LIKE / 更想在这里得到什么</h2><div class="expects" id="expects"></div><label class="field" for="customExpectation">其他期待（选填）</label><input id="customExpectation" maxlength="180" type="text" placeholder="还希望在社区获得什么？"></div>
 <label class="field" for="email">EMAIL / 邮箱</label><input id="email" type="email" autocomplete="email" required placeholder="name@example.com"><div id="emailStatus" class="status" role="status"></div>
 <label class="field" for="work">你现在主要在做什么？</label><input id="work" type="text" required maxlength="180" placeholder="例如：设计企业 Agent 体验">
 <label class="field" for="goal">接下来想探索什么？</label><input id="goal" type="text" required maxlength="180" placeholder="例如：AI-native 产品">
-<label class="field"><input id="consent" type="checkbox" required> 我同意接收 Design Matters 相关圆桌及总结邮件，可随时退订。</label>
+<label class="field"><input id="consent" type="checkbox" required> 我同意接收 designdran 相关圆桌及总结邮件，可随时退订。</label>
 <button class="primary" id="submit" type="submit">订阅相关圆桌与整理 →</button><div class="status" id="status" role="status" aria-live="polite"></div></form>
 </main><script type="module">
 import {TOPICS,EXPECTATIONS,registerMember,cleanEmail,emailHint} from "./dm-member-client.js?v=20261014-02";
@@ -17,7 +17,7 @@ try{const preselect=JSON.parse(localStorage.getItem("dm_pending_topics")||"[]");
 function validateEmail(){
  const value=cleanEmail(email.value),error=emailHint(value);
  if(error){emailStatus.textContent=error;emailStatus.className="status";return false;}
- emailStatus.textContent="邮箱格式有效。提交时会检查是否已有 Design Matters 账号。";
+ emailStatus.textContent="邮箱格式有效。提交时会检查是否已有 designdran 账号。";
  emailStatus.className="status good";return true;
 }
 email.addEventListener("blur",validateEmail);
