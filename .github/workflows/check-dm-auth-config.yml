@@ -1,4 +1,4 @@
-name: Check Design Matters Auth configuration
+name: Check designdran Auth configuration
 on:
   push:
     branches: [main]
