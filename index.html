@@ -656,7 +656,7 @@ async function subscribeToPreview(e){
   submit.textContent=t('正在创建你的 Profile…','Creating your Profile…');
   feedback.textContent=t('正在安全保存你的关注…','Saving your interests securely…');
   try{
-    const {registerMember,emailHint}=await import('./dm-member-client.js?v=20261015-roundtable-time-v1');
+    const {registerMember,emailHint}=await import('./dm-member-client.js?v=20261016-designdran-rebrand-v1');
     const emailProblem=emailHint(email);
     if(emailProblem){showSubscribeError(emailProblem,emailInput);return;}
     const saved={
@@ -670,7 +670,7 @@ async function subscribeToPreview(e){
     };
     await registerMember(saved);
     // Non-blocking welcome email: user can enter Profile even if SMTP is pending.
-    import('./dm-member-client.js?v=20261015-roundtable-time-v1')
+    import('./dm-member-client.js?v=20261016-designdran-rebrand-v1')
       .then(({supabase})=>supabase.functions.invoke('dm-send-welcome',{body:{}}))
       .then(({error})=>{if(error)console.info('Welcome email pending:',error.message)})
       .catch(err=>console.info('Welcome email pending:',err?.message||err));
@@ -743,5 +743,5 @@ initRoundtableAvailability();
 const navLinks=$$('.nav-item');const sects=['about','dm-community','next','synthesis','archive'].map(id=>$("#"+id)).filter(Boolean);if('IntersectionObserver' in window){let navObserver=new IntersectionObserver(entries=>{entries.filter(x=>x.isIntersecting).forEach(x=>{let id=x.target.id;if(id==='about')id='dm-community';if(id==='synthesis')id='archive';navLinks.forEach(a=>a.classList.toggle('active',a.dataset.navSection===id))})},{rootMargin:'-24% 0px -56% 0px',threshold:0});sects.forEach(e=>navObserver.observe(e))}
 $$('#archive details.session').forEach(el=>el.addEventListener('toggle',()=>{if(!el.open)return;$$('#archive details.session').forEach(o=>{if(o!==el)o.open=false})}));
 })();
-</script><script type="module" src="./dm-member-nav.js?v=20261015-otp-code-only-ui-v1"></script>
+</script><script type="module" src="./dm-member-nav.js?v=20261016-designdran-rebrand-v1"></script>
 </body></html>
