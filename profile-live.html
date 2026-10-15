@@ -205,6 +205,14 @@ async function init(){
    events=records;
   }
   $('profileMain').hidden=false;gate.hidden=true;render();
+  // Recover a welcome email missed during new-account registration without
+  // interrupting Profile or requiring another signup. Backend is idempotent.
+  const joinedAt=Date.parse(member.created_at||"");
+  if(Number.isFinite(joinedAt)&&Date.now()>=joinedAt&&Date.now()-joinedAt<24*60*60*1000){
+   supabase.functions.invoke('dm-send-welcome',{body:{}})
+     .then(({error})=>{if(error)console.info('Welcome email pending:',error.message)})
+     .catch(error=>console.info('Welcome email pending:',error?.message||error));
+  }
  }catch(error){gate.hidden=false;gate.querySelector('p').textContent='暂时无法载入 Profile：'+(error.message||'请重试');}
 }
 init();
