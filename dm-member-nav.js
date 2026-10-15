@@ -46,7 +46,7 @@ if(nav){
  controls.append(trigger);nav.append(controls);
  const menu=document.createElement("div");menu.className="dm-user-menu";menu.hidden=true;menu.setAttribute("role","menu");nav.append(menu);
  const backdrop=document.createElement("div");backdrop.className="dm-member-backdrop";backdrop.hidden=true;
- const dialog=document.createElement("section");dialog.className="dm-member-dialog";dialog.hidden=true;dialog.setAttribute("role","dialog");dialog.setAttribute("aria-modal","true");dialog.setAttribute("aria-label","Design Matters account");
+ const dialog=document.createElement("section");dialog.className="dm-member-dialog";dialog.hidden=true;dialog.setAttribute("role","dialog");dialog.setAttribute("aria-modal","true");dialog.setAttribute("aria-label","designdran account");
  document.body.append(backdrop,dialog);
  let signedIn=false,mode="login";
  const esc=s=>{const el=document.createElement("span");el.textContent=s;return el.innerHTML};
@@ -70,9 +70,9 @@ if(nav){
  }
  function renderDialog(){
   const signup=mode==="signup";
-  dialog.innerHTML=`<div class="dm-dialog-head"><span class="dm-eyebrow">DESIGN MATTERS / ${signup?"JOIN OUR COMMUNITY":"WELCOME BACK"}</span><button class="dm-dismiss" type="button" aria-label="关闭">×</button></div>
+  dialog.innerHTML=`<div class="dm-dialog-head"><span class="dm-eyebrow">designdran / ${signup?"JOIN OUR COMMUNITY":"WELCOME BACK"}</span><button class="dm-dismiss" type="button" aria-label="关闭">×</button></div>
   <h2>${signup?"加入持续思考的圈子。":"欢迎回来。"} </h2>
-  <p>${signup?"选择你更想在 Design Matters 获得的内容，留下邮箱，就可以进入自己的 Profile。":"输入注册邮箱，获取一次性登录验证码。首次使用前，请在另一浏览器测试是否能打开你原来的 Profile。"}</p>
+  <p>${signup?"选择你更想在 designdran 获得的内容，留下邮箱，就可以进入自己的 Profile。":"输入注册邮箱，获取一次性登录验证码。首次使用前，请在另一浏览器测试是否能打开你原来的 Profile。"}</p>
   <form id="dm-dialog-form">
   ${signup?'<label class="dm-entry-label">你更想在这里得到什么？</label><div id="dm-dialog-expects" class="dm-options"></div><label class="dm-entry-label" for="dm-dialog-other">其他期待（选填）</label><input type="text" id="dm-dialog-other" maxlength="180" placeholder="还有什么你想获得的？">':""}
   <label class="dm-entry-label" for="dm-dialog-email">EMAIL / 邮箱</label>
