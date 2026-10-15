@@ -53,7 +53,7 @@ if(nav){
  function closeMenu(){menu.hidden=true;trigger.setAttribute("aria-expanded","false")}
  function renderMenu(){
   menu.replaceChildren();
-  const links=signedIn?[["My Profile","profile"],["Log Out","logout"]]:[["Log In / 邮箱登录（测试中）","login"],["Sign Up / 注册","signup"]];
+  const links=signedIn?[["My Profile","profile"],["Log Out","logout"]]:[["Log In / 邮箱登录","login"],["Sign Up / 注册","signup"]];
   for(const [label,action] of links){
    const btn=document.createElement("button");btn.type="button";btn.setAttribute("role","menuitem");btn.textContent=label;
    btn.addEventListener("click",async()=>{
@@ -83,7 +83,7 @@ if(nav){
   <button type="submit" id="dm-dialog-submit" class="dm-dialog-submit">${signup?"创建我的 Profile →":"发送登录邮件 →"}</button>
   </form>
   <button type="button" id="dm-dialog-switch" class="dm-switch">${signup?"已有账号？通过邮箱登录 →":"第一次加入？创建 Profile →"}</button>
-  <div class="dm-note">${signup?"此浏览器会保持登录。邮箱验证码登录正在测试中，请先确认收件成功再登出。":"验证码邮件功能正在测试中；未确认收件前，请勿在原浏览器登出。"}</div>`;
+  <div class="dm-note">${signup?"此浏览器会保持登录；之后可使用邮箱验证码登录。":"验证码将发送至你的邮箱。"}</div>`;
   dialog.querySelector(".dm-dismiss").addEventListener("click",closeDialog);
   dialog.querySelector("#dm-dialog-switch").addEventListener("click",()=>{mode=signup?"login":"signup";renderDialog()});
   if(signup)optionLabels(dialog.querySelector("#dm-dialog-expects"),EXPECTATIONS,"dm-expect",[]);
