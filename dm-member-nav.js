@@ -60,7 +60,7 @@ if(nav){
     closeMenu();
     if(action==="login"||action==="signup"){openDialog(action);return}
     if(action==="profile"){location.assign("./profile-live.html");return}
-    try{const {data:{session}}=await supabase.auth.getSession();if(session&&!session.user?.email&&!confirm("请先在另一个浏览器测试邮箱验证码，确认能看到原来的 Profile。若邮件未送达，登出后可能无法恢复。确定仍要登出吗？"))return;await logoutMember();signedIn=false;renderMenu();trigger.textContent="Profile ↗";}catch(e){alert(e.message||"登出失败");}
+    try{await logoutMember();signedIn=false;renderMenu();trigger.textContent="Profile ↗";}catch(e){alert(e.message||"登出失败");}
    });menu.append(btn);
   }
  }
@@ -72,7 +72,7 @@ if(nav){
   const signup=mode==="signup";
   dialog.innerHTML=`<div class="dm-dialog-head"><span class="dm-eyebrow">designdran / ${signup?"JOIN OUR COMMUNITY":"WELCOME BACK"}</span><button class="dm-dismiss" type="button" aria-label="关闭">×</button></div>
   <h2>${signup?"加入持续思考的圈子。":"欢迎回来。"} </h2>
-  <p>${signup?"选择你更想在 designdran 获得的内容，留下邮箱，就可以进入自己的 Profile。":"输入注册邮箱，获取一次性登录验证码。首次使用前，请在另一浏览器测试是否能打开你原来的 Profile。"}</p>
+  <p>${signup?"选择你更想在 designdran 获得的内容，留下邮箱，就可以进入自己的 Profile。":"输入注册邮箱，获取一次性登录验证码。"}</p>
   <form id="dm-dialog-form">
   ${signup?'<label class="dm-entry-label">你更想在这里得到什么？</label><div id="dm-dialog-expects" class="dm-options"></div><label class="dm-entry-label" for="dm-dialog-other">其他期待（选填）</label><input type="text" id="dm-dialog-other" maxlength="180" placeholder="还有什么你想获得的？">':""}
   <label class="dm-entry-label" for="dm-dialog-email">EMAIL / 邮箱</label>
