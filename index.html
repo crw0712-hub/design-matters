@@ -475,12 +475,11 @@ async function subscribeToPreview(e){
       consent:true,updated_at:new Date().toISOString()
     };
     await registerMember(saved);
-    // Best-effort welcome email. Missing SMTP secrets must never block signup.
-    try{
-      const {supabase}=await import('./dm-member-client.js?v=20261015-browser-session-v1');
-      const welcome=await supabase.functions.invoke('dm-send-welcome',{body:{}});
-      if(welcome.error)console.info('Welcome email pending:',welcome.error.message);
-    }catch(err){console.info('Welcome email pending:',err?.message||err);}
+    // Non-blocking welcome email: user can enter Profile even if SMTP is pending.
+    import('./dm-member-client.js?v=20261015-browser-session-v1')
+      .then(({supabase})=>supabase.functions.invoke('dm-send-welcome',{body:{}}))
+      .then(({error})=>{if(error)console.info('Welcome email pending:',error.message)})
+      .catch(err=>console.info('Welcome email pending:',err?.message||err));
     state.saved=saved;
     storage.setItem('dm_community_preferences_v4',JSON.stringify(saved));
     $('#successEmail').textContent=t('邮箱：','Email: ')+email;
