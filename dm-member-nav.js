@@ -1,4 +1,4 @@
-import {supabase,currentMember,registerMember,requestEmailLogin,verifyEmailLogin,logoutMember,EXPECTATIONS,optionLabels,getExpectations,emailHint,cleanEmail} from "./dm-member-client.js?v=20261015-roundtable-time-v1";
+import {supabase,currentMember,registerMember,requestEmailLogin,verifyEmailLogin,logoutMember,EXPECTATIONS,optionLabels,getExpectations,emailHint,cleanEmail} from "./dm-member-client.js?v=20261016-designdran-rebrand-v1";
 // SMTP is configured; enable email login for controlled cross-browser testing.
 // Do not remove anonymous-user logout warnings until inbox delivery is verified.
 const EMAIL_RECOVERY_READY=true;
